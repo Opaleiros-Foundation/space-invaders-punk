@@ -1,4 +1,4 @@
- # Catsteroids
+ # Guide Capstone - Capstone Programming 3
 
 <img src=".gitlab/catsteroids.png"  width="400" height="250" alt="Catsteroids"/>
 
