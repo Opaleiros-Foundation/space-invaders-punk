@@ -1,27 +1,28 @@
-# Enginnering Requeriments
-
+# Requisitos de Engenharia
 
 ## Requisitos Funcionais
 
-- O sistema deve permitir que o usuário controle uma nave, podendo movimentar  no sentido horizontar, sem sair da tela, usando as setas direcionais para esquerda e direita
-- O usuario deve conseguir disparar lasers na direção vertical com o botão de espaço
-- O sistema deve atribuir pontos ao usuário disparar e acertar laser nos inimigos, com base na [tabela de inimigos]()
-- O sistema deve fazer com que os inimigos (do tipo 1, 2 ,3) apareçam na tela de forma aleatória e eles não podem sair do quadro
-- O sistema deve fazer com que os alienigenas vermelhos se movem  aleatoriamente começando da esquerda para a direita ou vice-versa e saindo do quadro, aparecendo 1 vez por 2 minutos aproximadamente, os pontos que eles lhe dão ao atirar variam
-- O usuario deve ter 3 vidas iniciais, sendo que se for atingido ou encostar em um alienigena ele morre
-- O sistema deve finalizar o jogo se o jogador perder todas as vidas ou terminara quando as naves alcançarem o jogador
-- O sistema deve possuir 4 blocos de proteção, contra os alienígenas, eles mudarão de cor conforme forem recebendo danos e eventualmente desaparecendo
-- O sistema deve fazer com que o movimento das naves alienigenas aumente um pouco e  a velocidade de fogo também assim que se moverem para baix
-- O sistem deve fazer com que a unica nave que ataca é o que valo 40 (veja mais na: [tabela de inimigos]()
-- O usuario deve disparar novamento quando seu tiro anterior acertar ou de outro forma quando exceder o limite supeprior do quadro do jogo
-- O sistema deve fazer com que os alienigenas não colidam com os blocos de proteção
-- O usuario deve conseguir destruir naves alienigenas com 1 tiro
-- O sistema deve fazer aparecer uma nova onde assim que todas as naves alienigenas forem destruidas, essa nova onde gerada move a posção para baixo os primeiros 5 e aumentando um pouco a velocidade a partir da quinta em diant
-- O sistema deve aumentar o número de vidas a cada 1000 pontos que o jogador conseguir
-- O sistema deve exibir a pontualçai no canto superior esquerdo
-- O sistema deve incrementar seguindo a [tabela de inimigos]() a cada vez que um inimigo é destruido
-- O sistema deve ao fim do jogo, exibir uma opção para o jogador de salvar a pontuação e adicionar um apelido, deve tambem ofertar ao jogador a opção de voltar a jogar e se o jogador nao quiser jogar novamente a página inicial será exibida
-- O sistema deve exibir a tela inicial, com:  um botao de iniciar um novo jogo, um botao de ver a tabela com os placare, botao de ver os controles do jogo
-- O sistema deve possuir um som representativo para cada ação do jogo 
-- O sistema deve salvar as informações do painel de pontuação em um arquivo de texto
-..
+| ID | Requisito | Descrição | Prioridade |
+| --- | --- | --- | --- |
+| RF01 | Controle da Nave | O sistema deve permitir que o usuário controle uma nave, movimentando-a horizontalmente com as setas direcionais. | Alta |
+| RF02 | Disparo de Lasers | O usuário deve conseguir disparar lasers verticalmente com a barra de espaço. | Alta |
+| RF03 | Pontuação por Inimigo | O sistema deve atribuir pontos ao usuário quando um laser acerta um inimigo, com base na [tabela de inimigos](). | Alta |
+| RF04 | Geração de Inimigos | Inimigos (tipos 1, 2, 3) devem aparecer na tela e se mover sem sair do quadro de jogo. | Alta |
+| RF05 | Inimigo Especial | Um alienígena vermelho especial deve cruzar a tela periodicamente, oferecendo pontos variáveis. | Média |
+| RF06 | Sistema de Vidas | O usuário começa com 3 vidas e perde uma ao ser atingido ou tocar em um alienígena. | Alta |
+| RF07 | Condição de Fim de Jogo | O jogo termina se o jogador perder todas as vidas ou se os alienígenas alcançarem a base. | Alta |
+| RF08 | Barreiras de Proteção | O sistema deve ter 4 blocos de proteção que se degradam com o dano. | Alta |
+| RF09 | Aumento de Dificuldade | A velocidade de movimento e de tiro dos alienígenas deve aumentar conforme eles descem. | Média |
+| RF10 | Ataque Inimigo | Apenas o tipo de alienígena que vale 40 pontos pode atirar. | Média |
+| RF11 | Recarga de Tiro | O usuário só pode disparar novamente após o tiro anterior atingir um alvo ou sair da tela. | Alta |
+| RF12 | Comportamento dos Inimigos | Os alienígenas não devem colidir com as barreiras de proteção. | Baixa |
+| RF13 | Dano em Inimigos | O usuário deve conseguir destruir naves alienígenas com um único tiro. | Alta |
+| RF14 | Novas Ondas | Uma nova onda de inimigos deve aparecer após a anterior ser destruída, com dificuldade aumentada. | Alta |
+| RF15 | Vida Extra | O jogador ganha uma vida extra a cada 1000 pontos. | Média |
+| RF16 | Exibição de Pontuação | A pontuação deve ser exibida no canto superior esquerdo da tela. | Alta |
+| RF17 | Incremento de Pontuação | A pontuação deve ser incrementada de acordo com a [tabela de inimigos](). | Alta |
+| RF18 | Tela de Fim de Jogo | Ao final do jogo, deve ser possível salvar a pontuação com um apelido ou jogar novamente. | Alta |
+| RF19 | Tela Inicial | O jogo deve ter uma tela inicial com opções para "Novo Jogo", "Placares" e "Controles". | Alta |
+| RF20 | Efeitos Sonoros | O sistema deve ter um som representativo para cada ação principal do jogo. | Média |
+| RF21 | Salvamento de Placar | As informações do painel de pontuação devem ser salvas em um arquivo de texto. | Alta |
+

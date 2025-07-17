@@ -1,6 +1,6 @@
  # Catsteroids
 
-![Catsteroids Logo](./.gitlab/catsteroids.png)
+<img src=".gitlab/catsteroids.png"  width="400" height="250" alt="Catsteroids"/>
 
 ## O Projeto
 
