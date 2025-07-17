@@ -1,28 +1,39 @@
- # Guide Capstone - Capstone Programming 3
+# Guia do Projeto Capstone: Recriação de Space Invaders
 
-<img src=".gitlab/catsteroids.png"  width="400" height="250" alt="Catsteroids"/>
+<img src=".gitlab/catsteroids.png" width="400" height="250" alt="Catsteroids Logo"/>
 
-## O Projeto
+## 1. Visão Geral do Projeto
 
-Este projeto é um jogo de tiro espacial inspirado no clássico Space Invaders, mas com um toque felino! Em Catsteroids, você controla uma nave-gato que deve defender seu planeta de uma horda de invasores alienígenas.
+Este repositório serve como a documentação central e o guia de desenvolvimento para o projeto final da disciplina de Programação 3. O objetivo é recriar o clássico jogo **Space Invaders** como uma aplicação de desktop, utilizando C# e a Uno Platform, com foco na aplicação de conceitos de Programação Orientada a Objetos, Estruturas de Dados e manipulação de eventos.
 
-## Documentação
+## 2. Documentação Detalhada (Writerside)
 
-A documentação completa do projeto, incluindo detalhes de arquitetura, requisitos e o design do jogo, está disponível na nossa página do [Writerside](https://www.jetbrains.com/writerside/).
+Toda a documentação do projeto está centralizada na nossa instância do Writerside. Consulte os links abaixo para acessar os documentos específicos.
 
-[Acesse a documentação aqui](./Writerside/hi.tree)
+- **[Documento de Requisitos de Negócio (BRD)](./Writerside/topics/BRD.md)**: Descreve a visão geral, o escopo e os objetivos do projeto.
+- **[Requisitos de Engenharia](./Writerside/topics/Enginnering-Requeriments.md)**: Detalha os requisitos funcionais e não funcionais do jogo.
+- **[Arquitetura do Sistema](./Writerside/topics/Architeture.md)**: Apresenta a pilha de tecnologia, wireframes e o esquema do banco de dados.
+- **[Análise sobre Space Invaders](./Writerside/topics/Space-Invaders.md)**: Um estudo sobre o jogo original, suas mecânicas e impacto cultural.
 
-## Como Jogar
+## 3. Resumo dos Requisitos Funcionais Chave
 
-- **Movimento**: Use as setas do teclado para mover a nave para a esquerda e para a direita.
-- **Tiro**: Pressione a barra de espaço para atirar nos inimigos.
-- **Objetivo**: Destrua todos os invasores antes que eles cheguem à parte inferior da tela.
+| ID | Requisito | Prioridade |
+| --- | --- | --- |
+| RF01 | Controle da Nave (Movimento Horizontal) | Alta |
+| RF02 | Disparo de Lasers (Vertical) | Alta |
+| RF04 | Geração e Movimento de Inimigos | Alta |
+| RF06 | Sistema de Vidas e Dano | Alta |
+| RF07 | Condições de Fim de Jogo | Alta |
+| RF19 | Menus e Telas (Inicial, Fim de Jogo) | Alta |
+| RF21 | Persistência de Placares | Alta |
 
-## Tecnologias
+## 4. Tecnologias
 
-* **Linguagem**: [A ser definida]
-* **Framework**: [A ser definido]
+*   **Linguagem**: C#
+*   **Plataforma**: Uno Platform (para aplicação de desktop)
+*   **UI**: XAML
+*   **Controle de Versão**: Git
 
-## Contribuição
+## 5. Como Contribuir
 
-Sinta-se à vontade para contribuir com o projeto! Abra uma issue ou envie um merge request com suas ideias.
+Este é um projeto acadêmico individual. No entanto, sugestões e discussões são bem-vindas através das **Issues** do GitLab.
