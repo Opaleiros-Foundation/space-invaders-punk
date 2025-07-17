@@ -1,0 +1,188 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><style>
+        .article {
+            position: relative;
+            padding-bottom: 24px;
+        }
+        
+
+        .control {
+            color: #19191c;
+            font-size: 16px;
+            font-weight: 670;
+        }
+        
+
+        .detached {
+            margin-block-start: 0;
+            margin-block-end: 0;
+            margin-bottom: 8px;
+        }
+        
+
+        .list {
+            list-style-type: disc;
+            padding-left: 0;
+            margin-left: 15px;
+        }
+        
+
+        .list-item {
+            margin-top: 6px;
+            margin-bottom: 6px;
+            margin-left: 4px;
+        }
+        
+
+        .main-title {
+            padding-bottom: 24px;
+            margin-top: 0;
+            font-size: 40px;
+            margin-block-start: 0;
+            margin-block-end: 0;
+        }
+        
+
+        :root {
+            width: 95%;
+            max-width: 95vw;
+            padding: 0 0 0 30px;
+        }
+        
+        body {
+            font-family: JetBrains Sans,serif;
+        }
+        
+        a {
+            overflow-wrap: anywhere;
+            width: 100vw;
+        }
+        
+        
+        @font-face {
+            font-family: JetBrains Sans;
+            src: url(https://resources.jetbrains.com/storage/jetbrains-sans/JetBrainsSans-Light.woff2) format("woff2"), url(https://resources.jetbrains.com/storage/jetbrains-sans/JetBrainsSans-Light.woff) format("woff");
+            font-weight: 300;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: JetBrains Sans;
+            src: url(https://resources.jetbrains.com/storage/jetbrains-sans/JetBrainsSans-Regular.woff2) format("woff2"), url(https://resources.jetbrains.com/storage/jetbrains-sans/JetBrainsSans-Regular.woff) format("woff");
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: JetBrains Sans;
+            src: url(https://resources.jetbrains.com/storage/jetbrains-sans/JetBrainsSans-SemiBold.woff2) format("woff2"), url(https://resources.jetbrains.com/storage/jetbrains-sans/JetBrainsSans-SemiBold.woff) format("woff");
+            font-weight: 600;
+            font-style: normal;
+        }
+        
+        
+        code {
+            display: inline;
+            word-break: break-word;
+            font-size: 15px;
+            line-height: inherit;
+            font-variant-ligatures: none;
+            font-family: JetBrains Sans,monospace;
+            white-space: pre-line;
+            overflow-wrap: break-word;
+        }
+        
+        figcaption {
+            margin-top: 5px;
+        }
+        
+        h2 {
+            padding-top: 16px;
+            padding-bottom: 8px;
+            margin-block-start: 0;
+            margin-block-end: 0;
+        }
+        
+        h3 {
+            padding-top: 8px;
+            padding-bottom: 8px;
+            margin-block-start: 0;
+            margin-block-end: 0;
+        }
+        
+        h4 {
+            padding-top: 4px;
+            padding-bottom: 8px;
+            margin-block-start: 0;
+            margin-block-end: 0;
+        }
+        
+        p {
+            padding: 0;
+            border: 0;
+            line-height: 25px;
+            margin-block-start: 0;
+            margin-block-end: 0;
+            padding-bottom: 8px;
+        }
+        
+        div {
+            display: block;
+        }
+        
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            page-break-inside: avoid;
+        }
+        
+        th, td {
+            border: 1px solid #c4c4c4;
+            padding: 10px;
+            text-align: left;
+            word-break: break-all;
+        }
+        
+        .no-bold {
+            font-weight: normal; 
+        }
+        
+        .entry {
+            display: grid;
+            grid-template-columns: auto max-content;
+            grid-template-areas: "chapter page";
+            align-items: end;
+            gap: 0 .25rem;
+            line-height: 25px;
+        }
+        
+        .toc-link-container{
+            grid-area: chapter;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .toc-link{
+            text-decoration: none;
+            color: black;
+        }
+        
+        .toc-link-container::after {
+            position: absolute;
+            padding-left: .25ch;
+            content: " . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "
+            ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . "
+            ". . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . ";
+            text-align: right;
+        }
+        
+        .page {
+            grid-area: page;
+            width: 30px;
+            text-align: right;
+        }
+        
+
+        .topic {
+            page-break-before: always;
+        }
+        </style><title>pdfSourceHI</title></head><body><div><section class="topic"><div><article class="article"><h1 class="main-title">Table of Contents</h1><div class="entry"><div class="toc-link-container"><a class="toc-link" href="#66036">BRD</a></div><div class="page">2</div></div><div class="entry"><div class="toc-link-container"><a class="toc-link" href="#-1392368071">Space Invaders</a></div><div class="page">6</div></div><div class="entry"><div class="toc-link-container"><a class="toc-link" href="#-1629673768">Architeture</a></div><div class="page">7</div></div><div class="entry"><div class="toc-link-container"><a class="toc-link" href="#1998974995">Enginnering Requeriments</a></div><div class="page">8</div></div><div class="entry"><div class="toc-link-container"><a class="toc-link" href="#-1575644492">MidTerm</a></div><div class="page">10</div></div><div class="entry"><div class="toc-link-container"><a class="toc-link" href="#67883350">Final</a></div><div class="page">11</div></div><div class="entry"><div class="toc-link-container"><a class="toc-link" href="#20897285">Resources</a></div><div class="page">12</div></div><div class="entry"><div class="toc-link-container"><a class="toc-link" href="#-331616722">Sprites</a></div><div class="page">13</div></div><div class="entry"><div class="toc-link-container"><a class="toc-link" href="#-1812642460">Sounds</a></div><div class="page">14</div></div><div class="entry"><div class="toc-link-container"><a class="toc-link" href="#-16790913">Uno Plataform</a></div><div class="page">15</div></div></article></div></section><section class="topic"><div><article class="article"><h1 class="main-title" id="66036">BRD</h1><section class="detached"><h2 id="66036#1-introdu-o" data-toc="1-introdu-o#BRD.md-1-introdu-o">1. Introdu&ccedil;&atilde;o</h2><section class="detached"><h3 id="66036#1-1-objetivo-do-projeto" data-toc="1-1-objetivo-do-projeto#BRD.md-1-1-objetivo-do-projeto">1.1. Objetivo do Projeto</h3><p id="66036#-xqdoou_9">O objetivo deste projeto &eacute; desenvolver uma recria&ccedil;&atilde;o do cl&aacute;ssico jogo &quot;Space Invaders&quot; como uma aplica&ccedil;&atilde;o de desktop. O projeto servir&aacute; como avalia&ccedil;&atilde;o final para a disciplina de Programa&ccedil;&atilde;o 3, focando na aplica&ccedil;&atilde;o pr&aacute;tica de conceitos de Programa&ccedil;&atilde;o Orientada a Objetos (OOP), Estruturas de Dados e manipula&ccedil;&atilde;o de eventos em C#.</p></section><section class="detached"><h3 id="66036#1-2-escopo" data-toc="1-2-escopo#BRD.md-1-2-escopo">1.2. Escopo</h3><p id="66036#-xqdoou_10">O projeto ser&aacute; desenvolvido individualmente, utilizando C# e a Uno Platform, sem o aux&iacute;lio de qualquer motor de jogo (game engine). A interface e a l&oacute;gica do jogo ser&atilde;o constru&iacute;das do zero, com entregas parciais e uma entrega final.</p></section></section><section class="detached"><h2 id="66036#2-requisitos-funcionais" data-toc="2-requisitos-funcionais#BRD.md-2-requisitos-funcionais">2. Requisitos Funcionais</h2><section class="detached"><h3 id="66036#2-1-tela-inicial" data-toc="2-1-tela-inicial#BRD.md-2-1-tela-inicial">2.1. Tela Inicial</h3><ul class="list" id="66036#-xqdoou_16" start="1"><li class="list-item" id="66036#-xqdoou_17"><p id="66036#-xqdoou_18">O jogo deve apresentar uma tela inicial com as seguintes op&ccedil;&otilde;es:</p><ul class="list" id="66036#-xqdoou_19" start="1"><li class="list-item" id="66036#-xqdoou_20"><p id="66036#-xqdoou_23"><span class="control" id="66036#-xqdoou_24">Iniciar um novo jogo:</span> Come&ccedil;a uma nova partida.</p></li><li class="list-item" id="66036#-xqdoou_21"><p id="66036#-xqdoou_25"><span class="control" id="66036#-xqdoou_26">Ver a tabela com os placares:</span> Exibe a lista de pontua&ccedil;&otilde;es salvas.</p></li><li class="list-item" id="66036#-xqdoou_22"><p id="66036#-xqdoou_27"><span class="control" id="66036#-xqdoou_28">Ver os controles do jogo:</span> Mostra as instru&ccedil;&otilde;es de como jogar.</p></li></ul></li></ul></section><section class="detached"><h3 id="66036#2-2-jogabilidade" data-toc="2-2-jogabilidade#BRD.md-2-2-jogabilidade">2.2. Jogabilidade</h3><section class="detached"><h4 id="66036#2-2-1-nave-do-jogador" data-toc="2-2-1-nave-do-jogador#BRD.md-2-2-1-nave-do-jogador">2.2.1. Nave do Jogador</h4><ul class="list" id="66036#-xqdoou_33" start="1"><li class="list-item" id="66036#-xqdoou_34"><p id="66036#-xqdoou_38">O jogador controla uma nave localizada na parte inferior da tela.</p></li><li class="list-item" id="66036#-xqdoou_35"><p id="66036#-xqdoou_39">A nave pode se mover horizontalmente (esquerda e direita).</p></li><li class="list-item" id="66036#-xqdoou_36"><p id="66036#-xqdoou_40">A nave pode disparar um proj&eacute;til (laser) para cima.</p></li><li class="list-item" id="66036#-xqdoou_37"><p id="66036#-xqdoou_41">O jogador s&oacute; pode ter um proj&eacute;til ativo na tela por vez.</p></li></ul></section><section class="detached"><h4 id="66036#2-2-2-inimigos-alien-genas" data-toc="2-2-2-inimigos-alien-genas#BRD.md-2-2-2-inimigos-alien-genas">2.2.2. Inimigos (Alien&iacute;genas)</h4><ul class="list" id="66036#-xqdoou_42" start="1"><li class="list-item" id="66036#-xqdoou_43"><p id="66036#-xqdoou_49">M&uacute;ltiplas ondas de alien&iacute;genas s&atilde;o posicionadas na parte superior da tela.</p></li><li class="list-item" id="66036#-xqdoou_44"><p id="66036#-xqdoou_50">Os alien&iacute;genas se movem em um bloco coeso, da esquerda para a direita.</p></li><li class="list-item" id="66036#-xqdoou_45"><p id="66036#-xqdoou_51">Ao atingir a borda da tela, o bloco de alien&iacute;genas desce uma linha e inverte sua dire&ccedil;&atilde;o de movimento.</p></li><li class="list-item" id="66036#-xqdoou_46"><p id="66036#-xqdoou_52">A velocidade de movimento dos alien&iacute;genas e a frequ&ecirc;ncia de seus disparos aumentam a cada vez que o bloco desce.</p></li><li class="list-item" id="66036#-xqdoou_47"><p id="66036#-xqdoou_53">Apenas o alien&iacute;gena de 40 pontos pode atirar.</p></li><li class="list-item" id="66036#-xqdoou_48"><p id="66036#-xqdoou_54">Um alien&iacute;gena especial (vermelho) aparece periodicamente no topo da tela, movendo-se horizontalmente e oferecendo uma pontua&ccedil;&atilde;o vari&aacute;vel.</p></li></ul></section><section class="detached"><h4 id="66036#2-2-3-barreiras-de-prote-o" data-toc="2-2-3-barreiras-de-prote-o#BRD.md-2-2-3-barreiras-de-prote-o">2.2.3. Barreiras de Prote&ccedil;&atilde;o</h4><ul class="list" id="66036#-xqdoou_55" start="1"><li class="list-item" id="66036#-xqdoou_56"><p id="66036#-xqdoou_59">Haver&aacute; 4 blocos de prote&ccedil;&atilde;o (escudos) localizados acima da nave do jogador.</p></li><li class="list-item" id="66036#-xqdoou_57"><p id="66036#-xqdoou_60">Os escudos servem para bloquear tiros, tanto do jogador quanto dos alien&iacute;genas.</p></li><li class="list-item" id="66036#-xqdoou_58"><p id="66036#-xqdoou_61">Os escudos se degradam visualmente (mudando de cor de branco para chumbo) ao serem atingidos e desaparecem ap&oacute;s sofrerem uma certa quantidade de dano.</p></li></ul></section><section class="detached"><h4 id="66036#2-2-4-sistema-de-pontua-o-e-vidas" data-toc="2-2-4-sistema-de-pontua-o-e-vidas#BRD.md-2-2-4-sistema-de-pontua-o-e-vidas">2.2.4. Sistema de Pontua&ccedil;&atilde;o e Vidas</h4><ul class="list" id="66036#-xqdoou_62" start="1"><li class="list-item" id="66036#-xqdoou_63"><p id="66036#-xqdoou_66">O jogador come&ccedil;a com um n&uacute;mero fixo de vidas.</p></li><li class="list-item" id="66036#-xqdoou_64"><p id="66036#-xqdoou_67">A pontua&ccedil;&atilde;o &eacute; incrementada ao destruir um alien&iacute;gena, com valores diferentes para cada tipo:</p><ul class="list" id="66036#-xqdoou_68" start="1"><li class="list-item" id="66036#-xqdoou_69"><p id="66036#-xqdoou_73">Alien&iacute;gena tipo 1: 10 pontos</p></li><li class="list-item" id="66036#-xqdoou_70"><p id="66036#-xqdoou_74">Alien&iacute;gena tipo 2: 20 pontos</p></li><li class="list-item" id="66036#-xqdoou_71"><p id="66036#-xqdoou_75">Alien&iacute;gena tipo 3: 40 pontos</p></li><li class="list-item" id="66036#-xqdoou_72"><p id="66036#-xqdoou_76">Alien&iacute;gena especial: Pontua&ccedil;&atilde;o misteri00 pontos, o jogador ganha uma vida extra, at&eacute; um m&aacute;ximo de 6 vidas.</p></li></ul></li><li class="list-item" id="66036#-xqdoou_65"><p id="66036#-xqdoou_77">A pontua&ccedil;&atilde;o atual &eacute; sempre vis&iacute;vel no canto superior esquerdo da tela.</p></li></ul></section></section><section class="detached"><h3 id="66036#2-3-fim-de-jogo" data-toc="2-3-fim-de-jogo#BRD.md-2-3-fim-de-jogo">2.3. Fim de Jogo</h3><ul class="list" id="66036#-xqdoou_78" start="1"><li class="list-item" id="66036#-xqdoou_79"><p id="66036#-xqdoou_82">O jogo termina se osa (???)</p></li><li class="list-item" id="66036#-xqdoou_80"><p id="66036#-xqdoou_83">A cada 10uma das seguintes condi&ccedil;&otilde;es for atendida:</p><ul class="list" id="66036#-xqdoou_84" start="1"><li class="list-item" id="66036#-xqdoou_85"><p id="66036#-xqdoou_87">O jogador perde todas as suas vidas.</p></li><li class="list-item" id="66036#-xqdoou_86"><p id="66036#-xqdoou_88">O bloco de alien&iacute;genas alcan&ccedil;a a parte inferior da tela (posi&ccedil;&atilde;o do jogador).</p></li></ul></li><li class="list-item" id="66036#-xqdoou_81"><p id="66036#-xqdoou_89">Ap&oacute;s o fim do jogo, o jogador tem a op&ccedil;&atilde;o de:</p><ul class="list" id="66036#-xqdoou_90" start="1"><li class="list-item" id="66036#-xqdoou_91"><p id="66036#-xqdoou_94">Salvar sua pontua&ccedil;&atilde;o, associando-a a um apelido.</p></li><li class="list-item" id="66036#-xqdoou_92"><p id="66036#-xqdoou_95">Voltar a jogar.</p></li><li class="list-item" id="66036#-xqdoou_93"><p id="66036#-xqdoou_96">Retornar &agrave; tela inicial.</p></li></ul></li></ul></section><section class="detached"><h3 id="66036#2-4-persist-ncia-de-dados" data-toc="2-4-persist-ncia-de-dados#BRD.md-2-4-persist-ncia-de-dados">2.4. Persist&ecirc;ncia de Dados</h3><ul class="list" id="66036#-xqdoou_97" start="1"><li class="list-item" id="66036#-xqdoou_99"><p id="66036#-xqdoou_100">As informa&ccedil;&otilde;es do placar (pontua&ccedil;&atilde;o e apelido) devem ser salvas em um arquivo de texto.</p></li></ul></section></section><section class="detached"><h2 id="66036#3-requisitos-n-o-funcionais" data-toc="3-requisitos-n-o-funcionais#BRD.md-3-requisitos-n-o-funcionais">3. Requisitos N&atilde;o-Funcionais</h2><section class="detached"><h3 id="66036#3-1-plataforma" data-toc="3-1-plataforma#BRD.md-3-1-plataforma">3.1. Plataforma</h3><ul class="list" id="66036#-xqdoou_104" start="1"><li class="list-item" id="66036#-xqdoou_105"><p id="66036#-xqdoou_106">O jogo deve ser uma aplica&ccedil;&atilde;o de desktop, constru&iacute;da com a Uno Platform para garantir a portabilidade.</p></li></ul></section><section class="detached"><h3 id="66036#3-2-tecnologia" data-toc="3-2-tecnologia#BRD.md-3-2-tecnologia">3.2. Tecnologia</h3><ul class="list" id="66036#-xqdoou_107" start="1"><li class="list-item" id="66036#-xqdoou_108"><p id="66036#-xqdoou_111">A linguagem de programa&ccedil;&atilde;o ser&aacute; C#.</p></li><li class="list-item" id="66036#-xqdoou_109"><p id="66036#-xqdoou_112">A interface do usu&aacute;rio (UI) ser&aacute; definida usando XAML.</p></li><li class="list-item" id="66036#-xqdoou_110"><p id="66036#-xqdoou_113">Nenhuma game engine externa (ex: Unity, Godot) ser&aacute; utilizada.</p></li></ul></section><section class="detached"><h3 id="66036#3-3-som" data-toc="3-3-som#BRD.md-3-3-som">3.3. Som</h3><ul class="list" id="66036#-xqdoou_114" start="1"><li class="list-item" id="66036#-xqdoou_116"><p id="66036#-xqdoou_117">Cada a&ccedil;&atilde;o significativa no jogo (disparo, destrui&ccedil;&atilde;o de inimigo, morte do jogador, etc.) deve ser acompanhada por um efeito sonoro correspondente.</p></li></ul></section></section><section class="detached"><h2 id="66036#4-fases-do-projeto" data-toc="4-fases-do-projeto#BRD.md-4-fases-do-projeto">4. Fases do Projeto</h2><section class="detached"><h3 id="66036#4-1-entrega-intermedi-ria-midterm-semana-4" data-toc="4-1-entrega-intermedi-ria-midterm-semana-4#BRD.md-4-1-entrega-intermedi-ria-midterm-semana-4">4.1. Entrega Intermedi&aacute;ria (Midterm - Semana 4)</h3><ul class="list" id="66036#-xqdoou_120" start="1"><li class="list-item" id="66036#-xqdoou_121"><p id="66036#-xqdoou_122"><span class="control" id="66036#-xqdoou_124">Escopo Reduzido:</span></p><ul class="list" id="66036#-xqdoou_123" start="1"><li class="list-item" id="66036#-xqdoou_125"><p id="66036#-xqdoou_132">Alien&iacute;genas n&atilde;o precisam se mover.</p></li><li class="list-item" id="66036#-xqdoou_126"><p id="66036#-xqdoou_133">O jogador deve ser capaz de se mover e atirar.</p></li><li class="list-item" id="66036#-xqdoou_127"><p id="66036#-xqdoou_134">Os blocos de prote&ccedil;&atilde;o devem ser destrut&iacute;veis pelo jogador.</p></li><li class="list-item" id="66036#-xqdoou_128"><p id="66036#-xqdoou_135">A pontua&ccedil;&atilde;o deve ser atualizada ao destruir um alien&iacute;gena.</p></li><li class="list-item" id="66036#-xqdoou_129"><p id="66036#-xqdoou_136">O jogo termina quando o jogador atinge 500 pontos.</p></li><li class="list-item" id="66036#-xqdoou_130"><p id="66036#-xqdoou_137">A pontua&ccedil;&atilde;o &eacute; mantida apenas em mem&oacute;ria (perdida ao fechar o jogo).</p></li><li class="list-item" id="66036#-xqdoou_131"><p id="66036#-xqdoou_138">Deve haver uma tela inicial e sons para as a&ccedil;&otilde;es.</p></li></ul></li></ul></section><section class="detached"><h3 id="66036#4-2-entrega-final" data-toc="4-2-entrega-final#BRD.md-4-2-entrega-final">4.2. Entrega Final</h3><ul class="list" id="66036#-xqdoou_139" start="1"><li class="list-item" id="66036#-xqdoou_140"><p id="66036#-xqdoou_141">Implementa&ccedil;&atilde;o de todos os requisitos funcionais e n&atilde;o-funcionais descritos neste documento.</p></li></ul></section></section></article></div></section><section class="topic"><div><article class="article"><h1 class="main-title" id="-1392368071">Space Invaders</h1><p id="-1392368071#-hhquqt_3">Start typing here...</p></article></div></section><section class="topic"><div><article class="article"><h1 class="main-title" id="-1629673768">Architeture</h1><section class="detached"><h2 id="-1629673768#technology-stack" data-toc="technology-stack#Architeture.md-technology-stack">Technology stack</h2></section><section class="detached"><h2 id="-1629673768#wireframe" data-toc="wireframe#Architeture.md-wireframe">Wireframe</h2></section><section class="detached"><h2 id="-1629673768#database-schema" data-toc="database-schema#Architeture.md-database-schema">Database schema</h2></section></article></div></section><section class="topic"><div><article class="article"><h1 class="main-title" id="1998974995">Enginnering Requeriments</h1><section class="detached"><h2 id="1998974995#requisitos-funcionais" data-toc="requisitos-funcionais#Enginnering-Requeriments.md-requisitos-funcionais">Requisitos Funcionais</h2><ul class="list" id="1998974995#izts01_4" start="1"><li class="list-item" id="1998974995#izts01_5"><p id="1998974995#izts01_26">O sistema deve permitir que o usu&aacute;rio controle uma nave, podendo movimentar no sentido horizontar, sem sair da tela, usando as setas direcionais para esquerda e direita</p></li><li class="list-item" id="1998974995#izts01_6"><p id="1998974995#izts01_27">O usuario deve conseguir disparar lasers na dire&ccedil;&atilde;o vertical com o bot&atilde;o de espa&ccedil;o</p></li><li class="list-item" id="1998974995#izts01_7"><p id="1998974995#izts01_28">O sistema deve atribuir pontos ao usu&aacute;rio disparar e acertar laser nos inimigos, com base na tabela de inimigos (<a href="#1998974995">Enginnering Requeriments</a>)</p></li><li class="list-item" id="1998974995#izts01_8"><p id="1998974995#izts01_30">O sistema deve fazer com que os inimigos (do tipo 1, 2 ,3) apare&ccedil;am na tela de forma aleat&oacute;ria e eles n&atilde;o podem sair do quadro</p></li><li class="list-item" id="1998974995#izts01_9"><p id="1998974995#izts01_31">O sistema deve fazer com que os alienigenas vermelhos se movem aleatoriamente come&ccedil;ando da esquerda para a direita ou vice-versa e saindo do quadro, aparecendo 1 vez por 2 minutos aproximadamente, os pontos que eles lhe d&atilde;o ao atirar variam</p></li><li class="list-item" id="1998974995#izts01_10"><p id="1998974995#izts01_32">O usuario deve ter 3 vidas iniciais, sendo que se for atingido ou encostar em um alienigena ele morre</p></li><li class="list-item" id="1998974995#izts01_11"><p id="1998974995#izts01_33">O sistema deve finalizar o jogo se o jogador perder todas as vidas ou terminara quando as naves alcan&ccedil;arem o jogador</p></li><li class="list-item" id="1998974995#izts01_12"><p id="1998974995#izts01_34">O sistema deve possuir 4 blocos de prote&ccedil;&atilde;o, contra os alien&iacute;genas, eles mudar&atilde;o de cor conforme forem recebendo danos e eventualmente desaparecendo</p></li><li class="list-item" id="1998974995#izts01_13"><p id="1998974995#izts01_35">O sistema deve fazer com que o movimento das naves alienigenas aumente um pouco e a velocidade de fogo tamb&eacute;m assim que se moverem para baix</p></li><li class="list-item" id="1998974995#izts01_14"><p id="1998974995#izts01_36">O sistem deve fazer com que a unica nave que ataca &eacute; o que valo 40 (veja mais na: tabela de inimigos (<a href="#1998974995">Enginnering Requeriments</a>)</p></li><li class="list-item" id="1998974995#izts01_15"><p id="1998974995#izts01_38">O usuario deve disparar novamento quando seu tiro anterior acertar ou de outro forma quando exceder o limite supeprior do quadro do jogo</p></li><li class="list-item" id="1998974995#izts01_16"><p id="1998974995#izts01_39">O sistema deve fazer com que os alienigenas n&atilde;o colidam com os blocos de prote&ccedil;&atilde;o</p></li><li class="list-item" id="1998974995#izts01_17"><p id="1998974995#izts01_40">O usuario deve conseguir destruir naves alienigenas com 1 tiro</p></li><li class="list-item" id="1998974995#izts01_18"><p id="1998974995#izts01_41">O sistema deve fazer aparecer uma nova onde assim que todas as naves alienigenas forem destruidas, essa nova onde gerada move a pos&ccedil;&atilde;o para baixo os primeiros 5 e aumentando um pouco a velocidade a partir da quinta em diant</p></li><li class="list-item" id="1998974995#izts01_19"><p id="1998974995#izts01_42">O sistema deve aumentar o n&uacute;mero de vidas a cada 1000 pontos que o jogador conseguir</p></li><li class="list-item" id="1998974995#izts01_20"><p id="1998974995#izts01_43">O sistema deve exibir a pontual&ccedil;ai no canto superior esquerdo</p></li><li class="list-item" id="1998974995#izts01_21"><p id="1998974995#izts01_44">O sistema deve incrementar seguindo a tabela de inimigos (<a href="#1998974995">Enginnering Requeriments</a>) a cada vez que um inimigo &eacute; destruido</p></li><li class="list-item" id="1998974995#izts01_22"><p id="1998974995#izts01_46">O sistema deve ao fim do jogo, exibir uma op&ccedil;&atilde;o para o jogador de salvar a pontua&ccedil;&atilde;o e adicionar um apelido, deve tambem ofertar ao jogador a op&ccedil;&atilde;o de voltar a jogar e se o jogador nao quiser jogar novamente a p&aacute;gina inicial ser&aacute; exibida</p></li><li class="list-item" id="1998974995#izts01_23"><p id="1998974995#izts01_47">O sistema deve exibir a tela inicial, com: um botao de iniciar um novo jogo, um botao de ver a tabela com os placare, botao de ver os controles do jogo</p></li><li class="list-item" id="1998974995#izts01_24"><p id="1998974995#izts01_48">O sistema deve possuir um som representativo para cada a&ccedil;&atilde;o do jogo</p></li><li class="list-item" id="1998974995#izts01_25"><p id="1998974995#izts01_49">O sistema deve salvar as informa&ccedil;&otilde;es do painel de pontua&ccedil;&atilde;o em um arquivo de texto ..</p></li></ul></section></article></div></section><section class="topic"><div><article class="article"><h1 class="main-title" id="-1575644492">MidTerm</h1><p id="-1575644492#-cs0ubi_3">Start typing here...</p></article></div></section><section class="topic"><div><article class="article"><h1 class="main-title" id="67883350">Final</h1><p id="67883350#k8uzts_3">Start typing here...</p></article></div></section><section class="topic"><div><article class="article"><h1 class="main-title" id="20897285">Resources</h1><p id="20897285#ne066p_3">Start typing here...</p></article></div></section><section class="topic"><div><article class="article"><h1 class="main-title" id="-331616722">Sprites</h1><p id="-331616722#-k2vqrc_3">Start typing here...</p></article></div></section><section class="topic"><div><article class="article"><h1 class="main-title" id="-1812642460">Sounds</h1><p id="-1812642460#nkcij4_3">Start typing here...</p></article></div></section><section class="topic"><div><article class="article"><h1 class="main-title" id="-16790913">Uno Plataform</h1><p id="-16790913#-fqskq1_3">Start typing here...</p></article></div></section></div></body></html>
