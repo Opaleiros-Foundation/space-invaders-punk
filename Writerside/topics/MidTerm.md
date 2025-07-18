@@ -1,11 +1,27 @@
-# MidTerm
+# Apresentação Parcial (MidTerm)
 
-O projeto será apresentado na semana 4 do módulo e deve ser uma versão inicial do "Space Invaders". Apenas para essa entrega deve ser considerado:
-- O sistema não deve ter a necessidade de naves alienigenas se moreverem
-- O sistema deve exibir os alienigenas e os blocos de proteção
-- O jogador deve ser capaz de se mover e atirar
-- O sistema deve ser capaz de atualizar toda vez que um navio for destruido. A pontuação deve ser salva na memória quando o jogo terminar, assim que o jogo for fechado a pontuação será perdida
-- O jogador deve ser capazde destruir os blocos de proteção
-- O sistema deve ser capaz de emitir um som correspondente de cada ação
-- O sistema deve ser capaz de haver uma tela inicial com os itens já descritos
-- O sistema deve terminar quando você atinge 500 pontos, podendo haver ondas
+**Projeto:** Versão Inicial do Jogo "Space Invaders"
+
+**Data da Apresentação:** Semana 4 do Módulo
+
+## Escopo da Entrega
+
+Para a avaliação parcial, o projeto deve implementar um subconjunto dos requisitos funcionais, focando na mecânica central do jogo. A tabela abaixo detalha o que precisa ser entregue.
+
+| ID do Requisito | Funcionalidade | Detalhes da Entrega Parcial |
+| --- | --- | --- |
+| **RF01** | Controle da Nave | A nave do jogador deve se mover horizontalmente. |
+| **RF02** | Disparo de Lasers | O jogador deve ser capaz de disparar projéteis para cima. |
+| **RF04** | Geração de Inimigos | Os alienígenas devem ser exibidos na tela, mas podem permanecer estáticos (sem movimento). |
+| **RF08** | Barreiras de Proteção | As barreiras devem ser exibidas e podem ser destruídas pelos tiros do jogador. |
+| **RF13** | Dano em Inimigos | Alienígenas devem ser removidos ao serem atingidos por um tiro. |
+| **RF16** | Exibição de Pontuação | A pontuação deve ser visível na tela. |
+| **RF17** | Incremento de Pontuação | A pontuação deve ser atualizada sempre que um inimigo for destruído. |
+| **RF19** | Tela Inicial | O jogo deve apresentar uma tela inicial simples. |
+| **RF20** | Efeitos Sonoros | Deve haver sons para as ações principais (tiro, destruição). |
+
+### Lógica de Jogo Simplificada
+
+- **Condição de Vitória:** Para esta entrega, o jogo termina quando o jogador atingir **500 pontos**.
+- **Armazenamento:** A pontuação é mantida apenas em memória durante a sessão de jogo.
+- **Inimigos:** O movimento complexo dos inimigos (descida, aumento de velocidade) não é necessário nesta fase.

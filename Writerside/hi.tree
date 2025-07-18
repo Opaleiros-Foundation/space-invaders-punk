@@ -13,9 +13,10 @@
         <toc-element topic="MidTerm.md"/>
         <toc-element topic="Final.md"/>
     </toc-element>
-    <toc-element topic="Resources.md">
-        <toc-element topic="Sprites.md"/>
-        <toc-element topic="Sounds.md"/>
-    </toc-element>
     <toc-element topic="Uno-Plataform.md"/>
+    <toc-element toc-title="Resources">
+        <toc-element topic="Sounds.md"/>
+        <toc-element topic="Sprites.md"/>
+        <toc-element topic="ResourcesDev.md"/>
+    </toc-element>
 </instance-profile>

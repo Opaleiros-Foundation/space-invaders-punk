@@ -1,3 +1,0 @@
-# Resources
-
-Start typing here...
