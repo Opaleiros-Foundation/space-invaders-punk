@@ -42,14 +42,14 @@ test:
 generate_changelog:
   stage: changelog
   image: node:latest
-  script:
-    - npm install -g conventional-changelog-cli
-    - git config user.name "GitLab CI/CD"
-    - git config user.email "gitlab-ci@example.com"
-    - conventional-changelog -p angular -i CHANGELOG.md -s -r 0
-    - git add CHANGELOG.md
-    - git commit -m "chore(changelog): Update CHANGELOG.md"
-    - git push origin HEAD:$CI_COMMIT_REF_NAME
+  script: |
+    npm install -g conventional-changelog-cli
+    git config user.name "GitLab CI/CD"
+    git config user.email "gitlab-ci@example.com"
+    conventional-changelog -p angular -i CHANGELOG.md -s -r 0
+    git add CHANGELOG.md
+    git commit -m "chore(changelog): Update CHANGELOG.md"
+    git push origin HEAD:$CI_COMMIT_REF_NAME
   only:
     - main
 
