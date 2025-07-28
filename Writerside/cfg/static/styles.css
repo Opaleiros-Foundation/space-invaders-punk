@@ -1,0 +1,23 @@
+/* styles.css */
+table {
+    border-collapse: separate;
+    border-spacing: 10px;
+    width: 100%;
+}
+
+td {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 15px;
+    vertical-align: top;
+    text-align: center;
+}
+
+td a {
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+td p {
+    margin-top: 10px;
+}

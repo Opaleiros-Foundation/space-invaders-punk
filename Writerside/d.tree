@@ -2,21 +2,15 @@
 <!DOCTYPE instance-profile
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/product-profile.dtd">
 
-<instance-profile id="hi"
-                 name="Help Instance"
-                  start-page="BRD.md">
-
+<instance-profile id="d"
+                 name="Documentation"
+                  start-page="Intro.md">
+    <toc-element topic="Intro.md"/>
     <toc-element topic="BRD.md"/>
     <toc-element topic="Space-Invaders.md"/>
     <toc-element topic="Architeture.md"/>
     <toc-element topic="Enginnering-Requeriments.md">
         <toc-element topic="MidTerm.md"/>
         <toc-element topic="Final.md"/>
-    </toc-element>
-    <toc-element topic="Uno-Plataform.md"/>
-    <toc-element toc-title="Resources">
-        <toc-element topic="Sounds.md"/>
-        <toc-element topic="Sprites.md"/>
-        <toc-element topic="ResourcesDev.md"/>
     </toc-element>
 </instance-profile>

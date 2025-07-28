@@ -4,5 +4,18 @@
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
     <variables></variables>
+    <build-profile instance="g">
+        <variables>
+            <noindex-content>true</noindex-content>
+        </variables>
+    </build-profile>
+    <build-profile instance="d">
+        <variables>
+            <noindex-content>true</noindex-content>
+        </variables>
+    </build-profile>
+    <custom-css-files>
+        <web-path>styles.css</web-path>
+    </custom-css-files>
 
 </buildprofiles>
