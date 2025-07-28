@@ -49,7 +49,7 @@ generate_changelog:
     conventional-changelog -p angular -i CHANGELOG.md -s -r 0
     git add CHANGELOG.md
     git commit -m "chore(changelog): Update CHANGELOG.md"
-    git push origin HEAD:$CI_COMMIT_REF_NAME
+    git push https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/${CI_PROJECT_PATH}.git HEAD:$CI_COMMIT_REF_NAME
   only:
     - main
 
