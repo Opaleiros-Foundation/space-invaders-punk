@@ -8,6 +8,7 @@ variables:
 
 stages:
   - build_pdf
+  - deploy
 
 build_pdf:
   stage: build_pdf
@@ -25,6 +26,15 @@ build_pdf:
     - test -e public/$HTML_FILE
   artifacts:
     paths:
-      - public/$PDF_FILE
-      - public/$HTML_FILE
+      - public/
     expire_in: 1 week
+
+pages:
+  stage: deploy
+  script:
+    - echo "Deploying to GitLab Pages..."
+  artifacts:
+    paths:
+      - public
+  only:
+    - main
