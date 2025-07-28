@@ -13,29 +13,4 @@ Esta documentação abrange:
 
 Vamos começar!
 
-<table>
-    <tr>
-        <td>
-            <a href="Architeture.md">Arquitetura</a>
-            <p>Visão geral de alto nível do design e dos componentes do sistema.</p>
-        </td>
-        <td>
-            <a href="Enginnering-Requeriments.md">Requisitos de Engenharia</a>
-            <p>As especificações e restrições técnicas.</p>
-        </td>
-        <td>
-            <a href="ResourcesDev.md">Recursos de Desenvolvimento</a>
-            <p>Guias e referências para as ferramentas e bibliotecas utilizadas.</p>
-        </td>
-    </tr>
-    <tr>
-        <td>
-            <a href="Sprites.md">Sprites</a>
-            <p>Informações sobre sprites e outros recursos criativos.</p>
-        </td>
-        <td>
-            <a href="Sounds.md">Sons</a>
-            <p>Informações sobre sons e outros recursos de áudio.</p>
-        </td>
-    </tr>
-</table>
+
