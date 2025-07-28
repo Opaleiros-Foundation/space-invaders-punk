@@ -1,10 +1,12 @@
-# Guia do Projeto Capstone: Recriação de Space Invaders
+# Projeto Capstone: Recriação de Space Invaders
 
-<img src=".gitlab/catsteroids.png" width="400" height="250" alt="Catsteroids Logo"/>
+
+![catsteroids.png](.gitlab/catsteroids.png)
+
 
 ## 1. Visão Geral do Projeto
 
-Este repositório serve como a documentação central e o guia de desenvolvimento para o projeto final da disciplina de Programação 3. O objetivo é recriar o clássico jogo **Space Invaders** como uma aplicação de desktop, utilizando C# e a Uno Platform, com foco na aplicação de conceitos de Programação Orientada a Objetos, Estruturas de Dados e manipulação de eventos.
+Este repositório contém o código-fonte e a documentação do projeto final da disciplina de Programação 3. O objetivo é recriar o clássico jogo **Space Invaders** como uma aplicação de desktop, utilizando C# e a Uno Platform, com foco na aplicação de conceitos de Programação Orientada a Objetos, Estruturas de Dados e manipulação de eventos.
 
 ## 2. Documentação Detalhada (Writerside)
 
