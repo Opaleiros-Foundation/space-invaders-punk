@@ -1,41 +1,41 @@
-# Introduction
+ # Introdução
 
-Welcome to the project documentation. This documentation serves as a central resource for developers, designers, and anyone interested in understanding the technical and architectural details of the project.
+Bem-vindo à documentação do projeto. Esta documentação serve como um recurso central para desenvolvedores, designers e qualquer pessoa interessada em entender os detalhes técnicos e de arquitetura do projeto.
 
-Our goal is to provide clear, concise, and practical information to get you up and running. Whether you're a new team member learning the ropes or a contributor looking for specific information, you should find it here.
+Nosso objetivo é fornecer informações claras, concisas e práticas para que você possa começar a trabalhar. Seja você um novo membro da equipe aprendendo o básico ou um contribuidor procurando por informações específicas, você deve encontrá-las aqui.
 
-This documentation covers:
+Esta documentação abrange:
 
-*   **Architecture:** High-level overview of the system design and components.
-*   **Engineering Requirements:** The technical specifications and constraints.
-*   **Development Resources:** Guides and references for the tools and libraries used.
-*   **Game Assets:** Information on sprites, sounds, and other creative assets.
+*   **Arquitetura:** Visão geral de alto nível do design e dos componentes do sistema.
+*   **Requisitos de Engenharia:** As especificações e restrições técnicas.
+*   **Recursos de Desenvolvimento:** Guias e referências para as ferramentas e bibliotecas utilizadas.
+*   **Recursos do Jogo:** Informações sobre sprites, sons e outros recursos criativos.
 
-Let's get started!
+Vamos começar!
 
 <table>
     <tr>
         <td>
-            <a href="Architeture.md">Architecture</a>
-            <p>High-level overview of the system design and components.</p>
+            <a href="Architeture.md">Arquitetura</a>
+            <p>Visão geral de alto nível do design e dos componentes do sistema.</p>
         </td>
         <td>
-            <a href="Enginnering-Requeriments.md">Engineering Requirements</a>
-            <p>The technical specifications and constraints.</p>
+            <a href="Enginnering-Requeriments.md">Requisitos de Engenharia</a>
+            <p>As especificações e restrições técnicas.</p>
         </td>
         <td>
-            <a href="ResourcesDev.md">Development Resources</a>
-            <p>Guides and references for the tools and libraries used.</p>
+            <a href="ResourcesDev.md">Recursos de Desenvolvimento</a>
+            <p>Guias e referências para as ferramentas e bibliotecas utilizadas.</p>
         </td>
     </tr>
     <tr>
         <td>
             <a href="Sprites.md">Sprites</a>
-            <p>Information on sprites and other creative assets.</p>
+            <p>Informações sobre sprites e outros recursos criativos.</p>
         </td>
         <td>
-            <a href="Sounds.md">Sounds</a>
-            <p>Information on sounds and other audio assets.</p>
+            <a href="Sounds.md">Sons</a>
+            <p>Informações sobre sons e outros recursos de áudio.</p>
         </td>
     </tr>
 </table>
