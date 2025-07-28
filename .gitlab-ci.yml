@@ -5,7 +5,6 @@ variables:
 stages:
   - build
   - test
-  - changelog
   - deploy
 
 build:
@@ -38,20 +37,6 @@ test:
     - java -jar wrs-checker.jar report.json $INSTANCE
   dependencies:
     - build
-
-generate_changelog:
-  stage: changelog
-  image: node:latest
-  script: |
-    npm install -g conventional-changelog-cli
-    git config user.name "GitLab CI/CD"
-    git config user.email "gitlab-ci@example.com"
-    conventional-changelog -p angular -i CHANGELOG.md -s -r 0
-    git add CHANGELOG.md
-    git commit -m "chore(changelog): Update CHANGELOG.md"
-    git push https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/${CI_PROJECT_PATH}.git HEAD:$CI_COMMIT_REF_NAME
-  only:
-    - main
 
 pages:
   stage: deploy
