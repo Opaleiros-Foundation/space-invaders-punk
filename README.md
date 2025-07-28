@@ -1,7 +1,14 @@
+<center>
+
+<p align="center">
+  <img src=".gitlab/catsteroids.png" alt="" width="120" />
+</p>
+
+</center>
+
+
+
 # Projeto Capstone: Recriação de Space Invaders
-
-
-![catsteroids.png](.gitlab/catsteroids.png)
 
 
 ## 1. Visão Geral do Projeto
