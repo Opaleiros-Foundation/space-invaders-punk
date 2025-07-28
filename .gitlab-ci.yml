@@ -2,7 +2,7 @@
 # It defines a GitLab CI/CD pipeline to build a PDF from your Writerside project.
 
 variables:
-  INSTANCE: 'Writerside/d'
+  INSTANCE: 'd'
   DOCKER_VERSION: '2025.04.8412'
   PDF: 'PDF.xml'
 
@@ -21,7 +21,7 @@ build_pdf:
     - PDF_FILE="pdfSource${PROJECT_ID}.pdf"
     - HTML_FILE="pdfSource${PROJECT_ID}.html"
     - ARTIFACT="webHelp${PROJECT_ID}2-all.zip"
-    - /opt/builder/bin/idea.sh helpbuilderinspect -source-dir . -product $INSTANCE --runner gitlab -output-dir public -pdf $PDF
+    - /opt/builder/bin/idea.sh helpbuilderinspect -source-dir Writerside/ -product Writerside/$INSTANCE --runner gitlab -output-dir public -pdf ../$PDF
     - echo "Testing existence of $PDF_FILE and $HTML_FILE"
     - test -e public/$PDF_FILE
     - test -e public/$HTML_FILE
