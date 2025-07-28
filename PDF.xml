@@ -3,4 +3,16 @@
         SYSTEM "https://resources.jetbrains.com/writerside/1.0/export-config.dtd">
 <export-config>
     <instance id="d"/>
+    <template>
+        <cover-page>
+            <title>Documentation for Capstone Project</title>
+            <subtitle>Space Invaders Recreation</subtitle>
+        </cover-page>
+        <header>
+            <text>Capstone Project Documentation</text>
+        </header>
+        <footer>
+            <text>Page <page-number/> of <total-pages/></text>
+        </footer>
+    </template>
 </export-config>
