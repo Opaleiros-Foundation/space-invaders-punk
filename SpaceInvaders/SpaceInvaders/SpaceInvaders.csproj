@@ -1,0 +1,43 @@
+<Project Sdk="Uno.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net9.0-desktop;net9.0</TargetFrameworks>
+
+    <OutputType>Exe</OutputType>
+    <UnoSingleProject>true</UnoSingleProject>
+
+    <!-- Display name -->
+    <ApplicationTitle>SpaceInvaders</ApplicationTitle>
+    <!-- App Identifier -->
+    <ApplicationId>com.companyname.spaceinvaders</ApplicationId>
+    <!-- Versions -->
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+    <ApplicationVersion>1</ApplicationVersion>
+    <!-- Package Publisher -->
+    <ApplicationPublisher>SpaceInvaders</ApplicationPublisher>
+    <!-- Package Description -->
+    <Description>SpaceInvaders powered by Uno Platform.</Description>
+
+    <!--
+      UnoFeatures let's you quickly add and manage implicit package references based on the features you want to use.
+      https://aka.platform.uno/singleproject-features
+    -->
+    <UnoFeatures>
+      Material;
+      MediaElement;
+      Hosting;
+      Toolkit;
+      Logging;
+      Mvvm;
+      Configuration;
+      Localization;
+      Navigation;
+      SkiaRenderer;
+    </UnoFeatures>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug' or '$(IsUiAutomationMappingEnabled)'=='True'">
+    <IsUiAutomationMappingEnabled>True</IsUiAutomationMappingEnabled>
+    <DefineConstants>$(DefineConstants);USE_UITESTS</DefineConstants>
+  </PropertyGroup>
+
+</Project>
