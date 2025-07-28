@@ -19,4 +19,5 @@
         <toc-element topic="Sprites.md"/>
         <toc-element topic="ResourcesDev.md"/>
     </toc-element>
+    <toc-element topic="Product-Backlog.md"/>
 </instance-profile>
