@@ -1,8 +1,8 @@
 ﻿namespace SpaceInvaders.Presentation;
 
-public sealed partial class MainPage : Page
+public sealed partial class ControllersPage : Page
 {
-  public MainPage()
+  public ControllersPage()
   {
     this.InitializeComponent();
   }

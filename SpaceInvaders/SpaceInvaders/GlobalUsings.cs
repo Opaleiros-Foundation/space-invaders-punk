@@ -6,6 +6,8 @@ global using Microsoft.Extensions.Logging;
 global using Microsoft.Extensions.Options;
 global using SpaceInvaders.Models;
 global using SpaceInvaders.Presentation;
+global using SpaceInvaders.Services.Endpoints;
+global using Uno.Extensions.Http.Kiota;
 global using ApplicationExecutionState = Windows.ApplicationModel.Activation.ApplicationExecutionState;
 global using CommunityToolkit.Mvvm.ComponentModel;
 global using CommunityToolkit.Mvvm.Input;

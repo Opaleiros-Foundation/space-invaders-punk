@@ -1,3 +1,4 @@
+using Windows.System;
 using Uno.Resizetizer;
 
 namespace SpaceInvaders;
@@ -31,9 +32,7 @@ public partial class App : Application
                     // Configure log levels for different categories of logging
                     logBuilder
                         .SetMinimumLevel(
-                            context.HostingEnvironment.IsDevelopment() ?
-                                LogLevel.Information :
-                                LogLevel.Warning)
+                            context.HostingEnvironment.IsDevelopment() ? LogLevel.Information : LogLevel.Warning)
 
                         // Default filters for core Uno Platform namespaces
                         .CoreLogLevel(LogLevel.Warning);
@@ -54,7 +53,6 @@ public partial class App : Application
                     //logBuilder.HotReloadCoreLogLevel(LogLevel.Information);
                     //// Debug JS interop
                     //logBuilder.WebAssemblyLogLevel(LogLevel.Debug);
-
                 }, enableUnoLogging: true)
                 .UseConfiguration(configure: configBuilder =>
                     configBuilder
@@ -63,6 +61,13 @@ public partial class App : Application
                 )
                 // Enable localization (see appsettings.json for supported languages)
                 .UseLocalization()
+                .UseHttp((context, services) =>
+                {
+#if DEBUG
+                    // DelegatingHandler will be automatically injected
+                    services.AddTransient<DelegatingHandler, DebugHttpHandler>();
+#endif
+                })
                 .ConfigureServices((context, services) =>
                 {
                     // TODO: Register your services
@@ -72,10 +77,10 @@ public partial class App : Application
             );
         MainWindow = builder.Window;
 
-        #if DEBUG
+#if DEBUG
         MainWindow.UseStudio();
 #endif
-                MainWindow.SetWindowIcon();
+        MainWindow.SetWindowIcon();
 
         Host = await builder.NavigateAsync<Shell>();
     }
@@ -85,15 +90,24 @@ public partial class App : Application
         views.Register(
             new ViewMap(ViewModel: typeof(ShellViewModel)),
             new ViewMap<MainPage, MainViewModel>(),
-            new DataViewMap<SecondPage, SecondViewModel, Entity>()
+            new DataViewMap<ControllersPage, ControllersViewModel, Player>(),
+            new DataViewMap<ScorePage, ScoreViewModel, Player>()
         );
 
         routes.Register(
             new RouteMap("", View: views.FindByViewModel<ShellViewModel>(),
                 Nested:
                 [
-                    new ("Main", View: views.FindByViewModel<MainViewModel>(), IsDefault:true),
-                    new ("Second", View: views.FindByViewModel<SecondViewModel>()),
+                    new RouteMap(
+                        Path: "Main",
+                        View: views.FindByViewModel<MainViewModel>(), IsDefault: true),
+                    new RouteMap(
+                        Path: "Controller",
+                        View: views.FindByViewModel<ControllersViewModel>()),
+                    new RouteMap(
+                        Path: "Score",
+                        View: views.FindByViewModel<ScoreViewModel>()
+                    )
                 ]
             )
         );
