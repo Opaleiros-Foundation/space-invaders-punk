@@ -1,0 +1,13 @@
+﻿<Page
+    Background="{ThemeResource BackgroundBrush}"
+    x:Class="SpaceInvaders.Presentation.ControllersPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+
+    <Button AutomationProperties.AutomationId="MainPageButton" Command="{Binding GoToMain}">
+        Return
+    </Button>
+
+
+</Page>
