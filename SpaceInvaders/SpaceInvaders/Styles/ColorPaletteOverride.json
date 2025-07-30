@@ -41,7 +41,7 @@
         },
         "dark": {
             "primary": "#FF007B",
-            "surfaceTint": "#FF007B",
+            "surfaceTint": "#99004D",
             "onPrimary": "#FFFFFF",
             "primaryContainer": "#D31BC1",
             "onPrimaryContainer": "#FFFFFF",

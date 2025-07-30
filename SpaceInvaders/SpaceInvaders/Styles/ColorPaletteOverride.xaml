@@ -33,7 +33,7 @@
     </ResourceDictionary>
     <ResourceDictionary x:Key="Dark">
       <Color x:Key="PrimaryColor">#FF007B</Color>
-      <Color x:Key="SurfaceTintColor">#FF007B</Color>
+      <Color x:Key="SurfaceTintColor">#99004D</Color>
       <Color x:Key="OnPrimaryColor">#FFFFFF</Color>
       <Color x:Key="PrimaryContainerColor">#D31BC1</Color>
       <Color x:Key="OnPrimaryContainerColor">#FFFFFF</Color>
