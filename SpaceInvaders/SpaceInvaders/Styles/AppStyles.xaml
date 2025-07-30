@@ -3,24 +3,24 @@
     xmlns:sys="using:System"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!--  ==========================================================================  -->
-    <!--  Gradient Brush Definition  -->
-    <!--  ==========================================================================  -->
     <RadialGradientBrush x:Key="PrimaryButtonBackgroundBrush">
         <GradientStop Color="{ThemeResource BackgroundColor}" Offset="0.1" />
         <GradientStop Color="{ThemeResource PrimaryColor}" Offset="12" />
     </RadialGradientBrush>
 
-    <!--  ==========================================================================  -->
-    <!--  Sizing and Spacing (Design Tokens)  -->
-    <!--  ==========================================================================  -->
-    <CornerRadius x:Key="ButtonCornerRadius">178</CornerRadius>
-    <Thickness x:Key="DefaultButtonPadding">12,6</Thickness>
-    <sys:Double x:Key="DefaultBorderThickness">1</sys:Double>
+    <RadialGradientBrush x:Key="SecondaryButtonBackgroundBrush">
+        <GradientStop Color="{ThemeResource BackgroundColor}" Offset="0.1" />
+        <GradientStop Color="{ThemeResource TertiaryColor}" Offset="12" />
+    </RadialGradientBrush>
 
-    <!--  ==========================================================================  -->
-    <!--  Primary Button Style (The most robust approach)  -->
-    <!--  ==========================================================================  -->
+    <CornerRadius x:Key="ButtonCornerRadius">178</CornerRadius>
+    <Thickness x:Key="DefaultButtonPadding">2</Thickness>
+    <sys:Double x:Key="DefaultBorderThickness">6 6 6 20</sys:Double>
+
+    <sys:Double x:Key="TitleFontSize">36</sys:Double>
+    <sys:Double x:Key="SubtitleFontSize">32</sys:Double>
+    <FontWeight x:Key="TitleFontWeight">Bold</FontWeight>
+
     <Style TargetType="Button" x:Key="PrimaryButtonStyle">
         <Setter Property="Background" Value="{StaticResource PrimaryButtonBackgroundBrush}" />
 
@@ -42,20 +42,23 @@
 
         <Setter Property="Width" Value="509" />
         <Setter Property="Height" Value="356" />
+
+        <Setter Property="FontSize" Value="{StaticResource TitleFontSize}" />
+        <Setter Property="FontWeight" Value="{StaticResource TitleFontWeight}" />
     </Style>
 
     <Style TargetType="Button" x:Key="SecondaryButtonStyle">
-        <Setter Property="Background" Value="{StaticResource PrimaryButtonBackgroundBrush}" />
+        <Setter Property="Background" Value="{StaticResource SecondaryButtonBackgroundBrush}" />
 
         <Setter Property="Foreground">
             <Setter.Value>
-                <SolidColorBrush Color="{ThemeResource OnPrimaryColor}" />
+                <SolidColorBrush Color="{ThemeResource OnTertiaryColor}" />
             </Setter.Value>
         </Setter>
 
         <Setter Property="BorderBrush">
             <Setter.Value>
-                <SolidColorBrush Color="{ThemeResource PrimaryColor}" />
+                <SolidColorBrush Color="{ThemeResource TertiaryColor}" />
             </Setter.Value>
         </Setter>
 
@@ -63,8 +66,11 @@
         <Setter Property="CornerRadius" Value="{StaticResource ButtonCornerRadius}" />
         <Setter Property="Padding" Value="{StaticResource DefaultButtonPadding}" />
 
-        <Setter Property="Width" Value="396" />
-        <Setter Property="Height" Value="220" />
+        <Setter Property="Width" Value="450" />
+        <Setter Property="Height" Value="300" />
+
+        <Setter Property="FontSize" Value="{StaticResource SubtitleFontSize}" />
+        <Setter Property="FontWeight" Value="{StaticResource TitleFontWeight}" />
     </Style>
 
 </ResourceDictionary>
