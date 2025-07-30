@@ -1,5 +1,4 @@
 ﻿<Page
-    Background="{ThemeResource BackgroundBrush}"
     NavigationCacheMode="Required"
     x:Class="SpaceInvaders.Presentation.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -8,6 +7,13 @@
     xmlns:um="using:Uno.Material"
     xmlns:utu="using:Uno.Toolkit.UI"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Styles/AppStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
     <ScrollViewer IsTabStop="True">
         <Grid utu:SafeArea.Insets="VisibleBounds">
             <Grid.RowDefinitions>
@@ -16,19 +22,38 @@
             </Grid.RowDefinitions>
             <utu:NavigationBar Content="{Binding Title}" />
 
-            <StackPanel
+            <Grid
+                ColumnSpacing="20"
                 Grid.Row="1"
                 HorizontalAlignment="Center"
-                Spacing="16"
                 VerticalAlignment="Center">
 
-                <TextBox PlaceholderText="Enter your name:" Text="{Binding Name, Mode=TwoWay}" />
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
                 <Button
                     AutomationProperties.AutomationId="ControllersPageButton"
                     Command="{Binding GoToControllers}"
-                    Content="Go to Second Page" />
-            </StackPanel>
+                    Content="CONTROLLERS"
+                    Grid.Column="0"
+                    Style="{StaticResource SecondaryButtonStyle}" />
+
+                <Button
+                    AutomationProperties.AutomationId="TakeOffPageButton"
+                    Content="TAKE OFF"
+                    Grid.Column="1"
+                    Style="{StaticResource PrimaryButtonStyle}" />
+
+                <Button
+                    AutomationProperties.AutomationId="ScorePageButton"
+                    Command="{Binding GoToScore}"
+                    Content="SCORE"
+                    Grid.Column="2"
+                    Style="{StaticResource SecondaryButtonStyle}" />
+            </Grid>
         </Grid>
     </ScrollViewer>
 </Page>

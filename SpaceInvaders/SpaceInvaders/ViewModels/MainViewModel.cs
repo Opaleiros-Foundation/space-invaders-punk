@@ -3,9 +3,7 @@ namespace SpaceInvaders.Presentation;
 public partial class MainViewModel : ObservableObject
 {
     private INavigator _navigator;
-
-    [ObservableProperty] private string? name;
-
+    
     public MainViewModel(
         IStringLocalizer localizer,
         IOptions<AppConfig> appInfo,
@@ -15,12 +13,26 @@ public partial class MainViewModel : ObservableObject
         _navigator = navigator;
         
         GoToControllers = new AsyncRelayCommand(GoToControllersView);
+        GoToScore = new AsyncRelayCommand(GoToScoreView);
+        Exit = new RelayCommand(ExitApp);
     }
     
     public ICommand GoToControllers { get; }
+    public ICommand GoToScore { get; }
+    public ICommand Exit { get; }
 
     private async Task GoToControllersView()
     {
-        await _navigator.NavigateViewModelAsync<ControllersViewModel>(this, data: new Player(Name!));
+        await _navigator.NavigateViewModelAsync<ControllersViewModel>(this);
+    }
+
+    private async Task GoToScoreView()
+    {
+        await _navigator.NavigateViewModelAsync<ScoreViewModel>(this);
+    }
+
+    private void ExitApp()
+    {
+        Application.Current.Exit();
     }
 }
