@@ -1,4 +1,4 @@
-﻿<Page
+<Page
     NavigationCacheMode="Required"
     x:Class="SpaceInvaders.Presentation.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -20,10 +20,8 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <utu:NavigationBar Content="{Binding Title}" />
 
             <Grid
-                ColumnSpacing="20"
                 Grid.Row="1"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center">
@@ -45,6 +43,7 @@
                     AutomationProperties.AutomationId="TakeOffPageButton"
                     Content="TAKE OFF"
                     Grid.Column="1"
+                    Margin="0,-140,0,0"
                     Style="{StaticResource PrimaryButtonStyle}" />
 
                 <Button
