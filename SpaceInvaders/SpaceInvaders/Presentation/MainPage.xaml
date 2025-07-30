@@ -16,6 +16,9 @@
     </Page.Resources>
     <ScrollViewer IsTabStop="True">
         <Grid utu:SafeArea.Insets="VisibleBounds">
+            <Grid.Background>
+                <ImageBrush ImageSource="ms-appx:///Assets/background/background.png" Stretch="UniformToFill" />
+            </Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
