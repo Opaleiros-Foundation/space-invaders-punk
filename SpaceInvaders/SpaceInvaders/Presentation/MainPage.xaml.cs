@@ -8,8 +8,6 @@ namespace SpaceInvaders.Presentation;
 
 public sealed partial class MainPage : Page
 {
-  private DispatcherTimer _musicLoopTimer;
-
   public MainPage()
   {
     this.InitializeComponent();
@@ -19,29 +17,20 @@ public sealed partial class MainPage : Page
 
   private void MainPage_Loaded(object sender, RoutedEventArgs e)
   {
+      BackgroundMusicPlayer.MediaPlayer.MediaEnded += MediaPlayer_MediaEnded;
       BackgroundMusicPlayer.MediaPlayer.Play();
-
-      _musicLoopTimer = new DispatcherTimer();
-      _musicLoopTimer.Interval = TimeSpan.FromSeconds(1);
-      _musicLoopTimer.Tick += MusicLoopTimer_Tick;
-      _musicLoopTimer.Start();
   }
 
   private void MainPage_Unloaded(object sender, RoutedEventArgs e)
   {
       BackgroundMusicPlayer.MediaPlayer.Pause();
-      _musicLoopTimer.Stop();
-      _musicLoopTimer.Tick -= MusicLoopTimer_Tick;
+      BackgroundMusicPlayer.MediaPlayer.MediaEnded -= MediaPlayer_MediaEnded;
   }
 
-  private void MusicLoopTimer_Tick(object sender, object e)
+  private void MediaPlayer_MediaEnded(MediaPlayer sender, object args)
   {
-      if (BackgroundMusicPlayer.MediaPlayer.PlaybackSession.NaturalDuration.TotalSeconds > 0 &&
-          BackgroundMusicPlayer.MediaPlayer.PlaybackSession.Position.TotalSeconds >= BackgroundMusicPlayer.MediaPlayer.PlaybackSession.NaturalDuration.TotalSeconds - 1)
-      {
-          BackgroundMusicPlayer.MediaPlayer.Position = TimeSpan.Zero;
-          BackgroundMusicPlayer.MediaPlayer.Play();
-      }
+      sender.Position = TimeSpan.Zero;
+      sender.Play();
   }
 
   protected override void OnNavigatedTo(NavigationEventArgs e)
