@@ -19,6 +19,7 @@
             <Grid.Background>
                 <ImageBrush ImageSource="ms-appx:///Assets/background/background.png" Stretch="UniformToFill" />
             </Grid.Background>
+            <MediaPlayerElement Source="ms-appx:///Assets/sounds/musics/start_only_music.mp3" AutoPlay="True" />
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />

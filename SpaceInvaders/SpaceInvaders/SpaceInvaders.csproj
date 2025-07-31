@@ -35,6 +35,7 @@
             Navigation;
             ThemeService;
             SkiaRenderer;
+            MediaElement;
         </UnoFeatures>
     </PropertyGroup>
     <ItemGroup>
