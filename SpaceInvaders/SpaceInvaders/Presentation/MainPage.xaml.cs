@@ -55,4 +55,9 @@ public sealed partial class MainPage : Page
       base.OnNavigatedFrom(e);
       // Music playback is now handled by Unloaded event
   }
+
+  private void VolumeButton_Click(object sender, RoutedEventArgs e)
+  {
+      BackgroundMusicPlayer.MediaPlayer.IsMuted = !BackgroundMusicPlayer.MediaPlayer.IsMuted;
+  }
 }

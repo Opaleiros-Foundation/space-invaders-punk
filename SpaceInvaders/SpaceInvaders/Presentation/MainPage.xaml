@@ -24,7 +24,7 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <MediaPlayerElement Grid.Row="0" x:Name="BackgroundMusicPlayer" Source="ms-appx:///Assets/sounds/musics/start_only_music.mp3" AutoPlay="True" />
+            <MediaPlayerElement Grid.Row="0" x:Name="BackgroundMusicPlayer" Source="ms-appx:///Assets/sounds/musics/start_music.mp3" AutoPlay="True" />
 
             <Grid
                 Grid.Row="1"
@@ -32,6 +32,7 @@
                 VerticalAlignment="Center">
 
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
@@ -57,6 +58,13 @@
                     Content="SCORE"
                     Grid.Column="2"
                     Style="{StaticResource SecondaryButtonStyle}" />
+
+                <Button
+                    AutomationProperties.AutomationId="VolumeButton"
+                    Content="MUTE VOLUME"
+                    Grid.Column="3"
+                    Click="VolumeButton_Click"
+                    Style="{StaticResource VolumeButtonStyle}" />
             </Grid>
         </Grid>
     </ScrollViewer>
