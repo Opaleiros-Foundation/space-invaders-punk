@@ -32,6 +32,7 @@
         <Setter Property="Height" Value="356" />
         <Setter Property="FontSize" Value="{StaticResource TitleFontSize}" />
         <Setter Property="FontWeight" Value="{StaticResource TitleFontWeight}" />
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/font/space_invaders.ttf#space_invaders" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -78,6 +79,7 @@
         <Setter Property="Height" Value="300" />
         <Setter Property="FontSize" Value="{StaticResource SubtitleFontSize}" />
         <Setter Property="FontWeight" Value="{StaticResource TitleFontWeight}" />
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/font/space_invaders.ttf#space_invaders" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">
@@ -119,6 +121,7 @@
         <Setter Property="FontSize" Value="16" />
         <Setter Property="Padding" Value="5" />
         <Setter Property="Margin" Value="12 0 0 0" />
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/font/space_invaders.ttf#space_invaders" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="Button">

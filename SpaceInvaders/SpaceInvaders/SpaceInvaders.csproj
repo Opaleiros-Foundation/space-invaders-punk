@@ -38,6 +38,11 @@
             MediaElement;
         </UnoFeatures>
     </PropertyGroup>
+
+    <ItemGroup>
+        <Content Include="Assets\font\space_invaders.ttf" />
+    </ItemGroup>
+
     <ItemGroup>
       <Reference Include="Uno.Extensions.Navigation">
         <HintPath>..\..\..\..\.nuget\packages\uno.extensions.navigation\6.1.4\lib\net8.0\Uno.Extensions.Navigation.dll</HintPath>
