@@ -19,11 +19,12 @@
             <Grid.Background>
                 <ImageBrush ImageSource="ms-appx:///Assets/background/background.png" Stretch="UniformToFill" />
             </Grid.Background>
-            <MediaPlayerElement Source="ms-appx:///Assets/sounds/musics/start_only_music.mp3" AutoPlay="True" />
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
+
+            <MediaPlayerElement Grid.Row="0" x:Name="BackgroundMusicPlayer" Source="ms-appx:///Assets/sounds/musics/start_only_music.mp3" AutoPlay="True" />
 
             <Grid
                 Grid.Row="1"
