@@ -24,7 +24,11 @@
                 <RowDefinition />
             </Grid.RowDefinitions>
 
-            <MediaPlayerElement Grid.Row="0" x:Name="BackgroundMusicPlayer" Source="ms-appx:///Assets/sounds/musics/start_music.mp3" AutoPlay="True" />
+            <MediaPlayerElement
+                AutoPlay="True"
+                Grid.Row="0"
+                Source="ms-appx:///Assets/sounds/musics/start_music.mp3"
+                x:Name="BackgroundMusicPlayer" />
 
             <Grid
                 Grid.Row="1"
@@ -47,6 +51,7 @@
 
                 <Button
                     AutomationProperties.AutomationId="TakeOffPageButton"
+                    Command="{Binding GoToGameStart}"
                     Content="TAKE OFF"
                     Grid.Column="1"
                     Margin="0,-140,0,0"
@@ -61,9 +66,9 @@
 
                 <Button
                     AutomationProperties.AutomationId="VolumeButton"
+                    Click="VolumeButton_Click"
                     Content="MUTE VOLUME"
                     Grid.Column="3"
-                    Click="VolumeButton_Click"
                     Style="{StaticResource VolumeButtonStyle}" />
             </Grid>
         </Grid>
