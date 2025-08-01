@@ -1,5 +1,4 @@
-﻿<Page
-    Background="{ThemeResource BackgroundBrush}"
+<Page
     NavigationCacheMode="Required"
     x:Class="SpaceInvaders.Presentation.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -8,27 +7,70 @@
     xmlns:um="using:Uno.Material"
     xmlns:utu="using:Uno.Toolkit.UI"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Styles/AppStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
     <ScrollViewer IsTabStop="True">
         <Grid utu:SafeArea.Insets="VisibleBounds">
+            <Grid.Background>
+                <ImageBrush ImageSource="ms-appx:///Assets/background/background.png" Stretch="UniformToFill" />
+            </Grid.Background>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
             </Grid.RowDefinitions>
-            <utu:NavigationBar Content="{Binding Title}" />
 
-            <StackPanel
+            <MediaPlayerElement
+                AutoPlay="True"
+                Grid.Row="0"
+                Source="ms-appx:///Assets/sounds/musics/start_music.mp3"
+                x:Name="BackgroundMusicPlayer" />
+
+            <Grid
                 Grid.Row="1"
                 HorizontalAlignment="Center"
-                Spacing="16"
                 VerticalAlignment="Center">
 
-                <TextBox PlaceholderText="Enter your name:" Text="{Binding Name, Mode=TwoWay}" />
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
 
                 <Button
                     AutomationProperties.AutomationId="ControllersPageButton"
                     Command="{Binding GoToControllers}"
-                    Content="Go to Second Page" />
-            </StackPanel>
+                    Content="CONTROLLERS"
+                    Grid.Column="0"
+                    Style="{StaticResource SecondaryButtonStyle}" />
+
+                <Button
+                    AutomationProperties.AutomationId="TakeOffPageButton"
+                    Command="{Binding GoToGameStart}"
+                    Content="TAKE OFF"
+                    Grid.Column="1"
+                    Margin="0,-140,0,0"
+                    Style="{StaticResource PrimaryButtonStyle}" />
+
+                <Button
+                    AutomationProperties.AutomationId="ScorePageButton"
+                    Command="{Binding GoToScore}"
+                    Content="SCORE"
+                    Grid.Column="2"
+                    Style="{StaticResource SecondaryButtonStyle}" />
+
+                <Button
+                    AutomationProperties.AutomationId="VolumeButton"
+                    Click="VolumeButton_Click"
+                    Content="MUTE VOLUME"
+                    Grid.Column="3"
+                    Style="{StaticResource VolumeButtonStyle}" />
+            </Grid>
         </Grid>
     </ScrollViewer>
 </Page>

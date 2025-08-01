@@ -11,13 +11,13 @@
         <utum:MaterialToolkitTheme
           ColorOverrideSource="ms-appx:///Styles/ColorPaletteOverride.xaml">
           <!-- NOTE: You can override the default Roboto font by providing your font assets here. -->
-          <!-- <utum:MaterialToolkitTheme.FontOverrideDictionary>
+          <utum:MaterialToolkitTheme.FontOverrideDictionary>
             <ResourceDictionary>
-              <FontFamily x:Key="MaterialLightFontFamily">ms-appx:///Uno.Fonts.Roboto/Fonts/Roboto-Light.ttf#Roboto</FontFamily>
-              <FontFamily x:Key="MaterialMediumFontFamily">ms-appx:///Uno.Fonts.Roboto/Fonts/Roboto-Medium.ttf#Roboto</FontFamily>
-              <FontFamily x:Key="MaterialRegularFontFamily">ms-appx:///Uno.Fonts.Roboto/Fonts/Roboto-Regular.ttf#Roboto</FontFamily>
+              <FontFamily x:Key="MaterialLightFontFamily">ms-appx:///Assets/font/space_invaders.ttf</FontFamily>
+              <FontFamily x:Key="MaterialMediumFontFamily">ms-appx:///Assets/font/space_invaders.ttf</FontFamily>
+              <FontFamily x:Key="MaterialRegularFontFamily">ms-appx:///Assets/font/space_invaders.ttf</FontFamily>
             </ResourceDictionary>
-          </utum:MaterialToolkitTheme.FontOverrideDictionary> -->
+          </utum:MaterialToolkitTheme.FontOverrideDictionary>
         </utum:MaterialToolkitTheme>
       </ResourceDictionary.MergedDictionaries>
 
