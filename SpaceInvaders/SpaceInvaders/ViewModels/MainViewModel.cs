@@ -35,7 +35,7 @@ public partial class MainViewModel : ObservableObject
 
     private async Task GoToGameStartView()
     {
-        await _navigator.NavigateViewModelAsync<GameStartPage>(this);
+        await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this);
     }
     
     private void ExitApp()
