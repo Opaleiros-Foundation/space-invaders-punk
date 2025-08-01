@@ -1,8 +1,16 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace SpaceInvaders.Presentation;
 
-public class GameStartPageViewModel
+public partial class GameStartPageViewModel : ObservableObject
 {
     private readonly INavigator _navigator;
+
+    [ObservableProperty]
+    private double _playerX;
+
+    [ObservableProperty]
+    private double _playerY;
 
     public GameStartPageViewModel(INavigator navigator, Player player)
     {
