@@ -14,12 +14,14 @@ public partial class MainViewModel : ObservableObject
         
         GoToControllers = new AsyncRelayCommand(GoToControllersView);
         GoToScore = new AsyncRelayCommand(GoToScoreView);
+        GoToGameStart = new AsyncRelayCommand(GoToGameStartView);
         Exit = new RelayCommand(ExitApp);
     }
     
     public ICommand GoToControllers { get; }
     public ICommand GoToScore { get; }
     public ICommand Exit { get; }
+    public ICommand GoToGameStart { get; }
 
     private async Task GoToControllersView()
     {
@@ -31,6 +33,11 @@ public partial class MainViewModel : ObservableObject
         await _navigator.NavigateViewModelAsync<ScoreViewModel>(this);
     }
 
+    private async Task GoToGameStartView()
+    {
+        await _navigator.NavigateViewModelAsync<GameStartPage>(this);
+    }
+    
     private void ExitApp()
     {
         Application.Current.Exit();
