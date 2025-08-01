@@ -1,26 +1,20 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using SpaceInvaders.Constants;
 
 namespace SpaceInvaders.Models;
 
-public partial class Player : ObservableObject
+public partial class Player : Actor
 {
-    [ObservableProperty]
-    private string _name;
-
-    [ObservableProperty]
-    private double _x;
-
-    [ObservableProperty]
-    private double _y;
-
     [ObservableProperty]
     private int _score;
 
-    public Player(string name)
+    [ObservableProperty]
+    private Weapon _weapon;
+
+    public Player(string name, int health, Weapon weapon) 
+        : base(name, SpritePaths.Player, health)
     {
-        _name = name;
-        _x = 0;
-        _y = 0;
         _score = 0;
+        _weapon = weapon;
     }
 }
