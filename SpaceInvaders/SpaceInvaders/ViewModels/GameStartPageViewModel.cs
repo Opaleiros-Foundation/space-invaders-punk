@@ -23,7 +23,7 @@ public partial class GameStartPageViewModel : ObservableObject
         FirePlayerWeaponCommand = new RelayCommand(FirePlayerWeapon);
 
         _player = new Player("Player1", 100, new Weapon(10, 0.5, SpritePaths.Projectile));
-        _alien = new Alien("Alien1", SpritePaths.Player, 50, 100, new Weapon(5, 1.0, SpritePaths.Projectile));
+        _alien = new Alien("Alien1", SpritePaths.AlienType1, 50, 100, new Weapon(5, 1.0, SpritePaths.Projectile));
         _alien.X = 200; // Posição X para teste
         _alien.Y = 50;  // Posição Y para teste
     }
