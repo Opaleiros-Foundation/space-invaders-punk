@@ -16,7 +16,6 @@ using Microsoft.UI.Xaml.Navigation;
 
 namespace SpaceInvaders.Presentation;
 
-
 public sealed partial class GameStartPage : Page
 {
     public GameStartPage()
