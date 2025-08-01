@@ -2,7 +2,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace SpaceInvaders.Models;
 
-public partial class Alien : Actor
+public abstract partial class Alien : Actor
 {
     [ObservableProperty]
     private int _scoreValue;
