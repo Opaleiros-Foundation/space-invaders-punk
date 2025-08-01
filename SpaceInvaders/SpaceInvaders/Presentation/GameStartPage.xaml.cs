@@ -15,6 +15,7 @@ using Microsoft.UI.Xaml.Navigation;
 
 
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace SpaceInvaders.Presentation;
 
@@ -28,8 +29,25 @@ public sealed partial class GameStartPage : Page
 
     private void GameStartPage_Loaded(object sender, RoutedEventArgs e)
     {
+        RootGrid.SizeChanged += RootGrid_SizeChanged;
+        UpdatePlayerPosition();
+    }
+
+    private void RootGrid_SizeChanged(object sender, SizeChangedEventArgs e)
+    {
+        UpdatePlayerPosition();
+    }
+
+    private void UpdatePlayerPosition()
+    {
         if (this.DataContext is GameStartPageViewModel viewModel)
         {
+            if (PlayerImage.ActualWidth == 0 || PlayerImage.ActualHeight == 0)
+            {
+                PlayerImage.Measure(new Windows.Foundation.Size(double.PositiveInfinity, double.PositiveInfinity));
+                PlayerImage.Arrange(new Windows.Foundation.Rect(0, 0, PlayerImage.DesiredSize.Width, PlayerImage.DesiredSize.Height));
+            }
+
             viewModel.PlayerX = (RootGrid.ActualWidth / 2) - (PlayerImage.ActualWidth / 2);
             viewModel.PlayerY = RootGrid.ActualHeight - PlayerImage.ActualHeight - 20; // 20 pixels from bottom
         }
