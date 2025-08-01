@@ -42,7 +42,6 @@
 
     <ItemGroup>
         <Content Include="Assets\font\space_invaders.ttf" />
-        <Content Include="Assets\sprites\aliens\alien1\type1.svg" />
     </ItemGroup>
 
     <ItemGroup>
