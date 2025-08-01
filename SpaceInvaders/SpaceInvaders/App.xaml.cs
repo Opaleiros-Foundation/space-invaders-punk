@@ -91,7 +91,8 @@ public partial class App : Application
             new ViewMap(ViewModel: typeof(ShellViewModel)),
             new ViewMap<MainPage, MainViewModel>(),
             new DataViewMap<ControllersPage, ControllersViewModel, Player>(),
-            new DataViewMap<ScorePage, ScoreViewModel, Player>()
+            new DataViewMap<ScorePage, ScoreViewModel, Player>(),
+            new DataViewMap<GameStartPage, GameStartPageViewModel, Player>()
         );
 
         routes.Register(
@@ -100,13 +101,19 @@ public partial class App : Application
                 [
                     new RouteMap(
                         Path: "Main",
-                        View: views.FindByViewModel<MainViewModel>(), IsDefault: true),
+                        View: views.FindByViewModel<MainViewModel>(), IsDefault: true
+                    ),
                     new RouteMap(
                         Path: "Controller",
-                        View: views.FindByViewModel<ControllersViewModel>()),
+                        View: views.FindByViewModel<ControllersViewModel>()
+                    ),
                     new RouteMap(
                         Path: "Score",
                         View: views.FindByViewModel<ScoreViewModel>()
+                    ),
+                    new RouteMap(
+                        Path: "GameStart",
+                        View: views.FindByViewModel<GameStartPageViewModel>()
                     )
                 ]
             )
