@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SpaceInvaders.Constants;
+using SpaceInvaders.Factories;
 using SpaceInvaders.Models;
 using System.Windows.Input;
 
@@ -22,10 +23,10 @@ public partial class GameStartPageViewModel : ObservableObject
         GoToMain = new AsyncRelayCommand(GoToMainView);
         FirePlayerWeaponCommand = new RelayCommand(FirePlayerWeapon);
 
-        _player = new Player("Player1", 100, new Weapon(10, 0.5, SpritePaths.Projectile));
-        _alien = new Alien("Alien1", SpritePaths.AlienType1, 50, 100, new Weapon(5, 1.0, SpritePaths.Projectile));
-        _alien.X = 200; // Posição X para teste
-        _alien.Y = 50;  // Posição Y para teste
+        Player = new Player("Player1", 100, new Weapon(10, 0.5, SpritePaths.Projectile));
+        Alien = AlienFactory.CreateAlien(AlienType.Type1);
+        Alien.X = 200; // Posição X para teste
+        Alien.Y = 50;  // Posição Y para teste
     }
 
     public ICommand GoToMain { get; }
@@ -38,6 +39,6 @@ public partial class GameStartPageViewModel : ObservableObject
 
     private void FirePlayerWeapon()
     {
-        _player.FireWeapon();
+        Player.FireWeapon();
     }
 }
