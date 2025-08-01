@@ -16,6 +16,8 @@ using Microsoft.UI.Xaml.Navigation;
 
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Input;
+using Windows.System;
 
 namespace SpaceInvaders.Presentation;
 
@@ -31,6 +33,7 @@ public sealed partial class GameStartPage : Page
     {
         RootGrid.SizeChanged += RootGrid_SizeChanged;
         UpdatePlayerPosition();
+        this.Focus(FocusState.Programmatic);
     }
 
     private void RootGrid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -48,8 +51,19 @@ public sealed partial class GameStartPage : Page
                 PlayerImage.Arrange(new Windows.Foundation.Rect(0, 0, PlayerImage.DesiredSize.Width, PlayerImage.DesiredSize.Height));
             }
 
-            viewModel.PlayerX = (RootGrid.ActualWidth / 2) - (PlayerImage.ActualWidth / 2);
-            viewModel.PlayerY = RootGrid.ActualHeight - PlayerImage.ActualHeight - 20; // 20 pixels from bottom
+            viewModel.Player.X = (RootGrid.ActualWidth / 2) - (PlayerImage.ActualWidth / 2);
+            viewModel.Player.Y = RootGrid.ActualHeight - PlayerImage.ActualHeight - 20; // 20 pixels from bottom
+        }
+    }
+
+    private void GameStartPage_KeyDown(object sender, KeyRoutedEventArgs e)
+    {
+        if (this.DataContext is GameStartPageViewModel viewModel)
+        {
+            if (e.Key == VirtualKey.Space)
+            {
+                viewModel.FirePlayerWeaponCommand.Execute(null);
+            }
         }
     }
 }

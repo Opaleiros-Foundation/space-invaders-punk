@@ -6,7 +6,9 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    IsTabStop="True"
+    KeyDown="GameStartPage_KeyDown">
 
     <Grid x:Name="RootGrid">
         <Grid.Background>
@@ -15,11 +17,17 @@
 
         <Canvas>
             <Image x:Name="PlayerImage"
-                   Source="ms-appx:///Assets/sprites/player/index.png"
-                   Width="64"
-                   Height="64"
-                   Canvas.Left="{Binding PlayerX, Mode=TwoWay}"
-                   Canvas.Top="{Binding PlayerY, Mode=TwoWay}"/>
+                   Source="{Binding Player.SpritePath}"
+                   Width="100"
+                   Height="100"
+                   Canvas.Left="{Binding Player.X, Mode=TwoWay}"
+                   Canvas.Top="{Binding Player.Y, Mode=TwoWay}"/>
+
+            <Image Source="{Binding Alien.SpritePath}"
+                   Width="80"
+                   Height="80"
+                   Canvas.Left="{Binding Alien.X, Mode=TwoWay}"
+                   Canvas.Top="{Binding Alien.Y, Mode=TwoWay}"/>
         </Canvas>
     </Grid>
 </Page>

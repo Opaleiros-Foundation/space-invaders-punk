@@ -36,6 +36,7 @@
             ThemeService;
             SkiaRenderer;
             MediaElement;
+            Svg;
         </UnoFeatures>
     </PropertyGroup>
 
