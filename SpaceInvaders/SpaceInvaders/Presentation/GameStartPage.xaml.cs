@@ -45,7 +45,6 @@ public sealed partial class GameStartPage : Page
     {
         if (this.DataContext is GameStartPageViewModel viewModel)
         {
-            // Ensure PlayerImage has its ActualWidth/Height calculated
             if (PlayerImage.ActualWidth == 0 || PlayerImage.ActualHeight == 0)
             {
                 PlayerImage.Measure(new Windows.Foundation.Size(double.PositiveInfinity, double.PositiveInfinity));
