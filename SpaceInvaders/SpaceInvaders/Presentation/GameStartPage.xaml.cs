@@ -42,14 +42,15 @@ public sealed partial class GameStartPage : Page
     {
         if (this.DataContext is GameStartPageViewModel viewModel)
         {
+            // Ensure PlayerImage has its ActualWidth/Height calculated
             if (PlayerImage.ActualWidth == 0 || PlayerImage.ActualHeight == 0)
             {
                 PlayerImage.Measure(new Windows.Foundation.Size(double.PositiveInfinity, double.PositiveInfinity));
                 PlayerImage.Arrange(new Windows.Foundation.Rect(0, 0, PlayerImage.DesiredSize.Width, PlayerImage.DesiredSize.Height));
             }
 
-            viewModel.PlayerX = (RootGrid.ActualWidth / 2) - (PlayerImage.ActualWidth / 2);
-            viewModel.PlayerY = RootGrid.ActualHeight - PlayerImage.ActualHeight - 20; // 20 pixels from bottom
+            viewModel.Player.X = (RootGrid.ActualWidth / 2) - (PlayerImage.ActualWidth / 2);
+            viewModel.Player.Y = RootGrid.ActualHeight - PlayerImage.ActualHeight - 20; // 20 pixels from bottom
         }
     }
 }
