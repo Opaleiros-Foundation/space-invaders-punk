@@ -1,8 +1,11 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SpaceInvaders.Constants;
+using SpaceInvaders.Factories;
 using SpaceInvaders.Models;
+using System.Collections.ObjectModel;
 using System.Windows.Input;
+using Microsoft.UI.Xaml;
 
 namespace SpaceInvaders.Presentation;
 
@@ -14,7 +17,10 @@ public partial class GameStartPageViewModel : ObservableObject
     private Player _player;
 
     [ObservableProperty]
-    private Alien _alien;
+    private ObservableCollection<Alien> _aliens;
+    private DispatcherTimer _gameTimer;
+    private double _alienSpeed = 2.0;
+    private bool _movingRight = true;
 
     public GameStartPageViewModel(INavigator navigator)
     {
@@ -22,10 +28,81 @@ public partial class GameStartPageViewModel : ObservableObject
         GoToMain = new AsyncRelayCommand(GoToMainView);
         FirePlayerWeaponCommand = new RelayCommand(FirePlayerWeapon);
 
-        _player = new Player("Player1", 100, new Weapon(10, 0.5, SpritePaths.Projectile));
-        _alien = new Alien("Alien1", SpritePaths.AlienType1, 50, 100, new Weapon(5, 1.0, SpritePaths.Projectile));
-        _alien.X = 200; // Posição X para teste
-        _alien.Y = 50;  // Posição Y para teste
+        Player = new Player("Player1", 100, new Weapon(10, 0.5, SpritePaths.Projectile));
+        Aliens = new ObservableCollection<Alien>();
+
+        // Generate aliens
+        int startX = 100;
+        int startY = 50;
+        int xOffset = 86;
+        int yOffsetBetweenRows = 70;
+
+        // Row 1: Type 3 aliens
+        for (int i = 0; i < 2; i++)
+        {
+            var alien = AlienFactory.CreateAlien(AlienType.Type3);
+            alien.X = startX + (i * xOffset);
+            alien.Y = startY + 5;
+            Aliens.Add(alien);
+        }
+
+        // Row 2: Type 2 aliens
+        for (int i = 0; i < 2; i++)
+        {
+            var alien = AlienFactory.CreateAlien(AlienType.Type2);
+            alien.X = startX + (i * xOffset);
+            alien.Y = startY + yOffsetBetweenRows + 10;
+            Aliens.Add(alien);
+        }
+
+        // Row 3: Type 1 aliens
+        for (int i = 0; i < 2; i++)
+        {
+            var alien = AlienFactory.CreateAlien(AlienType.Type1);
+            alien.X = startX + (i * xOffset);
+            alien.Y = startY + yOffsetBetweenRows + 80;
+            Aliens.Add(alien);
+        }
+
+        _gameTimer = new DispatcherTimer();
+        _gameTimer.Interval = TimeSpan.FromMilliseconds(16); 
+        _gameTimer.Tick += GameTimer_Tick;
+        _gameTimer.Start();
+    }
+
+    private void GameTimer_Tick(object sender, object e)
+    {
+        foreach (var alien in Aliens)
+        {
+            if (_movingRight)
+            {
+                alien.X += _alienSpeed;
+            }
+            else
+            {
+                alien.X -= _alienSpeed;
+            }
+        }
+
+        var rightmostAlien = Aliens.Max(a => a.X);
+        var leftmostAlien = Aliens.Min(a => a.X);
+
+        if (rightmostAlien > 700)
+        {
+            _movingRight = false;
+            foreach (var alien in Aliens)
+            {
+                alien.Y += 20;
+            }
+        }
+        else if (leftmostAlien < 50)
+        {
+            _movingRight = true;
+            foreach (var alien in Aliens)
+            {
+                alien.Y += 20;
+            }
+        }
     }
 
     public ICommand GoToMain { get; }
@@ -38,6 +115,6 @@ public partial class GameStartPageViewModel : ObservableObject
 
     private void FirePlayerWeapon()
     {
-        _player.FireWeapon();
+        Player.FireWeapon();
     }
 }
