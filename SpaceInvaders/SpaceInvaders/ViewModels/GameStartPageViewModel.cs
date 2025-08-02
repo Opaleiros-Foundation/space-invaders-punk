@@ -42,7 +42,7 @@ public partial class GameStartPageViewModel : ObservableObject
         {
             var alien = AlienFactory.CreateAlien(AlienType.Type3);
             alien.X = startX + (i * xOffset);
-            alien.Y = startY + 10;
+            alien.Y = startY + 5;
             Aliens.Add(alien);
         }
 
@@ -60,7 +60,7 @@ public partial class GameStartPageViewModel : ObservableObject
         {
             var alien = AlienFactory.CreateAlien(AlienType.Type1);
             alien.X = startX + (i * xOffset);
-            alien.Y = startY + yOffsetBetweenRows + 20;
+            alien.Y = startY + yOffsetBetweenRows + 80;
             Aliens.Add(alien);
         }
 
