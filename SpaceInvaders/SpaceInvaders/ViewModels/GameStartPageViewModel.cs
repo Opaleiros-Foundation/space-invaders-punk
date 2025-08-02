@@ -34,7 +34,7 @@ public partial class GameStartPageViewModel : ObservableObject
         // Generate aliens
         int startX = 100;
         int startY = 50;
-        int xOffset = 70;
+        int xOffset = 86;
         int yOffsetBetweenRows = 70;
 
         // Row 1: Type 3 aliens
