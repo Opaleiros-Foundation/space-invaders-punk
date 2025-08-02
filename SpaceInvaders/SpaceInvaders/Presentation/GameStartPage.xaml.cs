@@ -119,7 +119,11 @@ namespace SpaceInvaders.Presentation
 
         private void RootGrid_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            UpdatePlayerPosition();
+            if (DataContext is GameStartPageViewModel viewModel)
+            {
+                viewModel.ScreenWidth = e.NewSize.Width;
+                UpdatePlayerPosition();
+            }
         }
 
         private void UpdatePlayerPosition()

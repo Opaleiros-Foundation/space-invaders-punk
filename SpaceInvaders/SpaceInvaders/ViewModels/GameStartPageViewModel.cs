@@ -25,6 +25,7 @@ public partial class GameStartPageViewModel : ObservableObject
     private readonly DispatcherTimer _gameTimer;
     private const double AlienSpeed = 2.0;
     private bool _movingRight = true;
+    public double ScreenWidth { get; set; }
 
     public GameStartPageViewModel(INavigator navigator)
     {
@@ -114,12 +115,15 @@ public partial class GameStartPageViewModel : ObservableObject
     public void HandleKeyDown(VirtualKey key)
     {
         const double playerSpeed = 15.0;
+
         switch (key)
         {
             case VirtualKey.Left:
+            case VirtualKey.A:
                 Player.X -= playerSpeed;
                 break;
             case VirtualKey.Right:
+            case VirtualKey.D:
                 Player.X += playerSpeed;
                 break;
             case VirtualKey.Space:
