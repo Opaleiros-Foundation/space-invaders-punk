@@ -1,11 +1,15 @@
+using System;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using SpaceInvaders.Constants;
 using SpaceInvaders.Factories;
 using SpaceInvaders.Models;
 using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.UI.Xaml;
+using Windows.System;
 
 namespace SpaceInvaders.Presentation;
 
@@ -18,9 +22,12 @@ public partial class GameStartPageViewModel : ObservableObject
 
     [ObservableProperty]
     private ObservableCollection<Alien> _aliens;
-    private DispatcherTimer _gameTimer;
-    private double _alienSpeed = 2.0;
+    private readonly DispatcherTimer _gameTimer;
+    private const double AlienSpeed = 2.0;
     private bool _movingRight = true;
+    private bool _isMovingLeft;
+    private bool _isMovingRight;
+    public double ScreenWidth { get; set; }
 
     public GameStartPageViewModel(INavigator navigator)
     {
@@ -32,13 +39,13 @@ public partial class GameStartPageViewModel : ObservableObject
         Aliens = new ObservableCollection<Alien>();
 
         // Generate aliens
-        int startX = 100;
-        int startY = 50;
-        int xOffset = 86;
-        int yOffsetBetweenRows = 70;
+        const int startX = 100;
+        const int startY = 50;
+        const int xOffset = 86;
+        const int yOffsetBetweenRows = 70;
 
         // Row 1: Type 3 aliens
-        for (int i = 0; i < 2; i++)
+        for (var i = 0; i < 2; i++)
         {
             var alien = AlienFactory.CreateAlien(AlienType.Type3);
             alien.X = startX + (i * xOffset);
@@ -47,7 +54,7 @@ public partial class GameStartPageViewModel : ObservableObject
         }
 
         // Row 2: Type 2 aliens
-        for (int i = 0; i < 2; i++)
+        for (var i = 0; i < 2; i++)
         {
             var alien = AlienFactory.CreateAlien(AlienType.Type2);
             alien.X = startX + (i * xOffset);
@@ -56,7 +63,7 @@ public partial class GameStartPageViewModel : ObservableObject
         }
 
         // Row 3: Type 1 aliens
-        for (int i = 0; i < 2; i++)
+        for (var i = 0; i < 2; i++)
         {
             var alien = AlienFactory.CreateAlien(AlienType.Type1);
             alien.X = startX + (i * xOffset);
@@ -72,17 +79,23 @@ public partial class GameStartPageViewModel : ObservableObject
 
     private void GameTimer_Tick(object sender, object e)
     {
+        // Player Movement
+        UpdatePlayerPosition();
+
+        // Alien Movement
         foreach (var alien in Aliens)
         {
             if (_movingRight)
             {
-                alien.X += _alienSpeed;
+                alien.X += AlienSpeed;
             }
             else
             {
-                alien.X -= _alienSpeed;
+                alien.X -= AlienSpeed;
             }
         }
+
+        if (!Aliens.Any()) return;
 
         var rightmostAlien = Aliens.Max(a => a.X);
         var leftmostAlien = Aliens.Min(a => a.X);
@@ -102,6 +115,55 @@ public partial class GameStartPageViewModel : ObservableObject
             {
                 alien.Y += 20;
             }
+        }
+    }
+
+    private void UpdatePlayerPosition()
+    {
+        const double playerSpeed = 8.0;
+        const double playerWidth = 64;
+
+        if (_isMovingLeft && Player.X - playerSpeed > 0)
+        {
+            Player.X -= playerSpeed;
+        }
+
+        if (_isMovingRight && Player.X + playerSpeed + playerWidth < ScreenWidth)
+        {
+            Player.X += playerSpeed;
+        }
+    }
+
+    public void HandleKeyDown(VirtualKey key)
+    {
+        switch (key)
+        {
+            case VirtualKey.Left:
+            case VirtualKey.A:
+                _isMovingLeft = true;
+                break;
+            case VirtualKey.Right:
+            case VirtualKey.D:
+                _isMovingRight = true;
+                break;
+            case VirtualKey.Space:
+                FirePlayerWeapon();
+                break;
+        }
+    }
+
+    public void HandleKeyUp(VirtualKey key)
+    {
+        switch (key)
+        {
+            case VirtualKey.Left:
+            case VirtualKey.A:
+                _isMovingLeft = false;
+                break;
+            case VirtualKey.Right:
+            case VirtualKey.D:
+                _isMovingRight = false;
+                break;
         }
     }
 
