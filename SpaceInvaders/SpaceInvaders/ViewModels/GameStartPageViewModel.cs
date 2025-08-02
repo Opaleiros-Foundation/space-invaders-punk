@@ -115,16 +115,23 @@ public partial class GameStartPageViewModel : ObservableObject
     public void HandleKeyDown(VirtualKey key)
     {
         const double playerSpeed = 15.0;
+        const double playerWidth = 64; // Player's width
 
         switch (key)
         {
             case VirtualKey.Left:
             case VirtualKey.A:
-                Player.X -= playerSpeed;
+                if (Player.X - playerSpeed > 0)
+                {
+                    Player.X -= playerSpeed;
+                }
                 break;
             case VirtualKey.Right:
             case VirtualKey.D:
-                Player.X += playerSpeed;
+                if (Player.X + playerSpeed + playerWidth < ScreenWidth)
+                {
+                    Player.X += playerSpeed;
+                }
                 break;
             case VirtualKey.Space:
                 FirePlayerWeapon();
