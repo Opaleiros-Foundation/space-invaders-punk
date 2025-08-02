@@ -145,6 +145,14 @@ namespace SpaceInvaders.Presentation
                 viewModel.HandleKeyDown(e.Key);
             }
         }
+
+        private void GameStartPage_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            if (DataContext is GameStartPageViewModel viewModel)
+            {
+                viewModel.HandleKeyUp(e.Key);
+            }
+        }
     }
 }
 

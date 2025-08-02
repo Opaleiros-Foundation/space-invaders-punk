@@ -25,6 +25,8 @@ public partial class GameStartPageViewModel : ObservableObject
     private readonly DispatcherTimer _gameTimer;
     private const double AlienSpeed = 2.0;
     private bool _movingRight = true;
+    private bool _isMovingLeft;
+    private bool _isMovingRight;
     public double ScreenWidth { get; set; }
 
     public GameStartPageViewModel(INavigator navigator)
@@ -77,6 +79,10 @@ public partial class GameStartPageViewModel : ObservableObject
 
     private void GameTimer_Tick(object sender, object e)
     {
+        // Player Movement
+        UpdatePlayerPosition();
+
+        // Alien Movement
         foreach (var alien in Aliens)
         {
             if (_movingRight)
@@ -112,29 +118,51 @@ public partial class GameStartPageViewModel : ObservableObject
         }
     }
 
+    private void UpdatePlayerPosition()
+    {
+        const double playerSpeed = 8.0;
+        const double playerWidth = 64;
+
+        if (_isMovingLeft && Player.X - playerSpeed > 0)
+        {
+            Player.X -= playerSpeed;
+        }
+
+        if (_isMovingRight && Player.X + playerSpeed + playerWidth < ScreenWidth)
+        {
+            Player.X += playerSpeed;
+        }
+    }
+
     public void HandleKeyDown(VirtualKey key)
     {
-        const double playerSpeed = 15.0;
-        const double playerWidth = 64; // Player's width
-
         switch (key)
         {
             case VirtualKey.Left:
             case VirtualKey.A:
-                if (Player.X - playerSpeed > 0)
-                {
-                    Player.X -= playerSpeed;
-                }
+                _isMovingLeft = true;
                 break;
             case VirtualKey.Right:
             case VirtualKey.D:
-                if (Player.X + playerSpeed + playerWidth < ScreenWidth)
-                {
-                    Player.X += playerSpeed;
-                }
+                _isMovingRight = true;
                 break;
             case VirtualKey.Space:
                 FirePlayerWeapon();
+                break;
+        }
+    }
+
+    public void HandleKeyUp(VirtualKey key)
+    {
+        switch (key)
+        {
+            case VirtualKey.Left:
+            case VirtualKey.A:
+                _isMovingLeft = false;
+                break;
+            case VirtualKey.Right:
+            case VirtualKey.D:
+                _isMovingRight = false;
                 break;
         }
     }
