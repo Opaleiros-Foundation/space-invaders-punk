@@ -16,18 +16,14 @@
         </Grid.Background>
 
         <Canvas>
-            <Image x:Name="PlayerImage"
+            <Canvas x:Name="GameCanvas"/>
+        </Canvas>
+
+         <Image x:Name="PlayerImage"
                    Source="{Binding Player.SpritePath}"
-                   Width="100"
-                   Height="100"
+                   Width="64"
+                               Height="64"
                    Canvas.Left="{Binding Player.X, Mode=TwoWay}"
                    Canvas.Top="{Binding Player.Y, Mode=TwoWay}"/>
-
-            <Image Source="{Binding Alien.SpritePath}"
-                   Width="80"
-                   Height="80"
-                   Canvas.Left="{Binding Alien.X, Mode=TwoWay}"
-                   Canvas.Top="{Binding Alien.Y, Mode=TwoWay}"/>
-        </Canvas>
     </Grid>
 </Page>
