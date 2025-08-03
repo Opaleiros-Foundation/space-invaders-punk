@@ -201,6 +201,6 @@ public partial class GameStartPageViewModel : ObservableObject
 
     private void FirePlayerWeapon()
     {
-        Player.FireWeapon();
+        Player.Shoot();
     }
 }
