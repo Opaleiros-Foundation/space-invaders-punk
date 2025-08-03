@@ -98,11 +98,12 @@ public partial class GameStartPageViewModel : ObservableObject
 
     
 
-    private void GameTimer_Tick(object sender, object e)
+    private async void GameTimer_Tick(object? sender, object? e)
     {
         if (Player.Score >= 500 || !Aliens.Any())
         {
             _gameTimer.Stop();
+            await _navigator.NavigateViewModelAsync<EndGameViewModel>(this, data: Player.Score.ToString());
             return;
         }
 

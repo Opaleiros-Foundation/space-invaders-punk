@@ -1,0 +1,31 @@
+<Page
+    x:Class="SpaceInvaders.Presentation.EndGamePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="GAME OVER"
+                       FontSize="48"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,20"/>
+            <TextBlock Text="{Binding FinalScoreText}"
+                       FontSize="36"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       Margin="0,0,0,40"/>
+            <Button Content="PLAY AGAIN"
+                    Command="{Binding PlayAgainCommand}"
+                    Style="{StaticResource PrimaryButtonStyle}"
+                    Margin="0,0,0,10"/>
+            <Button Content="MAIN MENU"
+                    Command="{Binding GoToMainMenuCommand}"
+                    Style="{StaticResource SecondaryButtonStyle}"/>
+        </StackPanel>
+    </Grid>
+</Page>

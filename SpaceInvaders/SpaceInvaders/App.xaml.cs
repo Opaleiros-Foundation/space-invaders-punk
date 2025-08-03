@@ -93,7 +93,8 @@ public partial class App : Application
             new ViewMap<MainPage, MainViewModel>(),
             new DataViewMap<ControllersPage, ControllersViewModel, Player>(),
             new DataViewMap<ScorePage, ScoreViewModel, Player>(),
-            new DataViewMap<GameStartPage, GameStartPageViewModel, Player>()
+            new DataViewMap<GameStartPage, GameStartPageViewModel, Player>(),
+            new DataViewMap<EndGamePage, EndGameViewModel, string>()
         );
 
         routes.Register(
@@ -115,6 +116,10 @@ public partial class App : Application
                     new RouteMap(
                         Path: "GameStart",
                         View: views.FindByViewModel<GameStartPageViewModel>()
+                    ),
+                    new RouteMap(
+                        Path: "EndGame",
+                        View: views.FindByViewModel<EndGameViewModel>()
                     )
                 ]
             )
