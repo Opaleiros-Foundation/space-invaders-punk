@@ -11,7 +11,9 @@ public class AlienType1 : Alien
             spritePath: SpritePaths.AlienType1, 
             health: 100, 
             scoreValue: 10,
-            weapon: new Weapon(10, 1.0, SpritePaths.Projectile)
+            weapon: new Weapon(10, 1.0, SpritePaths.Projectile),
+            width: 64,
+            height: 64
             )
     {
     }

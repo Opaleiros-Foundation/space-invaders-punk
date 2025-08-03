@@ -45,9 +45,14 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="Assets\sounds\**\*.mp3" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Reference Include="Uno.Extensions.Navigation">
         <HintPath>..\..\..\..\.nuget\packages\uno.extensions.navigation\6.1.4\lib\net8.0\Uno.Extensions.Navigation.dll</HintPath>
       </Reference>
+      <PackageReference Include="NAudio" />
       </ItemGroup>
 
 </Project>

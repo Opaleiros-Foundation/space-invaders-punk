@@ -10,12 +10,14 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.UI.Xaml;
 using Windows.System;
+using SpaceInvaders.Interfaces.Services;
 
 namespace SpaceInvaders.Presentation;
 
 public partial class GameStartPageViewModel : ObservableObject
 {
     private readonly INavigator _navigator;
+    private readonly ISoundService _soundService;
 
     [ObservableProperty]
     private Player _player;
@@ -34,9 +36,10 @@ public partial class GameStartPageViewModel : ObservableObject
     private bool _isMovingRight;
     public double ScreenWidth { get; set; }
 
-    public GameStartPageViewModel(INavigator navigator, Player player)
+    public GameStartPageViewModel(INavigator navigator, ISoundService soundService, Player player)
     {
         _navigator = navigator;
+        _soundService = soundService;
         GoToMain = new AsyncRelayCommand(GoToMainView);
         FirePlayerWeaponCommand = new RelayCommand(FirePlayerWeapon);
 
@@ -201,6 +204,11 @@ public partial class GameStartPageViewModel : ObservableObject
 
     private void FirePlayerWeapon()
     {
-        Player.FireWeapon();
+        var random = new Random();
+        var soundIndex = random.Next(SoundPaths.PlayerShoot.Count);
+        var soundPath = SoundPaths.PlayerShoot[soundIndex];
+        _soundService.PlaySound(soundPath);
+        
+        Player.Shoot();
     }
 }
