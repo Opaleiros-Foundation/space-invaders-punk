@@ -22,21 +22,27 @@ public partial class GameStartPageViewModel : ObservableObject
 
     [ObservableProperty]
     private ObservableCollection<Alien> _aliens;
+
+    [ObservableProperty]
+    private string _scoreText;
+
     private readonly DispatcherTimer _gameTimer;
+    private readonly DispatcherTimer _scoreTimer;
     private const double AlienSpeed = 2.0;
     private bool _movingRight = true;
     private bool _isMovingLeft;
     private bool _isMovingRight;
     public double ScreenWidth { get; set; }
 
-    public GameStartPageViewModel(INavigator navigator)
+    public GameStartPageViewModel(INavigator navigator, Player player)
     {
         _navigator = navigator;
         GoToMain = new AsyncRelayCommand(GoToMainView);
         FirePlayerWeaponCommand = new RelayCommand(FirePlayerWeapon);
 
-        Player = new Player("Player1", 100, new Weapon(10, 0.5, SpritePaths.Projectile));
+        Player = player;
         Aliens = new ObservableCollection<Alien>();
+        ScoreText = $"SCORE: {Player.Score}";
 
         // Generate aliens
         const int startX = 100;
@@ -75,6 +81,24 @@ public partial class GameStartPageViewModel : ObservableObject
         _gameTimer.Interval = TimeSpan.FromMilliseconds(16); 
         _gameTimer.Tick += GameTimer_Tick;
         _gameTimer.Start();
+
+        _scoreTimer = new DispatcherTimer();
+        _scoreTimer.Interval = TimeSpan.FromSeconds(1); // Update score every second
+        _scoreTimer.Tick += ScoreTimer_Tick;
+        _scoreTimer.Start();
+
+        Player.PropertyChanged += (s, e) =>
+        {
+            if (e.PropertyName == nameof(Player.Score))
+            {
+                ScoreText = $"SCORE: {Player.Score}";
+            }
+        };
+    }
+
+    private void ScoreTimer_Tick(object sender, object e)
+    {
+        Player.Score += 10; // Increment score by 10 every second
     }
 
     private void GameTimer_Tick(object sender, object e)

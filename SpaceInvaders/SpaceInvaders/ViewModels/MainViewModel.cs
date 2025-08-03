@@ -1,3 +1,5 @@
+using SpaceInvaders.Constants;
+
 namespace SpaceInvaders.Presentation;
 
 public partial class MainViewModel : ObservableObject
@@ -35,7 +37,8 @@ public partial class MainViewModel : ObservableObject
 
     private async Task GoToGameStartView()
     {
-        await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this);
+        var player = new Player("Player1", 100, new Weapon(10, 0.5, SpritePaths.Projectile));
+        await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: player);
     }
     
     private void ExitApp()
