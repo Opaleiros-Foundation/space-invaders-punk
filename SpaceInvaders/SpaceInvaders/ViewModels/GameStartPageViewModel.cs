@@ -29,7 +29,6 @@ public partial class GameStartPageViewModel : ObservableObject
     private string _scoreText;
 
     private readonly DispatcherTimer _gameTimer;
-    private readonly DispatcherTimer _scoreTimer;
     private const double AlienSpeed = 2.0;
     private bool _movingRight = true;
     private bool _isMovingLeft;
@@ -54,7 +53,7 @@ public partial class GameStartPageViewModel : ObservableObject
         const int yOffsetBetweenRows = 70;
 
         // Row 1: Type 3 aliens
-        for (var i = 0; i < 2; i++)
+        for (var i = 0; i < 8; i++)
         {
             var alien = AlienFactory.CreateAlien(AlienType.Type3);
             alien.X = startX + (i * xOffset);
@@ -63,7 +62,7 @@ public partial class GameStartPageViewModel : ObservableObject
         }
 
         // Row 2: Type 2 aliens
-        for (var i = 0; i < 2; i++)
+        for (var i = 0; i < 8; i++)
         {
             var alien = AlienFactory.CreateAlien(AlienType.Type2);
             alien.X = startX + (i * xOffset);
@@ -72,7 +71,7 @@ public partial class GameStartPageViewModel : ObservableObject
         }
 
         // Row 3: Type 1 aliens
-        for (var i = 0; i < 2; i++)
+        for (var i = 0; i < 8; i++)
         {
             var alien = AlienFactory.CreateAlien(AlienType.Type1);
             alien.X = startX + (i * xOffset);
@@ -98,8 +97,15 @@ public partial class GameStartPageViewModel : ObservableObject
 
     
 
-    private void GameTimer_Tick(object sender, object e)
+    private async void GameTimer_Tick(object? sender, object? e)
     {
+        if (Player.Score >= 500 || !Aliens.Any())
+        {
+            _gameTimer.Stop();
+            await _navigator.NavigateViewModelAsync<EndGameViewModel>(this, data: Player.Score.ToString());
+            return;
+        }
+
         // Player Movement
         UpdatePlayerPosition();
 
@@ -126,7 +132,7 @@ public partial class GameStartPageViewModel : ObservableObject
             _movingRight = false;
             foreach (var alien in Aliens)
             {
-                alien.Y += 20;
+                alien.Y += 10;
             }
         }
         else if (leftmostAlien < 50)
@@ -134,14 +140,14 @@ public partial class GameStartPageViewModel : ObservableObject
             _movingRight = true;
             foreach (var alien in Aliens)
             {
-                alien.Y += 20;
+                alien.Y += 10;
             }
         }
     }
 
     private void UpdatePlayerPosition()
     {
-        const double playerSpeed = 8.0;
+        const double playerSpeed = 4.0;
         const double playerWidth = 64;
 
         if (_isMovingLeft && Player.X - playerSpeed > 0)

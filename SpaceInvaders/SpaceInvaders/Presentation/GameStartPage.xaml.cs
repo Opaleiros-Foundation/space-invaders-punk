@@ -14,8 +14,8 @@ namespace SpaceInvaders.Presentation
     {
         private readonly List<Image> _alienImages = new();
         private readonly List<Image> _projectileImages = new();
-        private Image _playerImage;
-        private DispatcherTimer _gameTimer;
+        private Image? _playerImage;
+        private DispatcherTimer? _gameTimer;
 
         public GameStartPage()
         {
@@ -135,7 +135,7 @@ namespace SpaceInvaders.Presentation
             }
         }
 
-        private void ViewModel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(GameStartPageViewModel.Aliens)) return;
             if (sender is GameStartPageViewModel viewModel)
@@ -168,7 +168,7 @@ namespace SpaceInvaders.Presentation
             _gameTimer.Tick -= GameTimer_Tick;
         }
 
-        private void GameTimer_Tick(object sender, object e)
+        private void GameTimer_Tick(object? sender, object? e)
         {
             if (DataContext is not GameStartPageViewModel viewModel) return;
 
