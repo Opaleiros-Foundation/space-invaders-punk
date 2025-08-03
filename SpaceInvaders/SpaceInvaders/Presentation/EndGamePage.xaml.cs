@@ -9,3 +9,4 @@ public sealed partial class EndGamePage : Page
         this.InitializeComponent();
     }
 }
+

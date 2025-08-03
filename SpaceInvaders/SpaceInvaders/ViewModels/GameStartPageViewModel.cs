@@ -29,7 +29,6 @@ public partial class GameStartPageViewModel : ObservableObject
     private string _scoreText;
 
     private readonly DispatcherTimer _gameTimer;
-    private readonly DispatcherTimer _scoreTimer;
     private const double AlienSpeed = 2.0;
     private bool _movingRight = true;
     private bool _isMovingLeft;
