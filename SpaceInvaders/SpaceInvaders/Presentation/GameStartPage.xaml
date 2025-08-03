@@ -18,5 +18,13 @@
         <Canvas x:Name="GameCanvas">
             <!-- Player is now created in code-behind -->
         </Canvas>
+
+        <TextBlock Text="{Binding ViewModel.ScoreText}"
+                   Foreground="White"
+                   FontSize="24"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Margin="20,20,0,0"/>
     </Grid>
 </Page>
