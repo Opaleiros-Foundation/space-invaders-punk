@@ -181,15 +181,33 @@ namespace SpaceInvaders.Presentation
                 var projectileImage = _projectileImages[i];
 
                 projectile.Move();
+                projectile.CheckBounds(0); // Check if projectile is off-screen
                 Canvas.SetTop(projectileImage, projectile.Y);
 
-                if (projectile.Y < 0)
+                if (!projectile.IsVisible)
                 {
                     projectilesToRemove.Add(projectile);
                     imagesToRemove.Add(projectileImage);
+                    continue; // Skip collision check if already off-screen
+                }
+
+                // Collision detection with aliens
+                for (var j = viewModel.Aliens.Count - 1; j >= 0; j--)
+                {
+                    var alien = viewModel.Aliens[j];
+                    if (projectile.CheckCollision(alien))
+                    {
+                        projectile.IsVisible = false;
+                        alien.IsVisible = false;
+                        viewModel.Player.Score += alien.ScoreValue; // Update score
+                        projectilesToRemove.Add(projectile);
+                        imagesToRemove.Add(projectileImage);
+                        break; // Projectile hit an alien, no need to check other aliens
+                    }
                 }
             }
 
+            // Remove projectiles
             foreach (var projectile in projectilesToRemove)
             {
                 viewModel.Player.Projectiles.Remove(projectile);
@@ -200,6 +218,40 @@ namespace SpaceInvaders.Presentation
                 var image = imagesToRemove[i];
                 GameCanvas.Children.Remove(image);
                 _projectileImages.Remove(image);
+            }
+
+            // Remove aliens that are no longer visible
+            var aliensToRemove = new List<Alien>();
+            var alienImagesToRemove = new List<Image>();
+
+            for (var i = _alienImages.Count - 1; i >= 0; i--)
+            {
+                var alien = viewModel.Aliens[i];
+                var alienImage = _alienImages[i];
+
+                if (!alien.IsVisible)
+                {
+                    aliensToRemove.Add(alien);
+                    alienImagesToRemove.Add(alienImage);
+                }
+            }
+
+            foreach (var alien in aliensToRemove)
+            {
+                viewModel.Aliens.Remove(alien);
+            }
+
+            for (var i = alienImagesToRemove.Count - 1; i >= 0; i--)
+            {
+                var image = alienImagesToRemove[i];
+                GameCanvas.Children.Remove(image);
+                _alienImages.Remove(image);
+            }
+
+            // Reset CanShoot if no projectiles are left
+            if (!viewModel.Player.Projectiles.Any())
+            {
+                viewModel.Player.CanShoot = true;
             }
         }
 

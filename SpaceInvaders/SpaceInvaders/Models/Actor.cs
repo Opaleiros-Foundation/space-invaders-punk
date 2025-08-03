@@ -14,6 +14,12 @@ public abstract partial class Actor : ObservableObject
     private double _y;
 
     [ObservableProperty]
+    private double _width;
+
+    [ObservableProperty]
+    private double _height;
+
+    [ObservableProperty]
     private string _spritePath;
 
     [ObservableProperty]
@@ -22,13 +28,15 @@ public abstract partial class Actor : ObservableObject
     [ObservableProperty]
     private bool _isVisible;
 
-    protected Actor(string name, string spritePath, int health)
+    protected Actor(string name, string spritePath, int health, double width = 0, double height = 0)
     {
         _name = name;
         _spritePath = spritePath;
         _health = health;
         _x = 0;
         _y = 0;
+        _width = width;
+        _height = height;
         _isVisible = true;
     }
 }

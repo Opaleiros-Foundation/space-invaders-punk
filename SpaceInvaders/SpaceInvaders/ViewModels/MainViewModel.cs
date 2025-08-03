@@ -37,7 +37,7 @@ public partial class MainViewModel : ObservableObject
 
     private async Task GoToGameStartView()
     {
-        var player = new Player("Player1", 100, new Weapon(10, 0.5, SpritePaths.Projectile));
+        var player = new Player("Player1", 100, new Weapon(10, 0.5, SpritePaths.Projectile), 64, 64);
         await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: player);
     }
     

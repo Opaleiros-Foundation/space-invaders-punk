@@ -10,8 +10,8 @@ public abstract partial class Alien : Actor
     [ObservableProperty]
     private Weapon _weapon;
 
-    public Alien(string name, string spritePath, int health, int scoreValue, Weapon weapon)
-        : base(name, spritePath, health)
+    public Alien(string name, string spritePath, int health, int scoreValue, Weapon weapon, double width, double height)
+        : base(name, spritePath, health, width, height)
     {
         _scoreValue = scoreValue;
         _weapon = weapon;
