@@ -1,5 +1,7 @@
 using Windows.System;
 using Uno.Resizetizer;
+using SpaceInvaders.Interfaces.Services;
+using SpaceInvaders.Services;
 
 namespace SpaceInvaders;
 
@@ -70,8 +72,7 @@ public partial class App : Application
                 })
                 .ConfigureServices((context, services) =>
                 {
-                    // TODO: Register your services
-                    //services.AddSingleton<IMyService, MyService>();
+                    services.AddSingleton<ISoundService, SoundService>();
                 })
                 .UseNavigation(RegisterRoutes)
             );

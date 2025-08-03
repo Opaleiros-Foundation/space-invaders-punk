@@ -175,7 +175,7 @@ namespace SpaceInvaders.Presentation
             var projectilesToRemove = new List<Projectile>();
             var imagesToRemove = new List<Image>();
 
-            for (var i = 0; i < viewModel.Player.Projectiles.Count; i++)
+            for (var i = _projectileImages.Count - 1; i >= 0; i--)
             {
                 var projectile = viewModel.Player.Projectiles[i];
                 var projectileImage = _projectileImages[i];
