@@ -10,7 +10,7 @@ public class AlienType3 : Alien
             name: "Alien Type 3", 
             spritePath: SpritePaths.AlienType3, 
             health: 150, 
-            scoreValue: 30,
+            scoreValue: 40,
             weapon: new Weapon(25, 1.0, SpritePaths.Projectile),
             width: 64,
             height: 64
