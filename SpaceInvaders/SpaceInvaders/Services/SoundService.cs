@@ -1,60 +1,46 @@
+using NAudio.Wave;
+using System.IO;
 using System;
 using System.Collections.Generic;
-using Windows.Media.Core;
-using Windows.Media.Playback;
+using Windows.ApplicationModel;
 using SpaceInvaders.Interfaces.Services;
-using Windows.ApplicationModel; // Add this using statement
 
 namespace SpaceInvaders.Services;
 
 public class SoundService : ISoundService
 {
-    private readonly List<MediaPlayer> _mediaPlayers = new();
+    private readonly List<IWavePlayer> _activePlayers = new();
 
     public void PlaySound(string soundPath)
     {
-        Console.WriteLine($"[SoundService] PlaySound method called for: {soundPath}");
         try
         {
-            var mediaPlayer = new MediaPlayer();
-            mediaPlayer.Volume = 1.0; // Ensure volume is not zero
-            Console.WriteLine("[SoundService] New MediaPlayer instance created.");
-
-            Uri uri;
-            if (soundPath.StartsWith("ms-appx:///"))
-            {
-                // Resolve ms-appx:/// URI to a local file path
-                var relativePath = soundPath.Replace("ms-appx:///", "");
-                var fullPath = System.IO.Path.Combine(Package.Current.InstalledLocation.Path, relativePath);
-                uri = new Uri(fullPath);
-                Console.WriteLine($"[SoundService] Resolved ms-appx URI to: {fullPath}");
-            }
-            else
-            {
-                uri = new Uri(soundPath);
-            }
+            // Converter ms-appx para caminho local
+            var localPath = soundPath.Replace("ms-appx:///", "");
+            var fullPath = Path.Combine(Package.Current.InstalledLocation.Path, localPath);
             
-            mediaPlayer.Source = MediaSource.CreateFromUri(uri);
+            // Verificar se o arquivo existe
+            if (!File.Exists(fullPath))
+            {
+                Console.WriteLine($"[SoundService] File not found: {fullPath}");
+                return;
+            }
 
-            mediaPlayer.MediaOpened += (sender, args) =>
+            var audioFile = new AudioFileReader(fullPath);
+            var outputDevice = new WaveOutEvent();
+            outputDevice.Init(audioFile);
+
+            outputDevice.PlaybackStopped += (sender, args) =>
             {
-                Console.WriteLine("[SoundService] MediaOpened event fired.");
-            };
-            mediaPlayer.MediaEnded += (sender, args) =>
-            {
-                Console.WriteLine("[SoundService] MediaEnded event fired. Removing MediaPlayer.");
-                _mediaPlayers.Remove(mediaPlayer);
-            };
-            mediaPlayer.MediaFailed += (sender, args) =>
-            {
-                Console.WriteLine($"[SoundService] Media failed: {args.ErrorMessage}");
-                _mediaPlayers.Remove(mediaPlayer);
+                outputDevice.Dispose();
+                audioFile.Dispose();
+                _activePlayers.Remove(outputDevice);
+                Console.WriteLine("[SoundService] Playback stopped and resources disposed.");
             };
 
-            _mediaPlayers.Add(mediaPlayer);
-            Console.WriteLine($"[SoundService] MediaPlayer CurrentState before Play(): {mediaPlayer.CurrentState}");
-            mediaPlayer.Play();
-            Console.WriteLine($"[SoundService] MediaPlayer CurrentState after Play(): {mediaPlayer.CurrentState}");
+            _activePlayers.Add(outputDevice);
+            outputDevice.Play();
+            Console.WriteLine($"[SoundService] Playing sound: {fullPath}");
         }
         catch (Exception ex)
         {
