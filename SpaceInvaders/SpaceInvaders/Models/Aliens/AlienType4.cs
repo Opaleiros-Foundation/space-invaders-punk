@@ -10,7 +10,7 @@ public class AlienType4 : Alien
             name: "Alien Type 4", 
             spritePath: SpritePaths.AlienType4, 
             health: 200, 
-            scoreValue: 50,
+            scoreValue: new Random().Next(50, 251),
             weapon: new Weapon(50, 1.0, SpritePaths.Projectile),
             width: 64,
             height: 64

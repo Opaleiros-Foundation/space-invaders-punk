@@ -85,10 +85,7 @@ public partial class GameStartPageViewModel : ObservableObject
         _gameTimer.Tick += GameTimer_Tick;
         _gameTimer.Start();
 
-        _scoreTimer = new DispatcherTimer();
-        _scoreTimer.Interval = TimeSpan.FromSeconds(1); // Update score every second
-        _scoreTimer.Tick += ScoreTimer_Tick;
-        _scoreTimer.Start();
+        
 
         Player.PropertyChanged += (s, e) =>
         {
@@ -99,10 +96,7 @@ public partial class GameStartPageViewModel : ObservableObject
         };
     }
 
-    private void ScoreTimer_Tick(object sender, object e)
-    {
-        Player.Score += 10; // Increment score by 10 every second
-    }
+    
 
     private void GameTimer_Tick(object sender, object e)
     {
