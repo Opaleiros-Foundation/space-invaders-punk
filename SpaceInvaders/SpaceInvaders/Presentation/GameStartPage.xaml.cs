@@ -269,7 +269,7 @@ namespace SpaceInvaders.Presentation
                 _projectileImages.Remove(image);
             }
 
-            // Remove aliens that are no longer visible
+            // Remove aliens that are no longer vis
             var aliensToRemove = new List<Alien>();
             var alienImagesToRemove = new List<Image>();
 
