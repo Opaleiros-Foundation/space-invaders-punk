@@ -14,7 +14,8 @@ namespace SpaceInvaders.Presentation
     {
         private readonly List<Image> _alienImages = new();
         private readonly List<Image> _projectileImages = new();
-        private readonly List<Image> _barrierImages = new();
+        private readonly List<Image> _shieldImages = new();
+        private readonly List<Shield> _shields = new();
         private Image? _playerImage;
         private DispatcherTimer? _gameTimer;
 
@@ -36,29 +37,31 @@ namespace SpaceInvaders.Presentation
             viewModel.Player.Projectiles.CollectionChanged += Projectiles_CollectionChanged;
         }
 
-        private void CreateBarrierImages()
+        private void CreateShieldImages()
         {
             var screenWidth = ActualWidth;
-            var barrierWidth = 64;
-            var spacing = (screenWidth - (4 * barrierWidth)) / 5;
+            var shieldWidth = 64;
+            var spacing = (screenWidth - (4 * shieldWidth)) / 5;
 
             for (var i = 0; i < 4; i++)
             {
-                var barrierImage = new Image
+                var shield = new Shield("Shield", 100, shieldWidth, 32);
+                var shieldImage = new Image
                 {
-                    Width = barrierWidth,
-                    Height = 32,
-                    Source = new BitmapImage(new Uri(Constants.SpritePaths.Barrier))
+                    Width = shield.Width,
+                    Height = shield.Height,
+                    Source = new BitmapImage(new Uri(shield.SpritePath))
                 };
 
-                var left = spacing * (i + 1) + (barrierWidth * i);
-                var top = ActualHeight - 200; 
+                shield.X = spacing * (i + 1) + (shield.Width * i);
+                shield.Y = ActualHeight - 200;
 
-                Canvas.SetLeft(barrierImage, left);
-                Canvas.SetTop(barrierImage, top);
+                Canvas.SetLeft(shieldImage, shield.X);
+                Canvas.SetTop(shieldImage, shield.Y);
 
-                GameCanvas.Children.Add(barrierImage);
-                _barrierImages.Add(barrierImage);
+                GameCanvas.Children.Add(shieldImage);
+                _shieldImages.Add(shieldImage);
+                _shields.Add(shield);
             }
         }
 
@@ -179,7 +182,7 @@ namespace SpaceInvaders.Presentation
                 viewModel.ScreenWidth = RootGrid.ActualWidth;
             }
             UpdatePlayerPosition();
-            CreateBarrierImages();
+            CreateShieldImages();
             Focus(FocusState.Programmatic);
 
             _gameTimer = new DispatcherTimer();
@@ -233,6 +236,24 @@ namespace SpaceInvaders.Presentation
                         break; // Projectile hit an alien, no need to check other aliens
                     }
                 }
+
+                // Collision detection with shields
+                for (var j = _shields.Count - 1; j >= 0; j--)
+                {
+                    var shield = _shields[j];
+                    if (projectile.CheckCollision(shield))
+                    {
+                        projectile.IsVisible = false;
+                        shield.Health -= projectile.Damage;
+                        if (shield.Health <= 0)
+                        {
+                            shield.IsVisible = false;
+                        }
+                        projectilesToRemove.Add(projectile);
+                        imagesToRemove.Add(projectileImage);
+                        break; // Projectile hit a shield, no need to check other shields
+                    }
+                }
             }
 
             // Remove projectiles
@@ -280,6 +301,34 @@ namespace SpaceInvaders.Presentation
             if (!viewModel.Player.Projectiles.Any())
             {
                 viewModel.Player.CanShoot = true;
+            }
+
+            // Remove shields that are no longer visible
+            var shieldsToRemove = new List<Shield>();
+            var shieldImagesToRemove = new List<Image>();
+
+            for (var i = _shieldImages.Count - 1; i >= 0; i--)
+            {
+                var shield = _shields[i];
+                var shieldImage = _shieldImages[i];
+
+                if (!shield.IsVisible)
+                {
+                    shieldsToRemove.Add(shield);
+                    shieldImagesToRemove.Add(shieldImage);
+                }
+            }
+
+            foreach (var shield in shieldsToRemove)
+            {
+                _shields.Remove(shield);
+            }
+
+            for (var i = shieldImagesToRemove.Count - 1; i >= 0; i--)
+            {
+                var image = shieldImagesToRemove[i];
+                GameCanvas.Children.Remove(image);
+                _shieldImages.Remove(image);
             }
         }
 
