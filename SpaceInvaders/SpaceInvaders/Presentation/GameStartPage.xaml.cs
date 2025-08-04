@@ -82,7 +82,7 @@ namespace SpaceInvaders.Presentation
             }
         }
 
-        private void Projectiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Projectiles_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             DispatcherQueue.TryEnqueue(() =>
             {
@@ -97,7 +97,11 @@ namespace SpaceInvaders.Presentation
                             Source = new BitmapImage(new Uri(projectile.SpritePath))
                         };
                         
-                        var playerImageWidth = _playerImage?.Width ?? 64;
+                        double playerImageWidth = 64;
+                        if (_playerImage != null)
+                        {
+                            playerImageWidth = _playerImage.Width;
+                        }
                         projectile.X = projectile.X + (playerImageWidth / 2) - (projectileImage.Width / 2);
                         projectile.Y -= 30;
 

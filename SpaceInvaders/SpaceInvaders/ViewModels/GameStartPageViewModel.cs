@@ -220,7 +220,7 @@ public partial class GameStartPageViewModel : ObservableObject
         var random = new Random();
         var soundIndex = random.Next(SoundPaths.PlayerShoot.Count);
         var soundPath = SoundPaths.PlayerShoot[soundIndex];
-        _soundService.PlaySound(soundPath);
+        SoundService.PlaySound(soundPath);
         
         _canPlayShootSound = false;
         _shootSoundCooldownTimer.Start();

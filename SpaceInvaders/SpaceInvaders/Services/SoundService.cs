@@ -17,8 +17,6 @@ public class SoundService : ISoundService
     private readonly List<IWavePlayer> _activePlayers = new();
 #endif
 
-    private Process _mpg123Process; // To keep track of the mpg123 process
-
     public float Volume { get; set; } = 1.0f; // Default volume to 1.0 (max)
 
     public void PlaySound(string soundPath)
@@ -36,14 +34,7 @@ public class SoundService : ISoundService
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                // Stop any existing mpg123 process
-                if (_mpg123Process != null && !_mpg123Process.HasExited)
-                {
-                    _mpg123Process.Kill();
-                    _mpg123Process.Dispose();
-                }
-
-                _mpg123Process = new Process
+                var process = new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
@@ -55,20 +46,12 @@ public class SoundService : ISoundService
                         CreateNoWindow = true
                     }
                 };
-                _mpg123Process.Start();
+                process.Start();
                 // dont wait for the process to finish
             }
 #if !__MACCATALYST__ && !WINDOWS && !ANDROID && !IOS
             else
             {
-                // Stop all currently playing sounds to prevent overlay
-                foreach (var player in _activePlayers.ToArray())
-                {
-                    player.Stop();
-                    player.Dispose();
-                }
-                _activePlayers.Clear();
-
                 Console.WriteLine($"[SoundService] Playing sound using NAudio: {fullPath}");
                 var audioFile = new AudioFileReader(fullPath)
                 {
