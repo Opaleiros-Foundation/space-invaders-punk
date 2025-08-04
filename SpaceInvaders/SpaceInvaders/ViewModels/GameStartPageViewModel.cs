@@ -17,7 +17,7 @@ namespace SpaceInvaders.Presentation;
 public partial class GameStartPageViewModel : ObservableObject
 {
     private readonly INavigator _navigator;
-    private readonly ISoundService _soundService;
+    public ISoundService SoundService { get; } // Expose SoundService
 
     [ObservableProperty]
     private Player _player;
@@ -35,12 +35,23 @@ public partial class GameStartPageViewModel : ObservableObject
     private bool _isMovingRight;
     public double ScreenWidth { get; set; }
 
+    private bool _canPlayShootSound = true;
+    private readonly DispatcherTimer _shootSoundCooldownTimer;
+
     public GameStartPageViewModel(INavigator navigator, ISoundService soundService, Player player)
     {
         _navigator = navigator;
-        _soundService = soundService;
+        SoundService = soundService; // Assign to the public property
         GoToMain = new AsyncRelayCommand(GoToMainView);
         FirePlayerWeaponCommand = new RelayCommand(FirePlayerWeapon);
+
+        _shootSoundCooldownTimer = new DispatcherTimer();
+        _shootSoundCooldownTimer.Interval = TimeSpan.FromMilliseconds(100); // Cooldown period for shoot sound
+        _shootSoundCooldownTimer.Tick += (sender, e) =>
+        {
+            _canPlayShootSound = true;
+            _shootSoundCooldownTimer.Stop();
+        };
 
         Player = player;
         Aliens = new ObservableCollection<Alien>();
@@ -204,10 +215,15 @@ public partial class GameStartPageViewModel : ObservableObject
 
     private void FirePlayerWeapon()
     {
+        if (!_canPlayShootSound) return;
+
         var random = new Random();
         var soundIndex = random.Next(SoundPaths.PlayerShoot.Count);
         var soundPath = SoundPaths.PlayerShoot[soundIndex];
-        _soundService.PlaySound(soundPath);
+        SoundService.PlaySound(soundPath);
+        
+        _canPlayShootSound = false;
+        _shootSoundCooldownTimer.Start();
         
         Player.Shoot();
     }

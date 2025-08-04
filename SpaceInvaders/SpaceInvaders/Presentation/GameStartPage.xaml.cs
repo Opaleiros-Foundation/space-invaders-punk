@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Linq;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media.Imaging;
 using Windows.System;
 using SpaceInvaders.Models;
+using SpaceInvaders.Constants;
+using SpaceInvaders.Interfaces.Services;
 
 namespace SpaceInvaders.Presentation
 {
@@ -18,6 +21,10 @@ namespace SpaceInvaders.Presentation
         private readonly List<Shield> _shields = new();
         private Image? _playerImage;
         private DispatcherTimer? _gameTimer;
+        private ISoundService? _soundService;
+
+        private bool _canPlayEnemyDeathSound = true;
+        private readonly DispatcherTimer _enemyDeathSoundCooldownTimer;
 
         public GameStartPage()
         {
@@ -25,11 +32,21 @@ namespace SpaceInvaders.Presentation
             Loaded += GameStartPage_Loaded;
             Unloaded += GameStartPage_Unloaded;
             DataContextChanged += OnDataContextChanged;
+
+            _enemyDeathSoundCooldownTimer = new DispatcherTimer();
+            _enemyDeathSoundCooldownTimer.Interval = TimeSpan.FromMilliseconds(50); // Cooldown period for enemy death sound
+            _enemyDeathSoundCooldownTimer.Tick += (sender, e) =>
+            {
+                _canPlayEnemyDeathSound = true;
+                _enemyDeathSoundCooldownTimer.Stop();
+            };
         }
 
         private void OnDataContextChanged(FrameworkElement sender, DataContextChangedEventArgs args)
         {
             if (DataContext is not GameStartPageViewModel viewModel) return;
+
+            _soundService = viewModel.SoundService; // Get the sound service from the ViewModel
 
             CreatePlayerImage(viewModel);
             CreateAlienImages(viewModel);
@@ -65,7 +82,7 @@ namespace SpaceInvaders.Presentation
             }
         }
 
-        private void Projectiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        private void Projectiles_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
         {
             DispatcherQueue.TryEnqueue(() =>
             {
@@ -80,7 +97,11 @@ namespace SpaceInvaders.Presentation
                             Source = new BitmapImage(new Uri(projectile.SpritePath))
                         };
                         
-                        var playerImageWidth = _playerImage?.Width ?? 64;
+                        double playerImageWidth = 64;
+                        if (_playerImage != null)
+                        {
+                            playerImageWidth = _playerImage.Width;
+                        }
                         projectile.X = projectile.X + (playerImageWidth / 2) - (projectileImage.Width / 2);
                         projectile.Y -= 30;
 
@@ -231,6 +252,18 @@ namespace SpaceInvaders.Presentation
                         projectile.IsVisible = false;
                         alien.IsVisible = false;
                         viewModel.Player.Score += alien.ScoreValue; // Update score
+
+                        // Play enemy death sound with cooldown
+                        if (_canPlayEnemyDeathSound && _soundService != null)
+                        {
+                            var random = new Random();
+                            var soundIndex = random.Next(SoundPaths.EnemyDie.Count);
+                            var soundPath = SoundPaths.EnemyDie[soundIndex];
+                            _soundService.PlaySound(soundPath);
+                            _canPlayEnemyDeathSound = false;
+                            _enemyDeathSoundCooldownTimer.Start();
+                        }
+
                         projectilesToRemove.Add(projectile);
                         imagesToRemove.Add(projectileImage);
                         break; // Projectile hit an alien, no need to check other aliens
@@ -380,7 +413,7 @@ namespace SpaceInvaders.Presentation
             
             if (e.Key == VirtualKey.Space)
             {
-                viewModel.Player.Shoot();
+                viewModel.FirePlayerWeaponCommand.Execute(null);
             }
             else
             {
