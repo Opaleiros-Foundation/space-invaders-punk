@@ -380,7 +380,7 @@ namespace SpaceInvaders.Presentation
             
             if (e.Key == VirtualKey.Space)
             {
-                viewModel.Player.Shoot();
+                viewModel.FirePlayerWeaponCommand.Execute(null);
             }
             else
             {

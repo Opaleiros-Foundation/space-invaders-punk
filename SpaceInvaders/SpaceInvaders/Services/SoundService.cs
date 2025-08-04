@@ -1,45 +1,72 @@
-using NAudio.Wave;
 using System.IO;
 using System;
 using System.Collections.Generic;
-using Windows.ApplicationModel;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using SpaceInvaders.Interfaces.Services;
+
+#if !__MACCATALYST__ && !WINDOWS && !ANDROID && !IOS
+using NAudio.Wave;
+#endif
 
 namespace SpaceInvaders.Services;
 
 public class SoundService : ISoundService
 {
+#if !__MACCATALYST__ && !WINDOWS && !ANDROID && !IOS
     private readonly List<IWavePlayer> _activePlayers = new();
+#endif
 
     public void PlaySound(string soundPath)
     {
         try
         {
-            // Converter ms-appx para caminho local
             var localPath = soundPath.Replace("ms-appx:///", "");
             var fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, localPath);
-            
-            // Verificar se o arquivo existe
+
             if (!File.Exists(fullPath))
             {
                 Console.WriteLine($"[SoundService] File not found: {fullPath}");
                 return;
             }
 
-            var audioFile = new AudioFileReader(fullPath);
-            var outputDevice = new WaveOutEvent();
-            outputDevice.Init(audioFile);
-
-            outputDevice.PlaybackStopped += (sender, args) =>
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                outputDevice.Dispose();
-                audioFile.Dispose();
-                _activePlayers.Remove(outputDevice);
-                Console.WriteLine("[SoundService] Playback stopped and resources disposed.");
-            };
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo
+                    {
+                        FileName = "mpg123",
+                        Arguments = $"\"{fullPath}\"",
+                        UseShellExecute = false,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        CreateNoWindow = true
+                    }
+                };
+                process.Start();
+                // Não esperamos pelo mpg123 para não travar a aplicação
+            }
+#if !__MACCATALYST__ && !WINDOWS && !ANDROID && !IOS
+            else
+            {
+                Console.WriteLine($"[SoundService] Playing sound using NAudio: {fullPath}");
+                var audioFile = new AudioFileReader(fullPath);
+                var outputDevice = new WaveOutEvent();
+                outputDevice.Init(audioFile);
 
-            _activePlayers.Add(outputDevice);
-            outputDevice.Play();
+                outputDevice.PlaybackStopped += (sender, args) =>
+                {
+                    outputDevice.Dispose();
+                    audioFile.Dispose();
+                    _activePlayers.Remove(outputDevice);
+                    Console.WriteLine("[SoundService] Playback stopped and resources disposed.");
+                };
+
+                _activePlayers.Add(outputDevice);
+                outputDevice.Play();
+            }
+#endif
             Console.WriteLine($"[SoundService] Playing sound: {fullPath}");
         }
         catch (Exception ex)
