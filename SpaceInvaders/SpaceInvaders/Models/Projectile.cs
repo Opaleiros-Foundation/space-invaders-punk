@@ -29,13 +29,4 @@ public class Projectile : Actor, IProjectile
         }
         return false;
     }
-
-    public bool CheckCollision(Actor other)
-    {
-        // Simple AABB collision detection
-        return X < other.X + other.Width &&
-               X + Width > other.X &&
-               Y < other.Y + other.Height &&
-               Y + Height > other.Y;
-    }
 }

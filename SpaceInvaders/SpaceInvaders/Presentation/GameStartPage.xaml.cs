@@ -14,6 +14,8 @@ namespace SpaceInvaders.Presentation
     {
         private readonly List<Image> _alienImages = new();
         private readonly List<Image> _projectileImages = new();
+        private readonly List<Image> _shieldImages = new();
+        private readonly List<Shield> _shields = new();
         private Image? _playerImage;
         private DispatcherTimer? _gameTimer;
 
@@ -33,6 +35,34 @@ namespace SpaceInvaders.Presentation
             CreateAlienImages(viewModel);
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
             viewModel.Player.Projectiles.CollectionChanged += Projectiles_CollectionChanged;
+        }
+
+        private void CreateShieldImages()
+        {
+            var screenWidth = ActualWidth;
+            var shieldWidth = 64;
+            var spacing = (screenWidth - (4 * shieldWidth)) / 5;
+
+            for (var i = 0; i < 4; i++)
+            {
+                var shield = new Shield("Shield", 100, shieldWidth, 32);
+                var shieldImage = new Image
+                {
+                    Width = shield.Width,
+                    Height = shield.Height,
+                    Source = new BitmapImage(new Uri(shield.SpritePath))
+                };
+
+                shield.X = spacing * (i + 1) + (shield.Width * i);
+                shield.Y = ActualHeight - 200;
+
+                Canvas.SetLeft(shieldImage, shield.X);
+                Canvas.SetTop(shieldImage, shield.Y);
+
+                GameCanvas.Children.Add(shieldImage);
+                _shieldImages.Add(shieldImage);
+                _shields.Add(shield);
+            }
         }
 
         private void Projectiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -152,6 +182,7 @@ namespace SpaceInvaders.Presentation
                 viewModel.ScreenWidth = RootGrid.ActualWidth;
             }
             UpdatePlayerPosition();
+            CreateShieldImages();
             Focus(FocusState.Programmatic);
 
             _gameTimer = new DispatcherTimer();
@@ -205,6 +236,27 @@ namespace SpaceInvaders.Presentation
                         break; // Projectile hit an alien, no need to check other aliens
                     }
                 }
+
+                // Collision detection with shields
+                for (var j = _shields.Count - 1; j >= 0; j--)
+                {
+                    var shield = _shields[j];
+                    var shieldImage = _shieldImages[j];
+
+                    if (projectile.CheckCollision(shield))
+                    {
+                        projectile.IsVisible = false;
+                        shield.Health -= projectile.Damage;
+                        shieldImage.Opacity = (double)shield.Health / shield.MaxHealth;
+                        if (shield.Health <= 0)
+                        {
+                            shield.IsVisible = false;
+                        }
+                        projectilesToRemove.Add(projectile);
+                        imagesToRemove.Add(projectileImage);
+                        break; // Projectile hit a shield, no need to check other shields
+                    }
+                }
             }
 
             // Remove projectiles
@@ -236,6 +288,28 @@ namespace SpaceInvaders.Presentation
                 }
             }
 
+            // Collision detection with shields
+            for (var i = viewModel.Aliens.Count - 1; i >= 0; i--)
+            {
+                var alien = viewModel.Aliens[i];
+                for (var j = _shields.Count - 1; j >= 0; j--)
+                {
+                    var shield = _shields[j];
+                    var shieldImage = _shieldImages[j];
+                    if (alien.CheckCollision(shield))
+                    {
+                        shield.Health -= alien.Health;
+                        shieldImage.Opacity = (double)shield.Health / shield.MaxHealth;
+                        if (shield.Health <= 0)
+                        {
+                            shield.IsVisible = false;
+                        }
+                        alien.IsVisible = false;
+                        break; // Alien hit a shield, no need to check other shields
+                    }
+                }
+            }
+
             foreach (var alien in aliensToRemove)
             {
                 viewModel.Aliens.Remove(alien);
@@ -253,6 +327,34 @@ namespace SpaceInvaders.Presentation
             {
                 viewModel.Player.CanShoot = true;
             }
+
+            // Remove shields that are no longer visible
+            var shieldsToRemove = new List<Shield>();
+            var shieldImagesToRemove = new List<Image>();
+
+            for (var i = _shieldImages.Count - 1; i >= 0; i--)
+            {
+                var shield = _shields[i];
+                var shieldImage = _shieldImages[i];
+
+                if (!shield.IsVisible)
+                {
+                    shieldsToRemove.Add(shield);
+                    shieldImagesToRemove.Add(shieldImage);
+                }
+            }
+
+            foreach (var shield in shieldsToRemove)
+            {
+                _shields.Remove(shield);
+            }
+
+            for (var i = shieldImagesToRemove.Count - 1; i >= 0; i--)
+            {
+                var image = shieldImagesToRemove[i];
+                GameCanvas.Children.Remove(image);
+                _shieldImages.Remove(image);
+            }
         }
 
         private void RootGrid_SizeChanged(object sender, SizeChangedEventArgs e)
@@ -269,7 +371,7 @@ namespace SpaceInvaders.Presentation
             if (DataContext is not GameStartPageViewModel viewModel || _playerImage is null) return;
 
             viewModel.Player.X = (RootGrid.ActualWidth / 2) - (_playerImage.Width / 2);
-            viewModel.Player.Y = RootGrid.ActualHeight - _playerImage.Height - 20;
+            viewModel.Player.Y = RootGrid.ActualHeight - _playerImage.Height - 50;
         }
 
         private void GameStartPage_KeyDown(object sender, KeyRoutedEventArgs e)
