@@ -17,7 +17,7 @@ public class SoundService : ISoundService
         {
             // Converter ms-appx para caminho local
             var localPath = soundPath.Replace("ms-appx:///", "");
-            var fullPath = Path.Combine(Package.Current.InstalledLocation.Path, localPath);
+            var fullPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, localPath);
             
             // Verificar se o arquivo existe
             if (!File.Exists(fullPath))
