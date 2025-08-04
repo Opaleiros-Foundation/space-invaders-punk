@@ -32,7 +32,6 @@ namespace SpaceInvaders.Presentation
 
             CreatePlayerImage(viewModel);
             CreateAlienImages(viewModel);
-            CreateBarrierImages();
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
             viewModel.Player.Projectiles.CollectionChanged += Projectiles_CollectionChanged;
         }
@@ -180,6 +179,7 @@ namespace SpaceInvaders.Presentation
                 viewModel.ScreenWidth = RootGrid.ActualWidth;
             }
             UpdatePlayerPosition();
+            CreateBarrierImages();
             Focus(FocusState.Programmatic);
 
             _gameTimer = new DispatcherTimer();
