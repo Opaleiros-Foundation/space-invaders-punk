@@ -14,6 +14,7 @@ namespace SpaceInvaders.Presentation
     {
         private readonly List<Image> _alienImages = new();
         private readonly List<Image> _projectileImages = new();
+        private readonly List<Image> _barrierImages = new();
         private Image? _playerImage;
         private DispatcherTimer? _gameTimer;
 
@@ -31,8 +32,35 @@ namespace SpaceInvaders.Presentation
 
             CreatePlayerImage(viewModel);
             CreateAlienImages(viewModel);
+            CreateBarrierImages();
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
             viewModel.Player.Projectiles.CollectionChanged += Projectiles_CollectionChanged;
+        }
+
+        private void CreateBarrierImages()
+        {
+            var screenWidth = ActualWidth;
+            var barrierWidth = 64;
+            var spacing = (screenWidth - (4 * barrierWidth)) / 5;
+
+            for (var i = 0; i < 4; i++)
+            {
+                var barrierImage = new Image
+                {
+                    Width = barrierWidth,
+                    Height = 32,
+                    Source = new BitmapImage(new Uri(Constants.SpritePaths.Barrier))
+                };
+
+                var left = spacing * (i + 1) + (barrierWidth * i);
+                var top = ActualHeight - 200; 
+
+                Canvas.SetLeft(barrierImage, left);
+                Canvas.SetTop(barrierImage, top);
+
+                GameCanvas.Children.Add(barrierImage);
+                _barrierImages.Add(barrierImage);
+            }
         }
 
         private void Projectiles_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -269,7 +297,7 @@ namespace SpaceInvaders.Presentation
             if (DataContext is not GameStartPageViewModel viewModel || _playerImage is null) return;
 
             viewModel.Player.X = (RootGrid.ActualWidth / 2) - (_playerImage.Width / 2);
-            viewModel.Player.Y = RootGrid.ActualHeight - _playerImage.Height - 20;
+            viewModel.Player.Y = RootGrid.ActualHeight - _playerImage.Height - 50;
         }
 
         private void GameStartPage_KeyDown(object sender, KeyRoutedEventArgs e)
