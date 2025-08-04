@@ -39,4 +39,13 @@ public abstract partial class Actor : ObservableObject
         _height = height;
         _isVisible = true;
     }
+
+    public bool CheckCollision(Actor other)
+    {
+        // Simple AABB collision detection
+        return X < other.X + other.Width &&
+               X + Width > other.X &&
+               Y < other.Y + other.Height &&
+               Y + Height > other.Y;
+    }
 }

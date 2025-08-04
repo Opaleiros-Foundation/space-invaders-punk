@@ -269,7 +269,7 @@ namespace SpaceInvaders.Presentation
                 _projectileImages.Remove(image);
             }
 
-            // Remove aliens that are no longer vis
+            // Remove aliens that are no longer visible
             var aliensToRemove = new List<Alien>();
             var alienImagesToRemove = new List<Image>();
 
@@ -282,6 +282,26 @@ namespace SpaceInvaders.Presentation
                 {
                     aliensToRemove.Add(alien);
                     alienImagesToRemove.Add(alienImage);
+                }
+            }
+
+            // Collision detection with shields
+            for (var i = viewModel.Aliens.Count - 1; i >= 0; i--)
+            {
+                var alien = viewModel.Aliens[i];
+                for (var j = _shields.Count - 1; j >= 0; j--)
+                {
+                    var shield = _shields[j];
+                    if (alien.CheckCollision(shield))
+                    {
+                        shield.Health -= alien.Health;
+                        if (shield.Health <= 0)
+                        {
+                            shield.IsVisible = false;
+                        }
+                        alien.IsVisible = false;
+                        break; // Alien hit a shield, no need to check other shields
+                    }
                 }
             }
 
