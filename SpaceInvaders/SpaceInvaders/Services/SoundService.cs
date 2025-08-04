@@ -17,6 +17,10 @@ public class SoundService : ISoundService
     private readonly List<IWavePlayer> _activePlayers = new();
 #endif
 
+    private Process _mpg123Process; // To keep track of the mpg123 process
+
+    public float Volume { get; set; } = 1.0f; // Default volume to 1.0 (max)
+
     public void PlaySound(string soundPath)
     {
         try
@@ -32,26 +36,44 @@ public class SoundService : ISoundService
 
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
-                var process = new Process
+                // Stop any existing mpg123 process
+                if (_mpg123Process != null && !_mpg123Process.HasExited)
+                {
+                    _mpg123Process.Kill();
+                    _mpg123Process.Dispose();
+                }
+
+                _mpg123Process = new Process
                 {
                     StartInfo = new ProcessStartInfo
                     {
                         FileName = "mpg123",
-                        Arguments = $"\"{fullPath}\"",
+                        Arguments = $"-f 16384 \"{fullPath}\"",
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
                         CreateNoWindow = true
                     }
                 };
-                process.Start();
-                // Não esperamos pelo mpg123 para não travar a aplicação
+                _mpg123Process.Start();
+                // dont wait for the process to finish
             }
 #if !__MACCATALYST__ && !WINDOWS && !ANDROID && !IOS
             else
             {
+                // Stop all currently playing sounds to prevent overlay
+                foreach (var player in _activePlayers.ToArray())
+                {
+                    player.Stop();
+                    player.Dispose();
+                }
+                _activePlayers.Clear();
+
                 Console.WriteLine($"[SoundService] Playing sound using NAudio: {fullPath}");
-                var audioFile = new AudioFileReader(fullPath);
+                var audioFile = new AudioFileReader(fullPath)
+                {
+                    Volume = Volume
+                };
                 var outputDevice = new WaveOutEvent();
                 outputDevice.Init(audioFile);
 
