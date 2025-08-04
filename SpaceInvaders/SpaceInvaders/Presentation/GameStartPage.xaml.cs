@@ -241,10 +241,13 @@ namespace SpaceInvaders.Presentation
                 for (var j = _shields.Count - 1; j >= 0; j--)
                 {
                     var shield = _shields[j];
+                    var shieldImage = _shieldImages[j];
+
                     if (projectile.CheckCollision(shield))
                     {
                         projectile.IsVisible = false;
                         shield.Health -= projectile.Damage;
+                        shieldImage.Opacity = (double)shield.Health / shield.MaxHealth;
                         if (shield.Health <= 0)
                         {
                             shield.IsVisible = false;
@@ -292,9 +295,11 @@ namespace SpaceInvaders.Presentation
                 for (var j = _shields.Count - 1; j >= 0; j--)
                 {
                     var shield = _shields[j];
+                    var shieldImage = _shieldImages[j];
                     if (alien.CheckCollision(shield))
                     {
                         shield.Health -= alien.Health;
+                        shieldImage.Opacity = (double)shield.Health / shield.MaxHealth;
                         if (shield.Health <= 0)
                         {
                             shield.IsVisible = false;
