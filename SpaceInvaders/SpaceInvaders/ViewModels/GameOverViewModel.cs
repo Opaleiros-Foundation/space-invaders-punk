@@ -4,6 +4,7 @@ using SpaceInvaders.Services;
 using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using System.Threading.Tasks;
+using Microsoft.UI.Xaml.Controls;
 
 namespace SpaceInvaders.Presentation;
 
@@ -23,6 +24,9 @@ public partial class GameOverViewModel : ObservableObject
 
     [ObservableProperty]
     private string _playerName;
+
+    [ObservableProperty]
+    private string _confirmationMessage;
 
     public  GameOverViewModel(INavigator navigator, PlayerService playerService)
     {
@@ -54,8 +58,7 @@ public partial class GameOverViewModel : ObservableObject
     private async Task SaveScore()
     {
         _playerService.SetPlayerName(PlayerName);
+        ConfirmationMessage = $"Score de {Player.Score} salvo com sucesso!";
         // TODO: Implement actual score saving logic here
-        // For now, just navigate back to main menu or show a confirmation
-        await _navigator.NavigateViewModelAsync<MainViewModel>(this, qualifier: Qualifiers.ClearBackStack);
     }
 }
