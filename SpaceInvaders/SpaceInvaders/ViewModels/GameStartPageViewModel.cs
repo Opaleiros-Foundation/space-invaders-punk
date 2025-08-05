@@ -113,7 +113,7 @@ public partial class GameStartPageViewModel : ObservableObject
         if (Player.Score >= 500 || !Aliens.Any())
         {
             _gameTimer.Stop();
-            await _navigator.NavigateViewModelAsync<EndGameViewModel>(this, data: Player.Score.ToString());
+            // Game ends here. EndGamePage functionality removed as requested.
             return;
         }
 
