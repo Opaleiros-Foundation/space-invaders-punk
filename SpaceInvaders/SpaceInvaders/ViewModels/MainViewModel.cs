@@ -1,18 +1,22 @@
 using SpaceInvaders.Constants;
+using SpaceInvaders.Services;
 
 namespace SpaceInvaders.Presentation;
 
 public partial class MainViewModel : ObservableObject
 {
     private INavigator _navigator;
+    private PlayerService _playerService;
     
     public MainViewModel(
         IStringLocalizer localizer,
         IOptions<AppConfig> appInfo,
-        INavigator navigator
+        INavigator navigator,
+        PlayerService playerService
     )
     {
         _navigator = navigator;
+        _playerService = playerService;
         
         GoToControllers = new AsyncRelayCommand(GoToControllersView);
         GoToScore = new AsyncRelayCommand(GoToScoreView);
@@ -37,8 +41,7 @@ public partial class MainViewModel : ObservableObject
 
     private async Task GoToGameStartView()
     {
-        var player = new Player("Player1", 100, new Weapon(10, 0.5, SpritePaths.Projectile), 64, 64);
-        await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: player);
+        await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: _playerService.CurrentPlayer);
     }
     
     private void ExitApp()

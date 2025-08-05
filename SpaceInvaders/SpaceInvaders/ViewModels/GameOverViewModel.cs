@@ -1,13 +1,13 @@
 using SpaceInvaders.Constants;
 using Uno.Extensions.Navigation;
-
-using Uno.Extensions.Navigation;
+using SpaceInvaders.Services;
 
 namespace SpaceInvaders.Presentation;
 
 public partial class GameOverViewModel : ObservableObject
 {
     private readonly INavigator _navigator;
+    private readonly PlayerService _playerService;
     public ICommand GoToMain { get; }
     public ICommand PlayAgain { get; }
 
@@ -17,9 +17,10 @@ public partial class GameOverViewModel : ObservableObject
     [ObservableProperty]
     private string _scoreText;
 
-    public GameOverViewModel(INavigator navigator)
+    public GameOverViewModel(INavigator navigator, PlayerService playerService)
     {
         _navigator = navigator;
+        _playerService = playerService;
         GoToMain = new AsyncRelayCommand(GoToMainView);
         PlayAgain = new AsyncRelayCommand(PlayAgainView);
     }
@@ -36,7 +37,7 @@ public partial class GameOverViewModel : ObservableObject
 
     private async Task PlayAgainView()
     {
-        var newPlayer = new Player("Player1", 100, new Weapon(10, 0.5, SpritePaths.Projectile), 64, 64);
-        await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: newPlayer, qualifier: Qualifiers.ClearBackStack);
+        _playerService.ResetPlayer();
+        await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: _playerService.CurrentPlayer, qualifier: Qualifiers.ClearBackStack);
     }
 }

@@ -71,7 +71,10 @@ public partial class App : Application
                     services.AddTransient<DelegatingHandler, DebugHttpHandler>();
 #endif
                 })
-                .ConfigureServices((context, services) => { services.AddSingleton<ISoundService, SoundService>(); })
+                .ConfigureServices((context, services) => {
+                    services.AddSingleton<ISoundService, SoundService>();
+                    services.AddSingleton<PlayerService>();
+                })
                 .UseNavigation(RegisterRoutes)
             );
         MainWindow = builder.Window;
