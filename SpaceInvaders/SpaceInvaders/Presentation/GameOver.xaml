@@ -10,13 +10,13 @@
 
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="GAME OVER" FontSize="48" FontWeight="Bold" Margin="0,0,0,20" HorizontalAlignment="Center"/>
-            <TextBlock Text="{Binding ScoreText}" FontSize="36" Margin="0,0,0,40" HorizontalAlignment="Center"/>
-            <TextBox Text="{Binding PlayerName, Mode=TwoWay}" PlaceholderText="Enter your name" Width="300" Margin="0,0,0,20" HorizontalAlignment="Center"/>
-            <Button Content="Save Score" Command="{Binding SaveScoreCommand}" Margin="0,0,0,10" HorizontalAlignment="Stretch"/>
-            <TextBlock Text="{Binding ConfirmationMessage}" FontSize="18" Margin="0,10,0,10" HorizontalAlignment="Center" Foreground="Green"/>
-            <Button Content="Play Again" Command="{Binding PlayAgain}" Margin="0,0,0,10" HorizontalAlignment="Stretch"/>
-            <Button Content="Return to Main Menu" Command="{Binding GoToMain}" HorizontalAlignment="Stretch"/>
+            <TextBlock Text="GAME OVER" Style="{StaticResource GameOverTitleStyle}"/>
+            <TextBlock Text="{Binding ScoreText}" Style="{StaticResource GameOverScoreStyle}"/>
+            <TextBox Text="{Binding PlayerName, Mode=TwoWay}" PlaceholderText="Enter your name" Style="{StaticResource GameOverTextBoxStyle}"/>
+            <Button Content="Save Score" Command="{Binding SaveScoreCommand}" Style="{StaticResource GameOverButtonStyle}"/>
+            <TextBlock Text="{Binding ConfirmationMessage}" Style="{StaticResource GameOverConfirmationMessageStyle}"/>
+            <Button Content="Play Again" Command="{Binding PlayAgain}" Style="{StaticResource GameOverButtonStyle}"/>
+            <Button Content="Return to Main Menu" Command="{Binding GoToMain}" Style="{StaticResource GameOverButtonStyle}"/>
         </StackPanel>
     </Grid>
 
