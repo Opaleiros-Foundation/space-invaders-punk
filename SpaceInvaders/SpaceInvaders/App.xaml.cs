@@ -89,7 +89,7 @@ public partial class App : Application
             new ViewMap<MainPage, MainViewModel>(),
             new DataViewMap<ControllersPage, ControllersViewModel, Player>(),
             new DataViewMap<ScorePage, ScoreViewModel, Player>(),
-            new DataViewMap<GameStartPage, GameStartPageViewModel, Player>(),
+            new ViewMap<GameStartPage, GameStartPageViewModel>(),
             new DataViewMap<GameOver, GameOverViewModel, Player>()
         );
 

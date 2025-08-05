@@ -19,12 +19,10 @@
             <!-- Player is now created in code-behind -->
         </Canvas>
 
-        <TextBlock Text="{Binding ScoreText}"
-                   Foreground="White"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Margin="20,20,0,0"/>
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding ShowInputElements}">
+            <TextBlock Text="Enter your name:" Foreground="White" FontSize="24" Margin="0,0,0,10" HorizontalAlignment="Center"/>
+            <TextBox Text="{Binding PlayerName, Mode=TwoWay}" Width="300" Margin="0,0,0,20" HorizontalAlignment="Center"/>
+            <Button Content="Start Game" Command="{Binding StartGameCommand}" HorizontalAlignment="Center"/>
+        </StackPanel>
     </Grid>
 </Page>
