@@ -11,7 +11,6 @@ using System.Windows.Input;
 using Microsoft.UI.Xaml;
 using Windows.System;
 using SpaceInvaders.Interfaces.Services;
-using SpaceInvaders.Services;
 
 namespace SpaceInvaders.Presentation;
 
@@ -19,13 +18,6 @@ public partial class GameStartPageViewModel : ObservableObject
 {
     private readonly INavigator _navigator;
     public ISoundService SoundService { get; } // Expose SoundService
-    private readonly PlayerService _playerService;
-
-    [ObservableProperty]
-    private string _playerName;
-
-    [ObservableProperty]
-    private bool _showInputElements = true;
 
     [ObservableProperty]
     private Player _player;
@@ -46,14 +38,12 @@ public partial class GameStartPageViewModel : ObservableObject
     private bool _canPlayShootSound = true;
     private readonly DispatcherTimer _shootSoundCooldownTimer;
 
-    public GameStartPageViewModel(INavigator navigator, ISoundService soundService, PlayerService playerService)
+    public GameStartPageViewModel(INavigator navigator, ISoundService soundService, Player player)
     {
         _navigator = navigator;
         SoundService = soundService; // Assign to the public property
-        _playerService = playerService;
         GoToMain = new AsyncRelayCommand(GoToMainView);
         FirePlayerWeaponCommand = new RelayCommand(FirePlayerWeapon);
-        StartGameCommand = new AsyncRelayCommand(StartGame);
 
         _shootSoundCooldownTimer = new DispatcherTimer();
         _shootSoundCooldownTimer.Interval = TimeSpan.FromMilliseconds(100); // Cooldown period for shoot sound
@@ -63,7 +53,7 @@ public partial class GameStartPageViewModel : ObservableObject
             _shootSoundCooldownTimer.Stop();
         };
 
-        Player = _playerService.CurrentPlayer;
+        Player = player;
         Aliens = new ObservableCollection<Alien>();
         ScoreText = $"SCORE: {Player.Score}";
 
@@ -103,6 +93,7 @@ public partial class GameStartPageViewModel : ObservableObject
         _gameTimer = new DispatcherTimer();
         _gameTimer.Interval = TimeSpan.FromMilliseconds(16); 
         _gameTimer.Tick += GameTimer_Tick;
+        _gameTimer.Start();
 
         Player.PropertyChanged += (s, e) =>
         {
@@ -111,15 +102,6 @@ public partial class GameStartPageViewModel : ObservableObject
                 ScoreText = $"SCORE: {Player.Score}";
             }
         };
-    }
-
-    public ICommand StartGameCommand { get; }
-
-    private async Task StartGame()
-    {
-        _playerService.SetPlayerName(PlayerName);
-        ShowInputElements = false;
-        _gameTimer.Start();
     }
 
     private async void GameTimer_Tick(object? sender, object? e)

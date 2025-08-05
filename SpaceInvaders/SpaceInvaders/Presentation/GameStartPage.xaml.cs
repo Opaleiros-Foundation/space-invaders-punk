@@ -204,7 +204,7 @@ namespace SpaceInvaders.Presentation
             }
             UpdatePlayerPosition();
             CreateShieldImages();
-            Focus(FocusState.Programmatic);
+            this.Focus(FocusState.Programmatic);
 
             _gameTimer = new DispatcherTimer();
             _gameTimer.Tick += GameTimer_Tick;
