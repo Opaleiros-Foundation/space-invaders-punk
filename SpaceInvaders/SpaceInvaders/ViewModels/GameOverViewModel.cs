@@ -24,7 +24,7 @@ public partial class GameOverViewModel : ObservableObject
     [ObservableProperty]
     private string _playerName;
 
-    public GameOverViewModel(INavigator navigator, PlayerService playerService)
+    public  GameOverViewModel(INavigator navigator, PlayerService playerService)
     {
         _navigator = navigator;
         _playerService = playerService;

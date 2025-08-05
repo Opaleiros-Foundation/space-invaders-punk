@@ -41,6 +41,7 @@ public partial class MainViewModel : ObservableObject
 
     private async Task GoToGameStartView()
     {
+        _playerService.ResetPlayer();
         await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: _playerService.CurrentPlayer);
     }
     
