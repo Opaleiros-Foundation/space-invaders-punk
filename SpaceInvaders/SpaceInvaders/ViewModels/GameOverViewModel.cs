@@ -58,7 +58,7 @@ public partial class GameOverViewModel : ObservableObject
     private async Task SaveScore()
     {
         _playerService.SetPlayerName(PlayerName);
-        ConfirmationMessage = $"Score de {Player.Score} salvo com sucesso!";
+        ConfirmationMessage = $"Score de {_playerService.CurrentPlayer.Score} salvo com sucesso para {_playerService.CurrentPlayer.Name}!";
         // TODO: Implement actual score saving logic here
     }
 }
