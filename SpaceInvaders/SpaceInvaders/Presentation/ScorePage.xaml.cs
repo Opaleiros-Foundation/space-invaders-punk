@@ -23,5 +23,18 @@ public sealed partial class ScorePage : Page
         base.OnNavigatedTo(e);
         await ViewModel.OnNavigatedTo();
     }
+
+    private void BackToMainMenu_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
+    {
+        if (Frame.CanGoBack)
+        {
+            Frame.GoBack();
+        }
+        else
+        {
+            // Fallback if cannot go back, e.g., navigate to a specific page
+            Frame.Navigate(typeof(MainPage));
+        }
+    }
 }
 

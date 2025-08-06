@@ -17,6 +17,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <TextBlock Text="High Scores" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="0" Foreground="White" FontSize="48" FontWeight="Bold"/>
@@ -43,6 +44,8 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
+
+        <Button Content="Back to Main Menu" Grid.Row="2" HorizontalAlignment="Center" Margin="0,20,0,20" Click="BackToMainMenu_Click" Style="{StaticResource AccentButtonStyle}"/>
     </Grid>
 </Page>
 
