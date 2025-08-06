@@ -34,6 +34,6 @@ public class ScoreService : IScoreService
 
     public async Task<List<Score>> GetAllScoresAsync()
     {
-        return await _context.Scores.ToListAsync();
+        return await _context.Scores.Include(s => s.Player).ToListAsync();
     }
 }
