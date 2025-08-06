@@ -19,6 +19,7 @@ namespace SpaceInvaders.Data
         public DbSet<Projectile> Projectiles { get; set; }
         public DbSet<Shield> Shields { get; set; }
         public DbSet<Weapon> Weapons { get; set; }
+        public DbSet<Score> Scores { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -35,6 +36,12 @@ namespace SpaceInvaders.Data
                 .HasMany(p => p.Projectiles)
                 .WithOne(pr => pr.Player)
                 .HasForeignKey(pr => pr.PlayerId);
+
+            // Configure one-to-many relationship between Player and Score
+            modelBuilder.Entity<Player>()
+                .HasMany(p => p.Scores)
+                .WithOne(s => s.Player)
+                .HasForeignKey(s => s.PlayerId);
         }
     }
 }
