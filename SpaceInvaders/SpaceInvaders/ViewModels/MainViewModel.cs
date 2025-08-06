@@ -14,7 +14,7 @@ namespace SpaceInvaders.Presentation;
         IStringLocalizer localizer,
         IOptions<AppConfig> appInfo,
         INavigator navigator,
-        PlayerService playerService
+        IPlayerService playerService
     )
     {
         _navigator = navigator;
