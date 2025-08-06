@@ -13,6 +13,9 @@
     </Page.Resources>
 
     <Grid>
+        <Grid.Background>
+            <ImageBrush ImageSource="ms-appx:///Assets/background/background.png" Stretch="UniformToFill"/>
+        </Grid.Background>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="GAME OVER" Style="{StaticResource GameOverTitleStyle}"/>
             <TextBlock Text="{Binding ScoreText}" Style="{StaticResource GameOverScoreStyle}"/>
