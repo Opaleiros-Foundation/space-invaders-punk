@@ -7,6 +7,9 @@ public class Projectile : Actor, IProjectile
     public int Speed { get; private set; }
     public int Damage { get; private set; }
 
+    public int PlayerId { get; set; } // Foreign Key
+    public Player Player { get; set; } // Navigation property
+
     // Parameterless constructor for Entity Framework Core
     public Projectile() : base() { }
 

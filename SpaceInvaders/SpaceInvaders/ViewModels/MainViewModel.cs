@@ -1,12 +1,14 @@
 using SpaceInvaders.Constants;
 using SpaceInvaders.Services;
+using SpaceInvaders.Models;
+using SpaceInvaders.Interfaces.Services;
 
 namespace SpaceInvaders.Presentation;
 
-public partial class MainViewModel : ObservableObject
-{
-    private INavigator _navigator;
-    private PlayerService _playerService;
+    public partial class MainViewModel : ObservableObject
+    {
+        private INavigator _navigator;
+        private IPlayerService _playerService;
     
     public MainViewModel(
         IStringLocalizer localizer,
@@ -41,8 +43,8 @@ public partial class MainViewModel : ObservableObject
 
     private async Task GoToGameStartView()
     {
-        _playerService.ResetPlayer();
-        await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: _playerService.CurrentPlayer);
+        var newPlayer = new Player("Player 1", 100, new Weapon(10, 1.0, SpritePaths.Projectile), 64, 64);
+        await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: newPlayer);
     }
     
     private void ExitApp()

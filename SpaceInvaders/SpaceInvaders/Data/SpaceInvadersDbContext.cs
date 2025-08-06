@@ -24,8 +24,17 @@ namespace SpaceInvaders.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Configurações adicionais do modelo, se necessário
-            // Exemplo: modelBuilder.Entity<Player>().HasKey(p => p.Id);
+            // Configure one-to-one relationship between Player and Weapon
+            modelBuilder.Entity<Player>()
+                .HasOne(p => p.Weapon)
+                .WithOne(w => w.Player)
+                .HasForeignKey<Weapon>(w => w.PlayerId);
+
+            // Configure one-to-many relationship between Player and Projectile
+            modelBuilder.Entity<Player>()
+                .HasMany(p => p.Projectiles)
+                .WithOne(pr => pr.Player)
+                .HasForeignKey(pr => pr.PlayerId);
         }
     }
 }

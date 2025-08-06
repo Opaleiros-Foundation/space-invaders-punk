@@ -76,7 +76,7 @@ public partial class App : Application
                 })
                 .ConfigureServices((context, services) => {
                     services.AddSingleton<ISoundService, SoundService>();
-                    services.AddSingleton<PlayerService>();
+                    services.AddSingleton<IPlayerService, PlayerService>();
                     services.AddDbContext<SpaceInvadersDbContext>(options =>
                         options.UseNpgsql(context.Configuration.GetConnectionString("SpaceInvadersDb")));
                 })

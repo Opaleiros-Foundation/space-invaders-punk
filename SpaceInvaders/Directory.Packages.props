@@ -12,5 +12,6 @@
     </PackageVersion>
     <PackageVersion Include="NAudio" Version="2.2.1" />
     <PackageVersion Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="9.0.4" />
+    <PackageVersion Include="Uno.Extensions.Navigation" Version="6.1.4" />
   </ItemGroup>
 </Project>

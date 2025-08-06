@@ -1,25 +1,47 @@
+using Microsoft.EntityFrameworkCore;
+using SpaceInvaders.Data;
+using SpaceInvaders.Interfaces.Services;
 using SpaceInvaders.Models;
-using SpaceInvaders.Constants;
+using System.Threading.Tasks;
 
-namespace SpaceInvaders.Services;
-
-public class PlayerService
+namespace SpaceInvaders.Services
 {
-    public Player CurrentPlayer { get; private set; }
-
-    public PlayerService()
+    public class PlayerService : IPlayerService
     {
-        // Inicializa o jogador com um nome padrão, que será atualizado depois
-        CurrentPlayer = new Player("", 100, new Weapon(10, 0.5, SpritePaths.Projectile), 64, 64);
-    }
+        private readonly SpaceInvadersDbContext _context;
 
-    public void SetPlayerName(string name)
-    {
-        CurrentPlayer.Name = name;
-    }
+        public PlayerService(SpaceInvadersDbContext context)
+        {
+            _context = context;
+        }
 
-    public void ResetPlayer()
-    {
-        CurrentPlayer = new Player(CurrentPlayer.Name, 100, new Weapon(10, 0.5, SpritePaths.Projectile), 64, 64);
+        public async Task<Player> GetPlayerAsync(int id)
+        {
+            return await _context.Players.FindAsync(id);
+        }
+
+        public async Task<Player> AddPlayerAsync(Player player)
+        {
+            _context.Players.Add(player);
+            await _context.SaveChangesAsync();
+            return player;
+        }
+
+        public async Task<Player> UpdatePlayerAsync(Player player)
+        {
+            _context.Entry(player).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return player;
+        }
+
+        public async Task DeletePlayerAsync(int id)
+        {
+            var player = await _context.Players.FindAsync(id);
+            if (player != null)
+            {
+                _context.Players.Remove(player);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }

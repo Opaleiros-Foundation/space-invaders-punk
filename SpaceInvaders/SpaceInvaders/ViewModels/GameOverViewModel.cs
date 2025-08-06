@@ -5,60 +5,75 @@ using CommunityToolkit.Mvvm.Input;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using Microsoft.UI.Xaml.Controls;
+using SpaceInvaders.Interfaces.Services;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Uno.Extensions.DependencyInjection;
 
 namespace SpaceInvaders.Presentation;
 
-public partial class GameOverViewModel : ObservableObject
-{
-    private readonly INavigator _navigator;
-    private readonly PlayerService _playerService;
-    public ICommand GoToMain { get; }
-    public ICommand PlayAgain { get; }
-    public ICommand SaveScoreCommand { get; }
-
-    [ObservableProperty]
-    private Player _player;
-
-    [ObservableProperty]
-    private string _scoreText;
-
-    [ObservableProperty]
-    private string _playerName;
-
-    [ObservableProperty]
-    private string _confirmationMessage;
-
-    public  GameOverViewModel(INavigator navigator, PlayerService playerService)
+    public partial class GameOverViewModel : ObservableObject
     {
-        _navigator = navigator;
-        _playerService = playerService;
-        GoToMain = new AsyncRelayCommand(GoToMainView);
-        PlayAgain = new AsyncRelayCommand(PlayAgainView);
-        SaveScoreCommand = new AsyncRelayCommand(SaveScore);
+        private readonly INavigator _navigator;
+        private readonly IPlayerService _playerService;
+        public ICommand GoToMain { get; }
+        public ICommand PlayAgain { get; }
+        public ICommand SaveScoreCommand { get; }
 
-        PlayerName = _playerService.CurrentPlayer.Name; // Pre-fill with current player name if available
-    }
+        [ObservableProperty]
+        private Player _player;
 
-    partial void OnPlayerChanged(Player value)
-    {
-        ScoreText = $"SCORE: {value.Score}";
-    }
+        [ObservableProperty]
+        private string _scoreText;
 
-    private async Task GoToMainView()
-    {
-        await _navigator.NavigateViewModelAsync<MainViewModel>(this, qualifier: Qualifiers.ClearBackStack);
-    }
+        [ObservableProperty]
+        private string _playerName;
 
-    private async Task PlayAgainView()
-    {
-        _playerService.ResetPlayer();
-        await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: _playerService.CurrentPlayer, qualifier: Qualifiers.ClearBackStack);
-    }
+        [ObservableProperty]
+        private string _confirmationMessage;
 
-    private async Task SaveScore()
-    {
-        _playerService.SetPlayerName(PlayerName);
-        ConfirmationMessage = $"Score de {_playerService.CurrentPlayer.Score} salvo com sucesso para {_playerService.CurrentPlayer.Name}!";
-        // TODO: Implement actual score saving logic here
+        public GameOverViewModel(INavigator navigator, IPlayerService playerService, Player player)
+        {
+            _navigator = navigator;
+            _playerService = playerService;
+            GoToMain = new AsyncRelayCommand(GoToMainView);
+            PlayAgain = new AsyncRelayCommand(PlayAgainView);
+            SaveScoreCommand = new AsyncRelayCommand(SaveScore);
+
+            _player = player;
+        }
+
+        partial void OnPlayerChanged(Player value)
+        {
+            ScoreText = $"SCORE: {value.Score}";
+        }
+
+        private async Task GoToMainView()
+        {
+            await _navigator.NavigateViewModelAsync<MainViewModel>(this, qualifier: Qualifiers.ClearBackStack);
+        }
+
+        private async Task PlayAgainView()
+        {
+            // _playerService.ResetPlayer(); // This line will be removed or updated
+            await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: _player, qualifier: Qualifiers.ClearBackStack);
+        }
+
+        private async Task SaveScore()
+        {
+            _player.Name = PlayerName; // Update player name from input
+
+            if (_player.Id == 0)
+            {
+                // New player, add to database
+                await _playerService.AddPlayerAsync(_player);
+            }
+            else
+            {
+                // Existing player, update in database
+                await _playerService.UpdatePlayerAsync(_player);
+            }
+
+            ConfirmationMessage = $"Score de {_player.Score} salvo com sucesso para {_player.Name}!";
+        }
     }
-}
