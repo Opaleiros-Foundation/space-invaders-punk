@@ -55,8 +55,8 @@ namespace SpaceInvaders.Presentation;
 
         private async Task PlayAgainView()
         {
-            // _playerService.ResetPlayer(); // This line will be removed or updated
-            await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: _player, qualifier: Qualifiers.ClearBackStack);
+            var newPlayer = new Player("Player 1", 100, new Weapon(10, 1.0, SpritePaths.Projectile), 3, 0);
+            await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: newPlayer, qualifier: Qualifiers.ClearBackStack);
         }
 
         private async Task SaveScore()
