@@ -14,6 +14,7 @@ public partial class App : Application
     public App()
     {
         this.InitializeComponent();
+        System.Diagnostics.Debug.WriteLine("Application constructor initialized.");
     }
 
     protected Window? MainWindow { get; private set; }
@@ -70,19 +71,14 @@ public partial class App : Application
                     services.AddTransient<DelegatingHandler, DebugHttpHandler>();
 #endif
                 })
-                .ConfigureServices((context, services) =>
-                {
+                .ConfigureServices((context, services) => {
                     services.AddSingleton<ISoundService, SoundService>();
+                    services.AddSingleton<PlayerService>();
                 })
                 .UseNavigation(RegisterRoutes)
             );
         MainWindow = builder.Window;
-
-#if DEBUG
-        MainWindow.UseStudio();
-#endif
-        MainWindow.SetWindowIcon();
-
+        
         Host = await builder.NavigateAsync<Shell>();
     }
 
@@ -94,7 +90,7 @@ public partial class App : Application
             new DataViewMap<ControllersPage, ControllersViewModel, Player>(),
             new DataViewMap<ScorePage, ScoreViewModel, Player>(),
             new DataViewMap<GameStartPage, GameStartPageViewModel, Player>(),
-            new DataViewMap<EndGamePage, EndGameViewModel, string>()
+            new DataViewMap<GameOver, GameOverViewModel, Player>()
         );
 
         routes.Register(
@@ -118,8 +114,8 @@ public partial class App : Application
                         View: views.FindByViewModel<GameStartPageViewModel>()
                     ),
                     new RouteMap(
-                        Path: "EndGame",
-                        View: views.FindByViewModel<EndGameViewModel>()
+                        Path: "GameOver",
+                        View: views.FindByViewModel<GameOverViewModel>()
                     )
                 ]
             )

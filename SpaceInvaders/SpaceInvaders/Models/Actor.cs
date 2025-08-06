@@ -4,8 +4,13 @@ namespace SpaceInvaders.Models;
 
 public abstract partial class Actor : ObservableObject
 {
-    [ObservableProperty]
     private string _name;
+
+    public string Name
+    {
+        get => _name;
+        set => SetProperty(ref _name, value);
+    }
 
     [ObservableProperty]
     private double _x;

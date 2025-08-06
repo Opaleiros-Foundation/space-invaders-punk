@@ -95,8 +95,6 @@ public partial class GameStartPageViewModel : ObservableObject
         _gameTimer.Tick += GameTimer_Tick;
         _gameTimer.Start();
 
-        
-
         Player.PropertyChanged += (s, e) =>
         {
             if (e.PropertyName == nameof(Player.Score))
@@ -106,14 +104,12 @@ public partial class GameStartPageViewModel : ObservableObject
         };
     }
 
-    
-
     private async void GameTimer_Tick(object? sender, object? e)
     {
         if (Player.Score >= 500 || !Aliens.Any())
         {
             _gameTimer.Stop();
-            await _navigator.NavigateViewModelAsync<EndGameViewModel>(this, data: Player.Score.ToString());
+            await _navigator.NavigateViewModelAsync<GameOverViewModel>(this, data: Player);
             return;
         }
 
