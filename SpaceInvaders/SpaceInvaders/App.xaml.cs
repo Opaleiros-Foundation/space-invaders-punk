@@ -21,7 +21,7 @@ public partial class App : Application
     }
 
     protected Window? MainWindow { get; private set; }
-    protected IHost? Host { get; private set; }
+    public static IHost? Host { get; private set; }
 
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
@@ -77,7 +77,10 @@ public partial class App : Application
                 .ConfigureServices((context, services) => {
                     services.AddSingleton<ISoundService, SoundService>();
                     services.AddSingleton<IPlayerService, PlayerService>();
+                    services.AddSingleton<IScoreService, ScoreService>();
                     services.AddSingleton<Player>();
+                    services.AddTransient<ScoreViewModel>();
+                    services.AddTransient<ScorePage>();
                     services.AddDbContext<SpaceInvadersDbContext>(options =>
                         options.UseNpgsql(context.Configuration.GetConnectionString("SpaceInvadersDb")));
                 })
@@ -94,7 +97,7 @@ public partial class App : Application
             new ViewMap(ViewModel: typeof(ShellViewModel)),
             new ViewMap<MainPage, MainViewModel>(),
             new DataViewMap<ControllersPage, ControllersViewModel, Player>(),
-            new DataViewMap<ScorePage, ScoreViewModel, Player>(),
+            new ViewMap<ScorePage, ScoreViewModel>(),
             new DataViewMap<GameStartPage, GameStartPageViewModel, Player>(),
             new DataViewMap<GameOver, GameOverViewModel, Player>()
         );

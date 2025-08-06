@@ -6,8 +6,28 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:SpaceInvaders.Presentation"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:viewmodels="using:SpaceInvaders.Presentation"
+    xmlns:models="using:SpaceInvaders.Models">
 
-    <Grid />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="High Scores" Style="{StaticResource TitleTextBlockStyle}" HorizontalAlignment="Center" Margin="0,20,0,0" Grid.Row="0"/>
+
+        <ListView ItemsSource="{x:Bind ViewModel.Scores}" Grid.Row="1" Margin="20">
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Score">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="{x:Bind PlayerScore}" Width="100"/>
+                        <TextBlock Text="{x:Bind DateAchieved}" Margin="20,0,0,0"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </Page>
 

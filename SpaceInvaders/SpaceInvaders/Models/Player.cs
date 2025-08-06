@@ -15,6 +15,8 @@ namespace SpaceInvaders.Models;
         [ObservableProperty]
         private ObservableCollection<Projectile> _projectiles;
 
+        public ICollection<Score> Scores { get; set; }
+
         [ObservableProperty]
         private bool _canShoot;
 
