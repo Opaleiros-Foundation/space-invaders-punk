@@ -1,4 +1,4 @@
- # Introdução
+# Introdução
 
 Bem-vindo à documentação do projeto. Esta documentação serve como um recurso central para desenvolvedores, designers e qualquer pessoa interessada em entender os detalhes técnicos e de arquitetura do projeto.
 
@@ -12,5 +12,3 @@ Esta documentação abrange:
 *   **Recursos do Jogo:** Informações sobre sprites, sons e outros recursos criativos.
 
 Vamos começar!
-
-

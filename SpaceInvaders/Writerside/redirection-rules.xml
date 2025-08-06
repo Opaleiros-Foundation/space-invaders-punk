@@ -18,4 +18,8 @@
         <description>Created after removal of "Data Modeling" from Documentation</description>
         <accepts>Data-Modeling.html</accepts>
     </rule>
+    <rule id="4a607655">
+        <description><![CDATA[Created after removal of "<Architeture.md>" from Documentation]]></description>
+        <accepts>Architeture.html</accepts>
+    </rule>
 </rules>
