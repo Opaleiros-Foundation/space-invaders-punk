@@ -20,12 +20,12 @@
 
         <ListView ItemsSource="{x:Bind ViewModel.Scores}" Grid.Row="1" Margin="20">
             <ListView.ItemTemplate>
-                <DataTemplate x:DataType="models:Score">
+                <DataTemplate x:DataType="models:ScoreDisplayItem">
                     <Grid ColumnDefinitions="Auto, *, Auto, Auto">
-                        <TextBlock Text="{Binding RelativeSource={RelativeSource Mode=TemplatedParent}, Path=DataContext.Scores.IndexOf(.)}" Grid.Column="0" Width="30" Margin="0,0,10,0"/>
-                        <TextBlock Text="{x:Bind Player.Name}" Grid.Column="1" Width="150"/>
+                        <TextBlock Text="{x:Bind Rank}" Grid.Column="0" Width="30" Margin="0,0,10,0"/>
+                        <TextBlock Text="{x:Bind PlayerName}" Grid.Column="1" Width="150"/>
                         <TextBlock Text="{x:Bind PlayerScore}" Grid.Column="2" Width="100" HorizontalAlignment="Right"/>
-                        <TextBlock Text="{x:Bind DateAchieved}" Grid.Column="3" Margin="20,0,0,0"/>
+                        <TextBlock Text="{x:Bind DateAchievedFormatted}" Grid.Column="3" Margin="20,0,0,0"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
