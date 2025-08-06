@@ -4,28 +4,37 @@ using SpaceInvaders.Constants;
 
 namespace SpaceInvaders.Models;
 
-public partial class Player : Actor
-{
-    [ObservableProperty]
-    private int _score;
-
-    [ObservableProperty]
-    private Weapon _weapon;
-    
-    [ObservableProperty]
-    private ObservableCollection<Projectile> _projectiles;
-
-    [ObservableProperty]
-    private bool _canShoot;
-
-    public Player(string name, int health, Weapon weapon, double width, double height) 
-        : base(name, SpritePaths.Player, health, width, height)
+    public partial class Player : Actor
     {
-        _score = 0;
-        _weapon = weapon;
-        _projectiles = new ObservableCollection<Projectile>();
-        _canShoot = true;
-    }
+        [ObservableProperty]
+        private int _score;
+
+        [ObservableProperty]
+        private Weapon _weapon;
+        
+        [ObservableProperty]
+        private ObservableCollection<Projectile> _projectiles;
+
+        [ObservableProperty]
+        private bool _canShoot;
+
+        // Parameterless constructor for Entity Framework Core
+        public Player() : base("", "", 0, 0, 0)
+        {
+            _score = 0;
+            _weapon = new Weapon(0, 0.0, ""); // Initialize with default values
+            _projectiles = new ObservableCollection<Projectile>();
+            _canShoot = true;
+        }
+
+        public Player(string name, int health, Weapon weapon, double width, double height) 
+            : base(name, SpritePaths.Player, health, width, height)
+        {
+            _score = 0;
+            _weapon = weapon;
+            _projectiles = new ObservableCollection<Projectile>();
+            _canShoot = true;
+        }
 
     public void Shoot()
     {

@@ -7,6 +7,9 @@ public class Projectile : Actor, IProjectile
     public int Speed { get; private set; }
     public int Damage { get; private set; }
 
+    // Parameterless constructor for Entity Framework Core
+    public Projectile() : base() { }
+
     public Projectile(string name, string spritePath, int health, int speed, int damage, double width, double height)
         : base(name, spritePath, health, width, height)
     {

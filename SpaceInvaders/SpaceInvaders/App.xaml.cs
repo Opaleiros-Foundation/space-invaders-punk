@@ -2,6 +2,9 @@ using Windows.System;
 using Uno.Resizetizer;
 using SpaceInvaders.Interfaces.Services;
 using SpaceInvaders.Services;
+using Microsoft.EntityFrameworkCore;
+using SpaceInvaders.Data;
+using Microsoft.Extensions.Configuration;
 
 namespace SpaceInvaders;
 
@@ -74,6 +77,8 @@ public partial class App : Application
                 .ConfigureServices((context, services) => {
                     services.AddSingleton<ISoundService, SoundService>();
                     services.AddSingleton<PlayerService>();
+                    services.AddDbContext<SpaceInvadersDbContext>(options =>
+                        options.UseNpgsql(context.Configuration.GetConnectionString("SpaceInvadersDb")));
                 })
                 .UseNavigation(RegisterRoutes)
             );
