@@ -10,7 +10,6 @@
         <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
         <utum:MaterialToolkitTheme
           ColorOverrideSource="ms-appx:///Styles/ColorPaletteOverride.xaml">
-          <ResourceDictionary Source="ms-appx:///Styles/GameOverStyles.xaml"/>
           <!-- NOTE: You can override the default Roboto font by providing your font assets here. -->
           <utum:MaterialToolkitTheme.FontOverrideDictionary>
             <ResourceDictionary>

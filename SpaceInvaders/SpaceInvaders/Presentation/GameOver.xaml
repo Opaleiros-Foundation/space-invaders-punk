@@ -8,6 +8,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
+    <Page.Resources>
+        <ResourceDictionary Source="ms-appx:///Styles/GameOverStyles.xaml"/>
+    </Page.Resources>
+
     <Grid>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
             <TextBlock Text="GAME OVER" Style="{StaticResource GameOverTitleStyle}"/>

@@ -3,34 +3,49 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Style x:Key="GameOverTitleStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="60"/>
+        <Setter Property="FontSize" Value="72"/>
         <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Margin" Value="0,0,0,30"/>
+        <Setter Property="Margin" Value="0,0,0,40"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/font/space_invaders.ttf#space_invaders" />
+        <Setter Property="Foreground" Value="{ThemeResource PrimaryColor}" />
     </Style>
 
     <Style x:Key="GameOverScoreStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="36"/>
-        <Setter Property="Margin" Value="0,0,0,20"/>
+        <Setter Property="FontSize" Value="48"/>
+        <Setter Property="Margin" Value="0,0,0,30"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/font/space_invaders.ttf#space_invaders" />
+        <Setter Property="Foreground" Value="{ThemeResource OnPrimaryColor}" />
     </Style>
 
     <Style x:Key="GameOverTextBoxStyle" TargetType="TextBox">
-        <Setter Property="Width" Value="300"/>
-        <Setter Property="Margin" Value="0,0,0,10"/>
+        <Setter Property="Width" Value="350"/>
+        <Setter Property="Margin" Value="0,0,0,20"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/font/space_invaders.ttf#space_invaders" />
+        <Setter Property="Background" Value="{ThemeResource SurfaceVariantColor}" />
+        <Setter Property="Foreground" Value="{ThemeResource OnSurfaceVariantColor}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource PrimaryColor}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="5" />
+        <Setter Property="Padding" Value="10,5,10,5" />
     </Style>
 
-    <Style x:Key="GameOverButtonStyle" TargetType="Button">
-        <Setter Property="Margin" Value="0,0,0,5"/>
+    <Style x:Key="GameOverButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Height" Value="80" />
+        <Setter Property="FontSize" Value="{StaticResource SubtitleFontSize}" />
+        <Setter Property="Margin" Value="0,0,0,10"/>
         <Setter Property="HorizontalAlignment" Value="Stretch"/>
     </Style>
 
     <Style x:Key="GameOverConfirmationMessageStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="18"/>
-        <Setter Property="Margin" Value="0,5,0,15"/>
+        <Setter Property="FontSize" Value="20"/>
+        <Setter Property="Margin" Value="0,10,0,20"/>
         <Setter Property="HorizontalAlignment" Value="Center"/>
-        <Setter Property="Foreground" Value="Green"/>
+        <Setter Property="FontFamily" Value="ms-appx:///Assets/font/space_invaders.ttf#space_invaders" />
+        <Setter Property="Foreground" Value="{ThemeResource TertiaryColor}" />
     </Style>
 
 </ResourceDictionary>
