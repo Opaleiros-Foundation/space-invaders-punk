@@ -388,6 +388,22 @@ namespace SpaceInvaders.Presentation
                 GameCanvas.Children.Remove(image);
                 _shieldImages.Remove(image);
             }
+            
+            // Check for collisions between player and aliens
+            for (var i = viewModel.Aliens.Count - 1; i >= 0; i--)
+            {
+                var alien = viewModel.Aliens[i];
+                if (viewModel.Player.CheckCollision(alien))
+                {
+                    // Handle collision - e.g., end game, reduce player health, etc.
+                    viewModel.Player.IsVisible = false; // Or handle player death
+                    alien.IsVisible = false;
+                    
+                    // Optionally, navigate to a game over screen
+                    // Frame.Navigate(typeof(GameOverPage));
+                    break; // Exit loop after one collision
+                }
+            }
         }
 
         private void RootGrid_SizeChanged(object sender, SizeChangedEventArgs e)
