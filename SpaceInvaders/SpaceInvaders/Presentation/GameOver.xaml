@@ -9,21 +9,36 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <Page.Resources>
-        <ResourceDictionary Source="ms-appx:///Styles/GameOverStyles.xaml"/>
+        <ResourceDictionary Source="ms-appx:///Styles/GameOverStyles.xaml" />
     </Page.Resources>
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="ms-appx:///Assets/background/background.png" Stretch="UniformToFill"/>
+            <ImageBrush
+                ImageSource="ms-appx:///Assets/background/gameover.png"
+                Opacity="0.6"
+                Stretch="UniformToFill" />
         </Grid.Background>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Text="GAME OVER" Style="{StaticResource GameOverTitleStyle}"/>
-            <TextBlock Text="{Binding ScoreText}" Style="{StaticResource GameOverScoreStyle}"/>
-            <TextBox Text="{Binding PlayerName, Mode=TwoWay}" PlaceholderText="Enter your name" Style="{StaticResource GameOverTextBoxStyle}"/>
-            <Button Content="Save Score" Command="{Binding SaveScoreCommand}" Style="{StaticResource GameOverButtonStyle}"/>
-            <TextBlock Text="{Binding ConfirmationMessage}" Style="{StaticResource GameOverConfirmationMessageStyle}"/>
-            <Button Content="Play Again" Command="{Binding PlayAgain}" Style="{StaticResource GameOverButtonStyle}"/>
-            <Button Content="Return to Main Menu" Command="{Binding GoToMain}" Style="{StaticResource GameOverButtonStyle}"/>
+            <TextBlock Style="{StaticResource GameOverTitleStyle}" Text="GAME OVER" />
+            <TextBlock Style="{StaticResource GameOverScoreStyle}" Text="{Binding ScoreText}" />
+            <TextBox
+                PlaceholderText="Enter your name"
+                Style="{StaticResource GameOverTextBoxStyle}"
+                Text="{Binding PlayerName, Mode=TwoWay}" />
+            <Button
+                Command="{Binding SaveScoreCommand}"
+                Content="Save Score"
+                Style="{StaticResource GameOverButtonStyle}" />
+            <TextBlock Style="{StaticResource GameOverConfirmationMessageStyle}" Text="{Binding ConfirmationMessage}" />
+            <Button
+                Command="{Binding PlayAgain}"
+                Content="Play Again"
+                Style="{StaticResource GameOverButtonStyle}" />
+            <Button
+                Command="{Binding GoToMain}"
+                Content="Return to Main Menu"
+                Style="{StaticResource GameOverButtonStyle}" />
         </StackPanel>
     </Grid>
 

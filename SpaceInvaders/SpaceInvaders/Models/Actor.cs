@@ -4,6 +4,8 @@ namespace SpaceInvaders.Models;
 
 public abstract partial class Actor : ObservableObject
 {
+    public int Id { get; set; } // Primary Key
+
     private string _name;
 
     public string Name
@@ -32,6 +34,9 @@ public abstract partial class Actor : ObservableObject
 
     [ObservableProperty]
     private bool _isVisible;
+
+    // Parameterless constructor for Entity Framework Core
+    protected Actor() { }
 
     protected Actor(string name, string spritePath, int health, double width = 0, double height = 0)
     {
