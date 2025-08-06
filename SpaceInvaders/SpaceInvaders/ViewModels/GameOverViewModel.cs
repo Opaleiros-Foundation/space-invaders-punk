@@ -16,6 +16,7 @@ namespace SpaceInvaders.Presentation;
     {
         private readonly INavigator _navigator;
         private readonly IPlayerService _playerService;
+        private readonly IScoreService _scoreService;
         public ICommand GoToMain { get; }
         public ICommand PlayAgain { get; }
         public ICommand SaveScoreCommand { get; }
@@ -32,10 +33,11 @@ namespace SpaceInvaders.Presentation;
         [ObservableProperty]
         private string _confirmationMessage;
 
-        public GameOverViewModel(INavigator navigator, IPlayerService playerService, Player player)
+        public GameOverViewModel(INavigator navigator, IPlayerService playerService, IScoreService scoreService, Player player)
         {
             _navigator = navigator;
             _playerService = playerService;
+            _scoreService = scoreService;
             GoToMain = new AsyncRelayCommand(GoToMainView);
             PlayAgain = new AsyncRelayCommand(PlayAgainView);
             SaveScoreCommand = new AsyncRelayCommand(SaveScore);
@@ -73,6 +75,15 @@ namespace SpaceInvaders.Presentation;
                 // Existing player, update in database
                 await _playerService.UpdatePlayerAsync(_player);
             }
+
+            // Save the score
+            var newScore = new Score
+            {
+                PlayerScore = _player.Score,
+                DateAchieved = DateTime.UtcNow,
+                PlayerId = _player.Id // Link to the player
+            };
+            await _scoreService.AddScoreAsync(newScore);
 
             ConfirmationMessage = $"Score de {_player.Score} salvo com sucesso para {_player.Name}!";
         }
