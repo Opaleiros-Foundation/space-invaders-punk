@@ -41,8 +41,81 @@ Toda a documentação do projeto está centralizada na nossa instância do Write
 *   **Linguagem**: C#
 *   **Plataforma**: Uno Platform (para aplicação de desktop)
 *   **UI**: XAML
+*   **Persistência de Dados**: Entity Framework Core com PostgreSQL
+*   **Padrão de Arquitetura**: MVVM (Model-View-ViewModel)
 *   **Controle de Versão**: Git
 
-## 5. Como Contribuir
+## 5. Estrutura do Projeto
+
+O projeto está organizado nas seguintes pastas principais:
+
+*   **`SpaceInvaders/Models`**: Contém as classes de modelo de dados, como `Player`, `Alien`, `Projectile`, `Score`, e as classes de configuração da aplicação (`AppConfig`).
+*   **`SpaceInvaders/ViewModels`**: Responsável pela lógica de apresentação e interação com os modelos, incluindo `MainViewModel`, `GameOverViewModel`, `ScoreViewModel`, etc.
+*   **`SpaceInvaders/Services`**: Implementa a lógica de negócio e a interação com o banco de dados, como `PlayerService`, `ScoreService`, e `SoundService`.
+*   **`SpaceInvaders/Data`**: Contém o contexto do banco de dados (`SpaceInvadersDbContext`) e as migrações do Entity Framework Core.
+*   **`SpaceInvaders/Presentation`**: Define a interface do usuário (UI) em XAML, incluindo as páginas (`MainPage.xaml`, `GameOver.xaml`, `ScorePage.xaml`) e o `Shell` da aplicação.
+*   **`SpaceInvaders/Constants`**: Armazena constantes utilizadas no projeto, como caminhos para sons e sprites.
+*   **`SpaceInvaders/Assets`**: Contém todos os recursos visuais e sonoros do jogo, como imagens, fontes e arquivos de áudio.
+
+## Diagrama de Estrutura do Projeto
+
+Abaixo, um diagrama que ilustra a organização das principais pastas e a relação entre elas:
+
+```plantuml
+@startuml
+skinparam componentStyle rectangle
+
+package "SpaceInvaders" {
+    folder "Models" {
+        [Player]
+        [Alien]
+        [Score]
+        [AppConfig]
+    }
+
+    folder "ViewModels" {
+        [MainViewModel]
+        [GameOverViewModel]
+        [ScoreViewModel]
+    }
+
+    folder "Services" {
+        [PlayerService]
+        [ScoreService]
+        [SoundService]
+    }
+
+    folder "Data" {
+        [SpaceInvadersDbContext]
+        [Migrations]
+    }
+
+    folder "Presentation" {
+        [MainPage.xaml]
+        [GameOver.xaml]
+        [ScorePage.xaml]
+        [Shell.xaml]
+    }
+
+    folder "Constants" {
+        [SoundPaths.cs]
+        [SpritePaths.cs]
+    }
+
+    folder "Assets" {
+        [Images]
+        [Fonts]
+        [Sounds]
+    }
+}
+
+ViewModels --> Models : manipula
+Services --> Models : interage
+Services --> Data : acessa
+Presentation --> ViewModels : exibe dados
+@enduml
+```
+
+## 6. Como Contribuir
 
 Este é um projeto acadêmico individual. No entanto, sugestões e discussões são bem-vindas através das **Issues** do GitLab.
