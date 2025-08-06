@@ -1,4 +1,4 @@
-# Labels do GitLab para o Projeto
+# Labels do GitLab
 
 Este documento descreve as labels utilizadas no GitLab para organizar e categorizar as issues e merge requests do projeto Capstone Space Invaders. Mesmo sendo um projeto individual, a utilização dessas labels ajuda na organização e no acompanhamento do progresso.
 

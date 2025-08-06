@@ -1,10 +1,14 @@
-<center>
+[//]: # (<center>)
 
-<p align="center">
-  <img src=".gitlab/catsteroids.png" alt="" width="120" />
-</p>
+[//]: # ()
+[//]: # (<p align="center">)
 
-</center>
+[//]: # (  <img src=".gitlab/catsteroids.png" alt="" width="120" />)
+
+[//]: # (</p>)
+
+[//]: # ()
+[//]: # (</center>)
 
 
 
