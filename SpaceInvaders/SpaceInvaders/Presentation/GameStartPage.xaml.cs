@@ -56,8 +56,10 @@ namespace SpaceInvaders.Presentation
 
         private void CreateShieldImages()
         {
-            var screenWidth = ActualWidth;
-            var shieldWidth = 64;
+            if (DataContext is not GameStartPageViewModel viewModel) return;
+
+            var screenWidth = viewModel.GameWidth;
+            var shieldWidth = 32;
             var spacing = (screenWidth - (4 * shieldWidth)) / 5;
 
             for (var i = 0; i < 4; i++)
@@ -65,13 +67,13 @@ namespace SpaceInvaders.Presentation
                 var shield = new Shield("Shield", 100, shieldWidth, 32);
                 var shieldImage = new Image
                 {
-                    Width = shield.Width,
-                    Height = shield.Height,
+                    Width = 32,
+                    Height = 32,
                     Source = new BitmapImage(new Uri(shield.SpritePath))
                 };
 
                 shield.X = spacing * (i + 1) + (shield.Width * i);
-                shield.Y = ActualHeight - 200;
+                shield.Y = viewModel.GameHeight - 200;
 
                 Canvas.SetLeft(shieldImage, shield.X);
                 Canvas.SetTop(shieldImage, shield.Y);
@@ -93,7 +95,7 @@ namespace SpaceInvaders.Presentation
                         var projectileImage = new Image
                         {
                             Width = 16,
-                            Height = 32,
+                            Height = 16,
                             Source = new BitmapImage(new Uri(projectile.SpritePath))
                         };
                         
@@ -121,8 +123,8 @@ namespace SpaceInvaders.Presentation
 
             _playerImage = new Image
             {
-                Width = 64,
-                Height = 64,
+                Width = 32,
+                Height = 32,
                 Source = new BitmapImage(new Uri(viewModel.Player.SpritePath))
             };
 
@@ -157,8 +159,8 @@ namespace SpaceInvaders.Presentation
             {
                 var image = new Image
                 {
-                    Width = 64,
-                    Height = 64,
+                    Width = 32,
+                    Height = 32,
                     Source = new BitmapImage(new Uri(alien.SpritePath))
                 };
 
@@ -203,14 +205,13 @@ namespace SpaceInvaders.Presentation
             {
                 if (DataContext is GameStartPageViewModel viewModel)
                 {
-                    viewModel.ScreenWidth = RootGrid.ActualWidth;
                     UpdatePlayerPosition();
                     CreateShieldImages();
                 }
 
                 _gameTimer = new DispatcherTimer();
                 _gameTimer.Tick += GameTimer_Tick;
-                _gameTimer.Interval = TimeSpan.FromMilliseconds(16); // Approx. 60 FPS
+                _gameTimer.Interval = TimeSpan.FromMilliseconds(45); // Approx. 60 FPS
                 _gameTimer.Start();
             });
         }
@@ -410,8 +411,8 @@ namespace SpaceInvaders.Presentation
         {
             if (DataContext is not GameStartPageViewModel viewModel || _playerImage is null) return;
 
-            viewModel.Player.X = (RootGrid.ActualWidth / 2) - (_playerImage.Width / 2);
-            viewModel.Player.Y = RootGrid.ActualHeight - _playerImage.Height - 50;
+            viewModel.Player.X = (viewModel.GameWidth / 2) - (_playerImage.Width / 2);
+            viewModel.Player.Y = viewModel.GameHeight - _playerImage.Height - 50;
         }
 
         private void GameStartPage_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -433,6 +434,15 @@ namespace SpaceInvaders.Presentation
             if (DataContext is GameStartPageViewModel viewModel)
             {
                 viewModel.HandleKeyUp(e.Key);
+            }
+        }
+
+        private void GameCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (DataContext is GameStartPageViewModel viewModel)
+            {
+                viewModel.GameWidth = e.NewSize.Width;
+                viewModel.GameHeight = e.NewSize.Height;
             }
         }
     }

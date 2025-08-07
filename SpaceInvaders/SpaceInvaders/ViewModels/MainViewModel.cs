@@ -43,7 +43,7 @@ namespace SpaceInvaders.Presentation;
 
     private async Task GoToGameStartView()
     {
-        var newPlayer = new Player("Player 1", 100, new Weapon(10, 1.0, SpritePaths.Projectile), 64, 64);
+        var newPlayer = new Player("Player 1", 100, new Weapon(10, 1.0, SpritePaths.Projectile), 32, 32);
         await _navigator.NavigateViewModelAsync<GameStartPageViewModel>(this, data: newPlayer);
     }
     
