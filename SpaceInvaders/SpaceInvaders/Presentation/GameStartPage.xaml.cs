@@ -197,19 +197,22 @@ namespace SpaceInvaders.Presentation
 
         private void GameStartPage_Loaded(object sender, RoutedEventArgs e)
         {
-            RootGrid.SizeChanged += RootGrid_SizeChanged;
-            if (DataContext is GameStartPageViewModel viewModel)
-            {
-                viewModel.ScreenWidth = RootGrid.ActualWidth;
-            }
-            UpdatePlayerPosition();
-            CreateShieldImages();
             this.Focus(FocusState.Programmatic);
 
-            _gameTimer = new DispatcherTimer();
-            _gameTimer.Tick += GameTimer_Tick;
-            _gameTimer.Interval = TimeSpan.FromMilliseconds(16); // Approx. 60 FPS
-            _gameTimer.Start();
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                if (DataContext is GameStartPageViewModel viewModel)
+                {
+                    viewModel.ScreenWidth = RootGrid.ActualWidth;
+                    UpdatePlayerPosition();
+                    CreateShieldImages();
+                }
+
+                _gameTimer = new DispatcherTimer();
+                _gameTimer.Tick += GameTimer_Tick;
+                _gameTimer.Interval = TimeSpan.FromMilliseconds(16); // Approx. 60 FPS
+                _gameTimer.Start();
+            });
         }
         
         private void GameStartPage_Unloaded(object sender, RoutedEventArgs e)
@@ -401,14 +404,7 @@ namespace SpaceInvaders.Presentation
             }
         }
 
-        private void RootGrid_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (DataContext is GameStartPageViewModel viewModel)
-            {
-                viewModel.ScreenWidth = e.NewSize.Width;
-                UpdatePlayerPosition();
-            }
-        }
+        
 
         private void UpdatePlayerPosition()
         {
