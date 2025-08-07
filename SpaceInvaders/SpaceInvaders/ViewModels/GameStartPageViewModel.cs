@@ -136,7 +136,7 @@ public partial class GameStartPageViewModel : ObservableObject
         var rightmostAlien = Aliens.Max(a => a.X);
         var leftmostAlien = Aliens.Min(a => a.X);
 
-        if (rightmostAlien > 700)
+        if (ScreenWidth > 0 && rightmostAlien + 64 > ScreenWidth - 50)
         {
             _movingRight = false;
             foreach (var alien in Aliens)
