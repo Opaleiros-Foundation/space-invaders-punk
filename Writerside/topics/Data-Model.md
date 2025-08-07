@@ -4,15 +4,19 @@ O modelo de dados define a estrutura das informações que são gerenciadas e pe
 
 ## 1. Entidades Principais
 
-As principais entidades que compõem o modelo de dados são:
+As principais entidades que compõem o modelo de dados são representadas pelas classes `DbSet` no `SpaceInvadersDbContext`:
 
+*   **`Player`**: Representa o jogador principal, suas características e relacionamentos com outros dados.
+*   **`Alien`**: Classe base para os diferentes tipos de alienígenas no jogo.
+*   **`AlienType1`, `AlienType2`, `AlienType3`, `AlienType4`**: Tipos específicos de alienígenas que herdam de `Alien`.
+*   **`Projectile`**: Representa os projéteis disparados por jogadores ou alienígenas.
+*   **`Shield`**: Representa as barreiras de proteção no jogo.
+*   **`Weapon`**: Define as características das armas, como dano e taxa de disparo.
 *   **`Score`**: Representa a pontuação de um jogador em uma partida. Esta entidade armazena informações como:
     *   `Id` (chave primária)
-    *   `PlayerName` (nome do jogador)
-    *   `Points` (pontuação alcançada)
+    *   `PlayerScore` (pontuação alcançada)
     *   `DateAchieved` (data em que a pontuação foi alcançada)
-
-*   **`Player`**: Embora o foco da persistência seja a pontuação, a entidade `Player` pode ser utilizada para associar as pontuações a um jogador específico, mesmo que de forma simplificada para este projeto.
+    *   `PlayerId` (chave estrangeira para o jogador associado, pode ser nula)
 
 As classes C# que representam essas entidades estão localizadas na pasta `SpaceInvaders/Models`.
 
@@ -20,21 +24,114 @@ As classes C# que representam essas entidades estão localizadas na pasta `Space
 
 O projeto utiliza **Entity Framework Core** como ORM (Object-Relational Mapper) para interagir com o banco de dados **PostgreSQL**. Essa combinação oferece uma solução robusta e flexível para o gerenciamento de dados.
 
-*   **`SpaceInvadersDbContext`**: Esta classe, localizada na pasta `SpaceInvaders/Data`, é o contexto do banco de dados. Ela atua como uma ponte entre as entidades do modelo e o banco de dados, permitindo operações de consulta, inserção, atualização e exclusão.
+*   **`SpaceInvadersDbContext`**: Esta classe, localizada na pasta `SpaceInvaders/Data`, é o contexto do banco de dados. Ela atua como uma ponte entre as entidades do modelo e o banco de dados, permitindo operações de consulta, inserção, atualização e exclusão. A configuração da conexão com o banco de dados é feita através do `appsettings.json`, utilizando o provedor `Npgsql` para PostgreSQL.
 
-*   **Migrações (Migrations)**: O Entity Framework Core utiliza migrações para gerenciar as alterações no esquema do banco de dados. As migrações são arquivos de código que descrevem como o esquema do banco de dados deve ser atualizado para refletir as mudanças no modelo de dados da aplicação. Elas estão localizadas na pasta `SpaceInvaders/Data/Migrations`.
+*   **Migrações (Migrations)**: O Entity Framework Core utiliza migrações para gerenciar as alterações no esquema do banco de dados. As migrações são arquivos de código que descrevem como o esquema do banco de dados deve ser atualizado para refletir as mudanças no modelo de dados da aplicação. Elas estão localizadas na pasta `SpaceInvaders/Migrations`.
 
-## 3. Estrutura do Banco de Dados (Simplificada)
+## 3. Diagrama de Entidade-Relacionamento (ERD)
+
+Este diagrama ilustra as entidades principais do modelo de dados e seus relacionamentos:
+
+```plantuml
+@startuml
+entity Player {
+  *Id: int <<PK>>
+  --
+  Name: string
+  Score: int
+  CanShoot: bool
+  Health: int
+  X: double
+  Y: double
+  Width: double
+  Height: double
+  SpritePath: string
+  IsVisible: bool
+}
+
+entity Alien {
+  *Id: int <<PK>>
+  --
+  ScoreValue: int
+  WeaponId: int <<FK>>
+  Discriminator: string
+  Name: string
+  Health: int
+  X: double
+  Y: double
+  Width: double
+  Height: double
+  SpritePath: string
+  IsVisible: bool
+}
+
+entity Projectile {
+  *Id: int <<PK>>
+  --
+  Speed: int
+  Damage: int
+  PlayerId: int <<FK>>
+  Name: string
+  Health: int
+  X: double
+  Y: double
+  Width: double
+  Height: double
+  SpritePath: string
+  IsVisible: bool
+}
+
+entity Shield {
+  *Id: int <<PK>>
+  --
+  MaxHealth: int
+  Name: string
+  Health: int
+  X: double
+  Y: double
+  Width: double
+  Height: double
+  SpritePath: string
+  IsVisible: bool
+}
+
+entity Weapon {
+  *Id: int <<PK>>
+  --
+  Damage: int
+  FireRate: double
+  ProjectileSpritePath: string
+  PlayerId: int <<FK>>
+}
+
+entity Score {
+  *Id: int <<PK>>
+  --
+  PlayerScore: int
+  DateAchieved: DateTime
+  PlayerId: int <<FK>>
+}
+
+Player ||--o{ Projectile : "shoots"
+Player ||--o{ Score : "earns"
+Player ||--|{ Weapon : "has"
+Alien ||--|{ Weapon : "has"
+
+@enduml
+```
+
+## 4. Estrutura do Banco de Dados (Simplificada)
 
 O banco de dados PostgreSQL conterá uma tabela principal para armazenar as pontuações, refletindo a estrutura da entidade `Score`.
 
 ```sql
 CREATE TABLE "Scores" (
     "Id" INTEGER GENERATED BY DEFAULT AS IDENTITY,
-    "PlayerName" TEXT NOT NULL,
-    "Points" INTEGER NOT NULL,
+    "PlayerScore" INTEGER NOT NULL,
     "DateAchieved" TIMESTAMP WITH TIME ZONE NOT NULL,
-    CONSTRAINT "PK_Scores" PRIMARY KEY ("Id")
+    "PlayerId" INTEGER,
+    CONSTRAINT "PK_Scores" PRIMARY KEY ("Id"),
+    CONSTRAINT "FK_Scores_Players_PlayerId" FOREIGN KEY ("PlayerId") REFERENCES "Players" ("Id")
 );
 ```
 
