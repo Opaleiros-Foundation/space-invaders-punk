@@ -39,6 +39,9 @@ public partial class GameStartPageViewModel : ObservableObject
     [ObservableProperty]
     private double _gameHeight;
 
+    [ObservableProperty]
+    private int _level;
+
     private bool _canPlayShootSound = true;
     private readonly DispatcherTimer _shootSoundCooldownTimer;
 
@@ -60,39 +63,9 @@ public partial class GameStartPageViewModel : ObservableObject
         Player = player;
         Aliens = new ObservableCollection<Alien>();
         ScoreText = $"SCORE: {Player.Score}";
+        Level = 1;
 
-        // Generate aliens
-        const int startX = 100;
-        const int startY = 50;
-        const int xOffset = 86;
-        const int yOffsetBetweenRows = 70;
-
-        // Row 1: Type 3 aliens
-        for (var i = 0; i < 8; i++)
-        {
-            var alien = AlienFactory.CreateAlien(AlienType.Type3);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY + 5;
-            Aliens.Add(alien);
-        }
-
-        // Row 2: Type 2 aliens
-        for (var i = 0; i < 8; i++)
-        {
-            var alien = AlienFactory.CreateAlien(AlienType.Type2);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY + yOffsetBetweenRows + 10;
-            Aliens.Add(alien);
-        }
-
-        // Row 3: Type 1 aliens
-        for (var i = 0; i < 8; i++)
-        {
-            var alien = AlienFactory.CreateAlien(AlienType.Type1);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY + yOffsetBetweenRows + 80;
-            Aliens.Add(alien);
-        }
+        GenerateAliens();
 
         _gameTimer = new DispatcherTimer();
         _gameTimer.Interval = TimeSpan.FromMilliseconds(16); 
@@ -108,14 +81,86 @@ public partial class GameStartPageViewModel : ObservableObject
         };
     }
 
+    private void GenerateAliens()
+    {
+        Aliens.Clear(); // Clear existing aliens
+
+        // Generate aliens
+        const int startX = 100;
+        const int startY = 50;
+        const int xOffset = 40; // Adjusted for 32x32 aliens
+        const int yOffsetBetweenRows = 40; // Adjusted for 32x32 aliens
+
+        // Row 1: Type 3 aliens (top row)
+        for (var i = 0; i < 12; i++)
+        {
+            var alien = AlienFactory.CreateAlien(AlienType.Type3);
+            alien.X = startX + (i * xOffset);
+            alien.Y = startY;
+            Aliens.Add(alien);
+        }
+
+        // Row 2: Type 2 aliens
+        for (var i = 0; i < 12; i++)
+        {
+            var alien = AlienFactory.CreateAlien(AlienType.Type2);
+            alien.X = startX + (i * xOffset);
+            alien.Y = startY + yOffsetBetweenRows;
+            Aliens.Add(alien);
+        }
+
+        // Row 3: Type 2 aliens
+        for (var i = 0; i < 12; i++)
+        {
+            var alien = AlienFactory.CreateAlien(AlienType.Type2);
+            alien.X = startX + (i * xOffset);
+            alien.Y = startY + (2 * yOffsetBetweenRows);
+            Aliens.Add(alien);
+        }
+
+        // Row 4: Type 1 aliens
+        for (var i = 0; i < 12; i++)
+        {
+            var alien = AlienFactory.CreateAlien(AlienType.Type1);
+            alien.X = startX + (i * xOffset);
+            alien.Y = startY + (3 * yOffsetBetweenRows);
+            Aliens.Add(alien);
+        }
+
+        // Row 5: Type 1 aliens
+        for (var i = 0; i < 12; i++)
+        {
+            var alien = AlienFactory.CreateAlien(AlienType.Type1);
+            alien.X = startX + (i * xOffset);
+            alien.Y = startY + (4 * yOffsetBetweenRows);
+            Aliens.Add(alien);
+        }
+
+        // Row 6: Type 1 aliens (bottom row)
+        for (var i = 0; i < 12; i++)
+        {
+            var alien = AlienFactory.CreateAlien(AlienType.Type1);
+            alien.X = startX + (i * xOffset);
+            alien.Y = startY + (5 * yOffsetBetweenRows);
+            Aliens.Add(alien);
+        }
+    }
+
     private async void GameTimer_Tick(object? sender, object? e)
     {
         // Game over conditions
         var aliensReachedBottom = Aliens.Any(alien => alien.Y >= GameHeight - 50);
-        if (Player.Lives <= 0 || aliensReachedBottom || Player.Score >= 500 || !Aliens.Any())
+        if (Player.Lives <= 0 || aliensReachedBottom || Player.Score >= 500)
         {
             _gameTimer.Stop();
             await _navigator.NavigateViewModelAsync<GameOverViewModel>(this, data: Player);
+            return;
+        }
+
+        if (!Aliens.Any())
+        {
+            Level++;
+            GenerateAliens();
             return;
         }
 

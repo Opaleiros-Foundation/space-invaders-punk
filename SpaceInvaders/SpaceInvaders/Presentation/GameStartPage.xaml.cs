@@ -94,8 +94,8 @@ namespace SpaceInvaders.Presentation
                     {
                         var projectileImage = new Image
                         {
-                            Width = 32,
-                            Height = 32,
+                            Width = 16,
+                            Height = 16,
                             Source = new BitmapImage(new Uri(projectile.SpritePath))
                         };
                         
