@@ -16,7 +16,6 @@ public class Score
     [Required]
     public DateTime DateAchieved { get; set; }
     
-    // Optional: Link to a Player if you have a Player model
     public int? PlayerId { get; set; }
     public Player? Player { get; set; }
 }

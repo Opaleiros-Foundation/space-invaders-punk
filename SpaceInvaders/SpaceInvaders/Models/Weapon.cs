@@ -10,7 +10,7 @@ public class Weapon
     public int PlayerId { get; set; } // Foreign Key
     public Player Player { get; set; } // Navigation property
 
-    // Parameterless constructor for Entity Framework Core
+    // For Entity Framework Core
     public Weapon() { }
 
     public Weapon(int damage, double fireRate, string projectileSpritePath)
