@@ -1,6 +1,7 @@
 <Application x:Class="SpaceInvaders.App"
        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+       xmlns:local="using:SpaceInvaders.Presentation"
        xmlns:utum="using:Uno.Toolkit.UI.Material">
 
   <Application.Resources>
@@ -22,7 +23,7 @@
       </ResourceDictionary.MergedDictionaries>
 
       <!-- Add resources here -->
-
+        <local:IntToLoopConverter x:Key="IntToLoopConverter" />
     </ResourceDictionary>
   </Application.Resources>
 

@@ -395,13 +395,8 @@ namespace SpaceInvaders.Presentation
                 var alien = viewModel.Aliens[i];
                 if (viewModel.Player.CheckCollision(alien))
                 {
-                    // Handle collision - e.g., end game, reduce player health, etc.
-                    viewModel.Player.IsVisible = false; // Or handle player death
-                    alien.IsVisible = false;
-                    
-                    // Optionally, navigate to a game over screen
-                    // Frame.Navigate(typeof(GameOverPage));
-                    break; // Exit loop after one collision
+                    viewModel.Player.Lives--; // Decrement player's lives
+                    alien.IsVisible = false; // Mark alien for removal
                 }
             }
         }
