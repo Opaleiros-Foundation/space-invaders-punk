@@ -59,7 +59,7 @@ namespace SpaceInvaders.Presentation
             if (DataContext is not GameStartPageViewModel viewModel) return;
 
             var screenWidth = viewModel.GameWidth;
-            var shieldWidth = 64;
+            var shieldWidth = 32;
             var spacing = (screenWidth - (4 * shieldWidth)) / 5;
 
             for (var i = 0; i < 4; i++)
@@ -67,8 +67,8 @@ namespace SpaceInvaders.Presentation
                 var shield = new Shield("Shield", 100, shieldWidth, 32);
                 var shieldImage = new Image
                 {
-                    Width = shield.Width,
-                    Height = shield.Height,
+                    Width = 32,
+                    Height = 32,
                     Source = new BitmapImage(new Uri(shield.SpritePath))
                 };
 
@@ -94,7 +94,7 @@ namespace SpaceInvaders.Presentation
                     {
                         var projectileImage = new Image
                         {
-                            Width = 16,
+                            Width = 32,
                             Height = 32,
                             Source = new BitmapImage(new Uri(projectile.SpritePath))
                         };
@@ -123,8 +123,8 @@ namespace SpaceInvaders.Presentation
 
             _playerImage = new Image
             {
-                Width = 64,
-                Height = 64,
+                Width = 32,
+                Height = 32,
                 Source = new BitmapImage(new Uri(viewModel.Player.SpritePath))
             };
 
@@ -159,8 +159,8 @@ namespace SpaceInvaders.Presentation
             {
                 var image = new Image
                 {
-                    Width = 64,
-                    Height = 64,
+                    Width = 32,
+                    Height = 32,
                     Source = new BitmapImage(new Uri(alien.SpritePath))
                 };
 

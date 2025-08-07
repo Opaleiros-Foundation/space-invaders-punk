@@ -56,7 +56,7 @@ namespace SpaceInvaders.Models;
             1, // Health
             10, // Speed
             Weapon.Damage,
-            16, // Width
+            32, // Width
             32 // Height
         );
         projectile.X = this.X;
