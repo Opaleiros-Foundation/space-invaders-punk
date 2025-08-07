@@ -33,7 +33,11 @@ public partial class GameStartPageViewModel : ObservableObject
     private bool _movingRight = true;
     private bool _isMovingLeft;
     private bool _isMovingRight;
-    public double ScreenWidth { get; set; }
+    [ObservableProperty]
+    private double _gameWidth;
+
+    [ObservableProperty]
+    private double _gameHeight;
 
     private bool _canPlayShootSound = true;
     private readonly DispatcherTimer _shootSoundCooldownTimer;
@@ -107,7 +111,7 @@ public partial class GameStartPageViewModel : ObservableObject
     private async void GameTimer_Tick(object? sender, object? e)
     {
         // Game over conditions
-        var aliensReachedBottom = Aliens.Any(alien => alien.Y >= 550);
+        var aliensReachedBottom = Aliens.Any(alien => alien.Y >= GameHeight - 50);
         if (Player.Lives <= 0 || aliensReachedBottom || Player.Score >= 500 || !Aliens.Any())
         {
             _gameTimer.Stop();
@@ -136,12 +140,12 @@ public partial class GameStartPageViewModel : ObservableObject
         var rightmostAlien = Aliens.Max(a => a.X);
         var leftmostAlien = Aliens.Min(a => a.X);
 
-        if (ScreenWidth > 0 && rightmostAlien + 64 > ScreenWidth - 50)
+        if (GameWidth > 0 && rightmostAlien + 64 > GameWidth - 50)
         {
             _movingRight = false;
             foreach (var alien in Aliens)
             {
-                alien.Y += 10;
+                alien.Y += GameHeight / 280.0;
             }
         }
         else if (leftmostAlien < 50)
@@ -149,7 +153,7 @@ public partial class GameStartPageViewModel : ObservableObject
             _movingRight = true;
             foreach (var alien in Aliens)
             {
-                alien.Y += 10;
+                alien.Y += GameHeight / 280.0;
             }
         }
     }
@@ -164,7 +168,7 @@ public partial class GameStartPageViewModel : ObservableObject
             Player.X -= playerSpeed;
         }
 
-        if (_isMovingRight && Player.X + playerSpeed + playerWidth < ScreenWidth)
+        if (_isMovingRight && Player.X + playerSpeed + playerWidth < GameWidth)
         {
             Player.X += playerSpeed;
         }

@@ -56,7 +56,9 @@ namespace SpaceInvaders.Presentation
 
         private void CreateShieldImages()
         {
-            var screenWidth = ActualWidth;
+            if (DataContext is not GameStartPageViewModel viewModel) return;
+
+            var screenWidth = viewModel.GameWidth;
             var shieldWidth = 64;
             var spacing = (screenWidth - (4 * shieldWidth)) / 5;
 
@@ -71,7 +73,7 @@ namespace SpaceInvaders.Presentation
                 };
 
                 shield.X = spacing * (i + 1) + (shield.Width * i);
-                shield.Y = ActualHeight - 200;
+                shield.Y = viewModel.GameHeight - 200;
 
                 Canvas.SetLeft(shieldImage, shield.X);
                 Canvas.SetTop(shieldImage, shield.Y);
@@ -203,14 +205,13 @@ namespace SpaceInvaders.Presentation
             {
                 if (DataContext is GameStartPageViewModel viewModel)
                 {
-                    viewModel.ScreenWidth = RootGrid.ActualWidth;
                     UpdatePlayerPosition();
                     CreateShieldImages();
                 }
 
                 _gameTimer = new DispatcherTimer();
                 _gameTimer.Tick += GameTimer_Tick;
-                _gameTimer.Interval = TimeSpan.FromMilliseconds(16); // Approx. 60 FPS
+                _gameTimer.Interval = TimeSpan.FromMilliseconds(45); // Approx. 60 FPS
                 _gameTimer.Start();
             });
         }
@@ -410,8 +411,8 @@ namespace SpaceInvaders.Presentation
         {
             if (DataContext is not GameStartPageViewModel viewModel || _playerImage is null) return;
 
-            viewModel.Player.X = (RootGrid.ActualWidth / 2) - (_playerImage.Width / 2);
-            viewModel.Player.Y = RootGrid.ActualHeight - _playerImage.Height - 50;
+            viewModel.Player.X = (viewModel.GameWidth / 2) - (_playerImage.Width / 2);
+            viewModel.Player.Y = viewModel.GameHeight - _playerImage.Height - 50;
         }
 
         private void GameStartPage_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -433,6 +434,15 @@ namespace SpaceInvaders.Presentation
             if (DataContext is GameStartPageViewModel viewModel)
             {
                 viewModel.HandleKeyUp(e.Key);
+            }
+        }
+
+        private void GameCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (DataContext is GameStartPageViewModel viewModel)
+            {
+                viewModel.GameWidth = e.NewSize.Width;
+                viewModel.GameHeight = e.NewSize.Height;
             }
         }
     }

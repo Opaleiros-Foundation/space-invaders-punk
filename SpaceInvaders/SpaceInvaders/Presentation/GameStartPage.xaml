@@ -15,9 +15,11 @@
             <ImageBrush ImageSource="ms-appx:///Assets/background/background.png" Stretch="UniformToFill"/>
         </Grid.Background>
 
-        <Canvas x:Name="GameCanvas">
-            <!-- Player is now created in code-behind -->
-        </Canvas>
+        <Viewbox Stretch="Uniform">
+            <Canvas x:Name="GameCanvas" Width="800" Height="600" SizeChanged="GameCanvas_SizeChanged">
+                <!-- Player is now created in code-behind -->
+            </Canvas>
+        </Viewbox>
 
         <TextBlock Text="{Binding ScoreText}"
                    Foreground="White"
