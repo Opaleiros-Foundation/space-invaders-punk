@@ -10,6 +10,9 @@ namespace SpaceInvaders.Models;
         private int _score;
 
         [ObservableProperty]
+        private int _lives; // Add this line
+
+        [ObservableProperty]
         private Weapon _weapon;
         
         [ObservableProperty]
@@ -24,6 +27,7 @@ namespace SpaceInvaders.Models;
         public Player() : base("", "", 0, 0, 0)
         {
             _score = 0;
+            _lives = 3; // Add this line
             _weapon = new Weapon(0, 0.0, ""); // Initialize with default values
             _projectiles = new ObservableCollection<Projectile>();
             _canShoot = true;
@@ -33,6 +37,7 @@ namespace SpaceInvaders.Models;
             : base(name, SpritePaths.Player, health, width, height)
         {
             _score = 0;
+            _lives = 3; // Add this line
             _weapon = weapon;
             _projectiles = new ObservableCollection<Projectile>();
             _canShoot = true;

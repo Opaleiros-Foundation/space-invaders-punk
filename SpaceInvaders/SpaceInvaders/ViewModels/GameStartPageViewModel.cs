@@ -106,7 +106,9 @@ public partial class GameStartPageViewModel : ObservableObject
 
     private async void GameTimer_Tick(object? sender, object? e)
     {
-        if (Player.Score >= 500 || !Aliens.Any())
+        // Game over conditions
+        var aliensReachedBottom = Aliens.Any(alien => alien.Y >= 550);
+        if (Player.Lives <= 0 || aliensReachedBottom || Player.Score >= 500 || !Aliens.Any())
         {
             _gameTimer.Stop();
             await _navigator.NavigateViewModelAsync<GameOverViewModel>(this, data: Player);

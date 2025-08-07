@@ -26,5 +26,25 @@
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Margin="20,20,0,0"/>
+
+        <!-- Player Lives Display -->
+        <ItemsControl ItemsSource="{Binding Player.Lives, Converter={StaticResource IntToLoopConverter}}"
+                      HorizontalAlignment="Right"
+                      VerticalAlignment="Top"
+                      Margin="0,20,20,0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <Image Source="ms-appx:///Assets/sprites/player/life/index.png"
+                           Width="32"
+                           Height="32"
+                           Margin="5,0"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </Page>
