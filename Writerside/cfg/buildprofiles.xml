@@ -3,18 +3,17 @@
 <buildprofiles xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/build-profiles.xsd"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <variables></variables>
-    <build-profile instance="g">
-        <variables>
-            <noindex-content>true</noindex-content>
-        </variables>
-    </build-profile>
+    <variables>
+        <custom-css>
+            styles.css
+        </custom-css>
+    </variables>
     <build-profile instance="d">
         <variables>
             <noindex-content>true</noindex-content>
+            <primary-color>strawberry</primary-color>
         </variables>
     </build-profile>
-    <custom-css-files>
-        <web-path>styles.css</web-path>
-    </custom-css-files>
+    <llms-txt single-file="true" />
+    <sitemap change-frequency="daily" priority="0.5"/>
 </buildprofiles>

@@ -1,4 +1,4 @@
-# Product Backlog do Projeto Space Invaders
+# Product Backlog
 
 Este documento detalha o Product Backlog do projeto de recriação do Space Invaders, apresentado em formato de User Stories. Cada User Story inclui sua descrição detalhada, critérios de aceitação, labels de categorização e a release à qual pertence.
 
