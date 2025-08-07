@@ -34,3 +34,19 @@
 | Inimigo Tipo 2 | 20 | Inimigo padrão, não atira. |
 | Inimigo Tipo 3 | 40 | Inimigo que pode atirar. |
 | Alienígena Vermelho Especial | 50-250 (variável) | Cruza a tela periodicamente. |
+
+## Requisitos Não Funcionais
+
+### 1. Plataforma
+
+*   **RNF01**: O jogo deve ser uma aplicação de desktop, construída com a Uno Platform para garantir a portabilidade.
+
+### 2. Tecnologia
+
+*   **RNF02**: A linguagem de programação será C#.
+*   **RNF03**: A interface do usuário (UI) será definida usando XAML.
+*   **RNF04**: Nenhuma game engine externa (ex: Unity, Godot) será utilizada.
+
+### 3. Som
+
+*   **RNF05**: Cada ação significativa no jogo (disparo, destruição de inimigo, morte do jogador, etc.) deve ser acompanhada por um efeito sonoro correspondente.
