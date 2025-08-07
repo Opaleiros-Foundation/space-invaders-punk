@@ -1,6 +1,6 @@
-# Pilha de Tecnologia (Technology Stack)
+# Tecnologias
 
-A pilha de tecnologia do projeto Space Invaders foi cuidadosamente selecionada para garantir um desenvolvimento eficiente, performance adequada e a capacidade de construir uma aplicação de desktop moderna e multiplataforma. Abaixo estão os principais componentes da tecnologia stack:
+ Abaixo estão os principais componentes da tecnologia stack:
 
 ## 1. Linguagem de Programação: C#
 

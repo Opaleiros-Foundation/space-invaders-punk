@@ -1,6 +1,6 @@
 # Manual do Usuário
 
-Bem-vindo ao Space Invaders! Este manual irá guiá-lo através dos conceitos básicos do jogo, controles e objetivos para que você possa começar a jogar e se divertir.
+Este manual irá guiá-lo através dos conceitos básicos do jogo, controles e objetivos para que você possa começar a jogar e se divertir.
 
 ## 1. Como Jogar
 
@@ -51,4 +51,3 @@ Ao final do jogo, a **Tela de Fim de Jogo** será exibida, onde você poderá:
 *   **Jogar Novamente**: Inicia uma nova partida.
 *   **Voltar ao Menu Principal**: Retorna à tela inicial.
 
-Divirta-se defendendo a galáxia!

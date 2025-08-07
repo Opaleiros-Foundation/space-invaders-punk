@@ -1,6 +1,6 @@
-# Solução de Problemas (Troubleshooting)
+# Solução de Problemas
 
-Este documento fornece soluções para problemas comuns que podem surgir durante a configuração, compilação ou execução do projeto Space Invaders.
+Este documento fornece soluções para problemas comuns que podem surgir durante a configuração, compilação ou execução do projeto.
 
 ## 1. Problemas de Conexão com o Banco de Dados (PostgreSQL)
 
