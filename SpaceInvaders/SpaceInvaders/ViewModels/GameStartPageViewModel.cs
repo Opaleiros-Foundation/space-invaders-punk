@@ -145,7 +145,7 @@ public partial class GameStartPageViewModel : ObservableObject
             _movingRight = false;
             foreach (var alien in Aliens)
             {
-                alien.Y += GameHeight / 180.0;
+                alien.Y += GameHeight / 90.0;
             }
         }
         else if (leftmostAlien < 50)
@@ -153,7 +153,7 @@ public partial class GameStartPageViewModel : ObservableObject
             _movingRight = true;
             foreach (var alien in Aliens)
             {
-                alien.Y += GameHeight / 180.0;
+                alien.Y += GameHeight / 90.0;
             }
         }
     }
