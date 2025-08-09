@@ -95,7 +95,7 @@ public partial class GameStartPageViewModel : ObservableObject
         };
     }
 
-    private void GenerateAliens()
+    public void GenerateAliens()
     {
         Aliens.Clear(); // Clear existing aliens
 
