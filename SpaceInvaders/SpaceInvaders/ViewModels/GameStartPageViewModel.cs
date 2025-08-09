@@ -68,8 +68,8 @@ public partial class GameStartPageViewModel : ObservableObject
         ScoreText = $"SCORE: {Player.Score}";
         LivesText = $"LIVES: {Player.Lives}";
         Level = 1;
-
-        GenerateAliens();
+        GameWidth = 800; // Initialize with default canvas width
+        GameHeight = 600; // Initialize with default canvas height
 
         _gameTimer = new DispatcherTimer();
         _gameTimer.Interval = TimeSpan.FromMilliseconds(16); 

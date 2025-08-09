@@ -207,6 +207,8 @@ namespace SpaceInvaders.Presentation
                 {
                     UpdatePlayerPosition();
                     CreateShieldImages();
+                    viewModel.GenerateAliens(); // Call GenerateAliens here
+                    CreateAlienImages(viewModel); // Create alien images after generation
                 }
 
                 _gameTimer = new DispatcherTimer();
