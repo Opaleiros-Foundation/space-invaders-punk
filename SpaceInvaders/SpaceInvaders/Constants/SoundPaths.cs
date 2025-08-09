@@ -24,4 +24,6 @@ public static class SoundPaths
         // "ms-appx:///Assets/sounds/enemies/die/sound7.mp3",
         // "ms-appx:///Assets/sounds/enemies/die/sound8.mp3"
     };
+
+    public const string ExtraLife = "ms-appx:///Assets/sounds/musics/extra_life.mp3";
 }

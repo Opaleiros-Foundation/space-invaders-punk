@@ -28,6 +28,9 @@ public partial class GameStartPageViewModel : ObservableObject
     [ObservableProperty]
     private string _scoreText;
 
+    [ObservableProperty]
+    private string _livesText;
+
     private readonly DispatcherTimer _gameTimer;
     private const double AlienSpeed = 2.0;
     private bool _movingRight = true;
@@ -63,9 +66,10 @@ public partial class GameStartPageViewModel : ObservableObject
         Player = player;
         Aliens = new ObservableCollection<Alien>();
         ScoreText = $"SCORE: {Player.Score}";
+        LivesText = $"LIVES: {Player.Lives}";
         Level = 1;
-
-        GenerateAliens();
+        GameWidth = 800; // Initialize with default canvas width
+        GameHeight = 600; // Initialize with default canvas height
 
         _gameTimer = new DispatcherTimer();
         _gameTimer.Interval = TimeSpan.FromMilliseconds(16); 
@@ -77,11 +81,21 @@ public partial class GameStartPageViewModel : ObservableObject
             if (e.PropertyName == nameof(Player.Score))
             {
                 ScoreText = $"SCORE: {Player.Score}";
+                // Check for extra life
+                if (Player.Score > 0 && Player.Score % 1000 == 0 && Player.Lives < 6)
+                {
+                    Player.Lives++;
+                    SoundService.PlaySound(SoundPaths.ExtraLife);
+                }
+            }
+            if (e.PropertyName == nameof(Player.Lives))
+            {
+                LivesText = $"LIVES: {Player.Lives}";
             }
         };
     }
 
-    private void GenerateAliens()
+    public void GenerateAliens()
     {
         Aliens.Clear(); // Clear existing aliens
 
@@ -150,7 +164,7 @@ public partial class GameStartPageViewModel : ObservableObject
     {
         // Game over conditions
         var aliensReachedBottom = Aliens.Any(alien => alien.Y >= GameHeight - 50);
-        if (Player.Lives <= 0 || aliensReachedBottom || Player.Score >= 500)
+        if (Player.Lives <= 0 || aliensReachedBottom)
         {
             _gameTimer.Stop();
             await _navigator.NavigateViewModelAsync<GameOverViewModel>(this, data: Player);
