@@ -52,6 +52,18 @@ namespace SpaceInvaders.Presentation
             CreateAlienImages(viewModel);
             viewModel.PropertyChanged += ViewModel_PropertyChanged;
             viewModel.Player.Projectiles.CollectionChanged += Projectiles_CollectionChanged;
+            viewModel.Aliens.CollectionChanged += Aliens_CollectionChanged;
+        }
+
+        private void Aliens_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                if (DataContext is GameStartPageViewModel viewModel)
+                {
+                    CreateAlienImages(viewModel);
+                }
+            });
         }
 
         private void CreateShieldImages()
@@ -208,7 +220,6 @@ namespace SpaceInvaders.Presentation
                     UpdatePlayerPosition();
                     CreateShieldImages();
                     viewModel.GenerateAliens(); // Call GenerateAliens here
-                    CreateAlienImages(viewModel); // Create alien images after generation
                 }
 
                 _gameTimer = new DispatcherTimer();
