@@ -127,28 +127,13 @@ public partial class GameStartPageViewModel : ObservableObject
             }
         }
 
-        // Level 1 starts with 3 rows.
-        // Every 2 levels (at 3, 5, 7...) add a row.
-        int totalRows = 3 + ((Level - 1) / 2);
-        
-        // Cap at 6 rows.
-        totalRows = Math.Min(totalRows, 6);
+        // Get the wave pattern from the factory
+        var wavePattern = WaveFactory.GenerateWave(Level);
 
-        // Defines the pattern of rows to be added
-        var rowPattern = new List<AlienType>
+        // Create the rows based on the pattern
+        for (int i = 0; i < wavePattern.Count; i++)
         {
-            AlienType.Type3, // Row 0
-            AlienType.Type2, // Row 1
-            AlienType.Type1, // Row 2
-            AlienType.Type2, // Row 3 (added at level 3)
-            AlienType.Type1, // Row 4 (added at level 5)
-            AlienType.Type1  // Row 5 (added at level 7)
-        };
-
-        // Create the rows based on the calculated total
-        for (int i = 0; i < totalRows; i++)
-        {
-            CreateRow(rowPattern[i], i);
+            CreateRow(wavePattern[i], i);
         }
     }
 
