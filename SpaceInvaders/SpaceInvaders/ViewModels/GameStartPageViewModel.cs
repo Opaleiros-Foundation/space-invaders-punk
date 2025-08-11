@@ -73,7 +73,7 @@ public partial class GameStartPageViewModel : ObservableObject
         Level = 1;
         GameWidth = 800; // Initialize with default canvas width
         GameHeight = 600; // Initialize with default canvas height
-        _alienSpeed = 2.0;
+        _alienSpeed = GameConstants.InitialAlienSpeed;
 
         _gameTimer = new DispatcherTimer();
         _gameTimer.Interval = TimeSpan.FromMilliseconds(16); 
@@ -110,19 +110,13 @@ public partial class GameStartPageViewModel : ObservableObject
     {
         Aliens.Clear();
 
-        const int startX = 100;
-        const int startY = 50;
-        const int xOffset = 40;
-        const int yOffsetBetweenRows = 40;
-        const int aliensPerRow = 12;
-
         void CreateRow(AlienType type, int rowIndex)
         {
-            for (var i = 0; i < aliensPerRow; i++)
+            for (var i = 0; i < GameConstants.AliensPerRow; i++)
             {
                 var alien = AlienFactory.CreateAlien(type);
-                alien.X = startX + (i * xOffset);
-                alien.Y = startY + (rowIndex * yOffsetBetweenRows);
+                alien.X = GameConstants.WaveStartX + (i * GameConstants.AlienXOffset);
+                alien.Y = GameConstants.WaveStartY + (rowIndex * GameConstants.AlienYOffset);
                 Aliens.Add(alien);
             }
         }
@@ -140,7 +134,7 @@ public partial class GameStartPageViewModel : ObservableObject
     private async void GameTimer_Tick(object? sender, object? e)
     {
         // Game over conditions
-        var aliensReachedBottom = Aliens.Any(alien => alien.Y >= GameHeight - 50);
+        var aliensReachedBottom = Aliens.Any(alien => alien.Y >= GameHeight - GameConstants.ScreenMargin);
         if (Player.Lives <= 0 || aliensReachedBottom)
         {
             _gameTimer.Stop();
@@ -151,7 +145,7 @@ public partial class GameStartPageViewModel : ObservableObject
         if (!Aliens.Any())
         {
             Level++;
-            _alienSpeed += 0.25; // Increase speed every level
+            _alienSpeed += GameConstants.AlienSpeedIncrement; // Increase speed every level
             GenerateAliens();
             return;
         }
@@ -177,37 +171,34 @@ public partial class GameStartPageViewModel : ObservableObject
         var rightmostAlien = Aliens.Max(a => a.X);
         var leftmostAlien = Aliens.Min(a => a.X);
 
-        if (GameWidth > 0 && rightmostAlien + 64 > GameWidth - 50)
+        if (GameWidth > 0 && rightmostAlien + GameConstants.AlienWidth > GameWidth - GameConstants.ScreenMargin)
         {
             _movingRight = false;
             foreach (var alien in Aliens)
             {
-                alien.Y += GameHeight / 90.0;
+                alien.Y += GameHeight / GameConstants.AlienVerticalStepDivisor;
             }
         }
-        else if (leftmostAlien < 50)
+        else if (leftmostAlien < GameConstants.ScreenMargin)
         {
             _movingRight = true;
             foreach (var alien in Aliens)
             {
-                alien.Y += GameHeight / 90.0;
+                alien.Y += GameHeight / GameConstants.AlienVerticalStepDivisor;
             }
         }
     }
 
     private void UpdatePlayerPosition()
     {
-        const double playerSpeed = 4.0;
-        const double playerWidth = 64;
-
-        if (_isMovingLeft && Player.X - playerSpeed > 0)
+        if (_isMovingLeft && Player.X - GameConstants.PlayerSpeed > 0)
         {
-            Player.X -= playerSpeed;
+            Player.X -= GameConstants.PlayerSpeed;
         }
 
-        if (_isMovingRight && Player.X + playerSpeed + playerWidth < GameWidth)
+        if (_isMovingRight && Player.X + GameConstants.PlayerSpeed + GameConstants.PlayerWidth < GameWidth)
         {
-            Player.X += playerSpeed;
+            Player.X += GameConstants.PlayerSpeed;
         }
     }
 
