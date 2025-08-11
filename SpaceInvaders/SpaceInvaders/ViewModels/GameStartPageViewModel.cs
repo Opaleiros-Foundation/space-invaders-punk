@@ -32,7 +32,7 @@ public partial class GameStartPageViewModel : ObservableObject
     private string _livesText;
 
     private readonly DispatcherTimer _gameTimer;
-    private const double AlienSpeed = 2.0;
+    private double _alienSpeed;
     private bool _movingRight = true;
     private bool _isMovingLeft;
     private bool _isMovingRight;
@@ -58,7 +58,7 @@ public partial class GameStartPageViewModel : ObservableObject
         FirePlayerWeaponCommand = new RelayCommand(FirePlayerWeapon);
 
         _shootSoundCooldownTimer = new DispatcherTimer();
-        _shootSoundCooldownTimer.Interval = TimeSpan.FromMilliseconds(100); // Cooldown period for shoot sound
+        _shootSoundCooldownTimer.Interval = TimeSpan.FromMilliseconds(GameConstants.PlayerShootCooldownMs); // Cooldown period for shoot sound
         _shootSoundCooldownTimer.Tick += (sender, e) =>
         {
             _canPlayShootSound = true;
@@ -71,11 +71,12 @@ public partial class GameStartPageViewModel : ObservableObject
         LivesText = $"LIVES: {Player.Lives}";
         _livesAwarded = 0;
         Level = 1;
-        GameWidth = 800; // Initialize with default canvas width
-        GameHeight = 600; // Initialize with default canvas height
+        GameWidth = GameConstants.InitialGameWidth; // Initialize with default canvas width
+        GameHeight = GameConstants.InitialGameHeight; // Initialize with default canvas height
+        _alienSpeed = GameConstants.InitialAlienSpeed;
 
         _gameTimer = new DispatcherTimer();
-        _gameTimer.Interval = TimeSpan.FromMilliseconds(16); 
+        _gameTimer.Interval = TimeSpan.FromMilliseconds(GameConstants.GameLoopIntervalMs); 
         _gameTimer.Tick += GameTimer_Tick;
         _gameTimer.Start();
 
@@ -85,10 +86,10 @@ public partial class GameStartPageViewModel : ObservableObject
             {
                 ScoreText = $"SCORE: {Player.Score}";
                 // Check for extra life
-                var potentialLives = Player.Score / 1000;
-                if (potentialLives > _livesAwarded && Player.Lives < 6)
+                var potentialLives = Player.Score / GameConstants.ExtraLifeThreshold;
+                if (potentialLives > _livesAwarded && Player.Lives < GameConstants.MaxPlayerLives)
                 {
-                    var livesToAdd = Math.Min(potentialLives - _livesAwarded, 6 - Player.Lives);
+                    var livesToAdd = Math.Min(potentialLives - _livesAwarded, GameConstants.MaxPlayerLives - Player.Lives);
                     if (livesToAdd > 0)
                     {
                         Player.Lives += livesToAdd;
@@ -107,64 +108,33 @@ public partial class GameStartPageViewModel : ObservableObject
 
     public void GenerateAliens()
     {
-        Aliens.Clear(); // Clear existing aliens
+        Aliens.Clear();
 
-        // Generate aliens
-        const int startX = 100;
-        const int startY = 50;
-        const int xOffset = 40; 
-        const int yOffsetBetweenRows = 40; 
-
-        // Row 1: Type 3 aliens (top row)
-        for (var i = 0; i < 12; i++)
+        void CreateRow(AlienType type, int rowIndex)
         {
-            var alien = AlienFactory.CreateAlien(AlienType.Type3);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY;
-            Aliens.Add(alien);
+            for (var i = 0; i < GameConstants.AliensPerRow; i++)
+            {
+                var alien = AlienFactory.CreateAlien(type);
+                alien.X = GameConstants.WaveStartX + (i * GameConstants.AlienXOffset);
+                alien.Y = GameConstants.WaveStartY + (rowIndex * GameConstants.AlienYOffset);
+                Aliens.Add(alien);
+            }
         }
 
-        // Row 2: Type 2 aliens
-        for (var i = 0; i < 12; i++)
-        {
-            var alien = AlienFactory.CreateAlien(AlienType.Type2);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY + yOffsetBetweenRows;
-            Aliens.Add(alien);
-        }
+        // Get the wave pattern from the factory
+        var wavePattern = WaveFactory.GenerateWave(Level);
 
-        // Row 3: Type 2 aliens
-        for (var i = 0; i < 12; i++)
+        // Create the rows based on the pattern
+        for (int i = 0; i < wavePattern.Count; i++)
         {
-            var alien = AlienFactory.CreateAlien(AlienType.Type2);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY + (2 * yOffsetBetweenRows);
-            Aliens.Add(alien);
-        }
-
-        // Row 4: Type 1 aliens
-        for (var i = 0; i < 12; i++)
-        {
-            var alien = AlienFactory.CreateAlien(AlienType.Type1);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY + (3 * yOffsetBetweenRows);
-            Aliens.Add(alien);
-        }
-
-        // Row 5: Type 1 aliens
-        for (var i = 0; i < 12; i++)
-        {
-            var alien = AlienFactory.CreateAlien(AlienType.Type1);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY + (4 * yOffsetBetweenRows);
-            Aliens.Add(alien);
+            CreateRow(wavePattern[i], i);
         }
     }
 
     private async void GameTimer_Tick(object? sender, object? e)
     {
         // Game over conditions
-        var aliensReachedBottom = Aliens.Any(alien => alien.Y >= GameHeight - 50);
+        var aliensReachedBottom = Aliens.Any(alien => alien.Y >= GameHeight - GameConstants.ScreenMargin);
         if (Player.Lives <= 0 || aliensReachedBottom)
         {
             _gameTimer.Stop();
@@ -175,6 +145,7 @@ public partial class GameStartPageViewModel : ObservableObject
         if (!Aliens.Any())
         {
             Level++;
+            _alienSpeed += GameConstants.AlienSpeedIncrement; // Increase speed every level
             GenerateAliens();
             return;
         }
@@ -187,11 +158,11 @@ public partial class GameStartPageViewModel : ObservableObject
         {
             if (_movingRight)
             {
-                alien.X += AlienSpeed;
+                alien.X += _alienSpeed;
             }
             else
             {
-                alien.X -= AlienSpeed;
+                alien.X -= _alienSpeed;
             }
         }
 
@@ -200,37 +171,34 @@ public partial class GameStartPageViewModel : ObservableObject
         var rightmostAlien = Aliens.Max(a => a.X);
         var leftmostAlien = Aliens.Min(a => a.X);
 
-        if (GameWidth > 0 && rightmostAlien + 64 > GameWidth - 50)
+        if (GameWidth > 0 && rightmostAlien + GameConstants.AlienWidth > GameWidth - GameConstants.ScreenMargin)
         {
             _movingRight = false;
             foreach (var alien in Aliens)
             {
-                alien.Y += GameHeight / 90.0;
+                alien.Y += GameHeight / GameConstants.AlienVerticalStepDivisor;
             }
         }
-        else if (leftmostAlien < 50)
+        else if (leftmostAlien < GameConstants.ScreenMargin)
         {
             _movingRight = true;
             foreach (var alien in Aliens)
             {
-                alien.Y += GameHeight / 90.0;
+                alien.Y += GameHeight / GameConstants.AlienVerticalStepDivisor;
             }
         }
     }
 
     private void UpdatePlayerPosition()
     {
-        const double playerSpeed = 4.0;
-        const double playerWidth = 64;
-
-        if (_isMovingLeft && Player.X - playerSpeed > 0)
+        if (_isMovingLeft && Player.X - GameConstants.PlayerSpeed > 0)
         {
-            Player.X -= playerSpeed;
+            Player.X -= GameConstants.PlayerSpeed;
         }
 
-        if (_isMovingRight && Player.X + playerSpeed + playerWidth < GameWidth)
+        if (_isMovingRight && Player.X + GameConstants.PlayerSpeed + GameConstants.PlayerWidth < GameWidth)
         {
-            Player.X += playerSpeed;
+            Player.X += GameConstants.PlayerSpeed;
         }
     }
 
