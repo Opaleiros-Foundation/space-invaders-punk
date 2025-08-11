@@ -32,7 +32,7 @@ public partial class GameStartPageViewModel : ObservableObject
     private string _livesText;
 
     private readonly DispatcherTimer _gameTimer;
-    private const double AlienSpeed = 2.0;
+    private double _alienSpeed;
     private bool _movingRight = true;
     private bool _isMovingLeft;
     private bool _isMovingRight;
@@ -73,6 +73,7 @@ public partial class GameStartPageViewModel : ObservableObject
         Level = 1;
         GameWidth = 800; // Initialize with default canvas width
         GameHeight = 600; // Initialize with default canvas height
+        _alienSpeed = 2.0;
 
         _gameTimer = new DispatcherTimer();
         _gameTimer.Interval = TimeSpan.FromMilliseconds(16); 
@@ -107,57 +108,47 @@ public partial class GameStartPageViewModel : ObservableObject
 
     public void GenerateAliens()
     {
-        Aliens.Clear(); // Clear existing aliens
+        Aliens.Clear();
 
-        // Generate aliens
         const int startX = 100;
         const int startY = 50;
-        const int xOffset = 40; 
-        const int yOffsetBetweenRows = 40; 
+        const int xOffset = 40;
+        const int yOffsetBetweenRows = 40;
+        const int aliensPerRow = 12;
 
-        // Row 1: Type 3 aliens (top row)
-        for (var i = 0; i < 12; i++)
+        void CreateRow(AlienType type, int rowIndex)
         {
-            var alien = AlienFactory.CreateAlien(AlienType.Type3);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY;
-            Aliens.Add(alien);
+            for (var i = 0; i < aliensPerRow; i++)
+            {
+                var alien = AlienFactory.CreateAlien(type);
+                alien.X = startX + (i * xOffset);
+                alien.Y = startY + (rowIndex * yOffsetBetweenRows);
+                Aliens.Add(alien);
+            }
         }
 
-        // Row 2: Type 2 aliens
-        for (var i = 0; i < 12; i++)
-        {
-            var alien = AlienFactory.CreateAlien(AlienType.Type2);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY + yOffsetBetweenRows;
-            Aliens.Add(alien);
-        }
+        // Level 1 starts with 3 rows.
+        // Every 2 levels (at 3, 5, 7...) add a row.
+        int totalRows = 3 + ((Level - 1) / 2);
+        
+        // Cap at 6 rows.
+        totalRows = Math.Min(totalRows, 6);
 
-        // Row 3: Type 2 aliens
-        for (var i = 0; i < 12; i++)
+        // Defines the pattern of rows to be added
+        var rowPattern = new List<AlienType>
         {
-            var alien = AlienFactory.CreateAlien(AlienType.Type2);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY + (2 * yOffsetBetweenRows);
-            Aliens.Add(alien);
-        }
+            AlienType.Type3, // Row 0
+            AlienType.Type2, // Row 1
+            AlienType.Type1, // Row 2
+            AlienType.Type2, // Row 3 (added at level 3)
+            AlienType.Type1, // Row 4 (added at level 5)
+            AlienType.Type1  // Row 5 (added at level 7)
+        };
 
-        // Row 4: Type 1 aliens
-        for (var i = 0; i < 12; i++)
+        // Create the rows based on the calculated total
+        for (int i = 0; i < totalRows; i++)
         {
-            var alien = AlienFactory.CreateAlien(AlienType.Type1);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY + (3 * yOffsetBetweenRows);
-            Aliens.Add(alien);
-        }
-
-        // Row 5: Type 1 aliens
-        for (var i = 0; i < 12; i++)
-        {
-            var alien = AlienFactory.CreateAlien(AlienType.Type1);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY + (4 * yOffsetBetweenRows);
-            Aliens.Add(alien);
+            CreateRow(rowPattern[i], i);
         }
     }
 
@@ -175,6 +166,7 @@ public partial class GameStartPageViewModel : ObservableObject
         if (!Aliens.Any())
         {
             Level++;
+            _alienSpeed += 0.25; // Increase speed every level
             GenerateAliens();
             return;
         }
@@ -187,11 +179,11 @@ public partial class GameStartPageViewModel : ObservableObject
         {
             if (_movingRight)
             {
-                alien.X += AlienSpeed;
+                alien.X += _alienSpeed;
             }
             else
             {
-                alien.X -= AlienSpeed;
+                alien.X -= _alienSpeed;
             }
         }
 
