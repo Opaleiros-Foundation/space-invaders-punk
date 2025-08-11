@@ -59,7 +59,21 @@ namespace SpaceInvaders.Presentation
         {
             DispatcherQueue.TryEnqueue(() =>
             {
-                if (DataContext is GameStartPageViewModel viewModel)
+                if (DataContext is not GameStartPageViewModel viewModel) return;
+
+                if (e.Action == NotifyCollectionChangedAction.Remove)
+                {
+                    foreach (Alien alien in e.OldItems)
+                    {
+                        var imageToRemove = _alienImages.FirstOrDefault(img => img.Tag == alien);
+                        if (imageToRemove != null)
+                        {
+                            GameCanvas.Children.Remove(imageToRemove);
+                            _alienImages.Remove(imageToRemove);
+                        }
+                    }
+                }
+                else // Handles Reset (from Clear) and Add
                 {
                     CreateAlienImages(viewModel);
                 }
@@ -173,7 +187,8 @@ namespace SpaceInvaders.Presentation
                 {
                     Width = 32,
                     Height = 32,
-                    Source = new BitmapImage(new Uri(alien.SpritePath))
+                    Source = new BitmapImage(new Uri(alien.SpritePath)),
+                    Tag = alien
                 };
 
                 Canvas.SetLeft(image, alien.X);
@@ -417,9 +432,7 @@ namespace SpaceInvaders.Presentation
                 }
             }
         }
-
         
-
         private void UpdatePlayerPosition()
         {
             if (DataContext is not GameStartPageViewModel viewModel || _playerImage is null) return;

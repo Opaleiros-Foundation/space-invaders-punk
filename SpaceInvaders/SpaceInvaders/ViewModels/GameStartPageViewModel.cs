@@ -53,7 +53,7 @@ public partial class GameStartPageViewModel : ObservableObject
     public GameStartPageViewModel(INavigator navigator, ISoundService soundService, Player player)
     {
         _navigator = navigator;
-        SoundService = soundService; // Assign to the public property
+        SoundService = soundService; 
         GoToMain = new AsyncRelayCommand(GoToMainView);
         FirePlayerWeaponCommand = new RelayCommand(FirePlayerWeapon);
 
@@ -112,8 +112,8 @@ public partial class GameStartPageViewModel : ObservableObject
         // Generate aliens
         const int startX = 100;
         const int startY = 50;
-        const int xOffset = 40; // Adjusted for 32x32 aliens
-        const int yOffsetBetweenRows = 40; // Adjusted for 32x32 aliens
+        const int xOffset = 40; 
+        const int yOffsetBetweenRows = 40; 
 
         // Row 1: Type 3 aliens (top row)
         for (var i = 0; i < 12; i++)
