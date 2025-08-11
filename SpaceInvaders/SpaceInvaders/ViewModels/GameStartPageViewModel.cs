@@ -36,6 +36,8 @@ public partial class GameStartPageViewModel : ObservableObject
     private bool _movingRight = true;
     private bool _isMovingLeft;
     private bool _isMovingRight;
+    private int _livesAwarded;
+
     [ObservableProperty]
     private double _gameWidth;
 
@@ -67,6 +69,7 @@ public partial class GameStartPageViewModel : ObservableObject
         Aliens = new ObservableCollection<Alien>();
         ScoreText = $"SCORE: {Player.Score}";
         LivesText = $"LIVES: {Player.Lives}";
+        _livesAwarded = 0;
         Level = 1;
         GameWidth = 800; // Initialize with default canvas width
         GameHeight = 600; // Initialize with default canvas height
@@ -82,12 +85,19 @@ public partial class GameStartPageViewModel : ObservableObject
             {
                 ScoreText = $"SCORE: {Player.Score}";
                 // Check for extra life
-                if (Player.Score > 0 && Player.Score % 1000 == 0 && Player.Lives < 6)
+                var potentialLives = Player.Score / 1000;
+                if (potentialLives > _livesAwarded && Player.Lives < 6)
                 {
-                    Player.Lives++;
-                    SoundService.PlaySound(SoundPaths.ExtraLife);
+                    var livesToAdd = Math.Min(potentialLives - _livesAwarded, 6 - Player.Lives);
+                    if (livesToAdd > 0)
+                    {
+                        Player.Lives += livesToAdd;
+                        _livesAwarded = potentialLives;
+                        SoundService.PlaySound(SoundPaths.ExtraLife);
+                    }
                 }
             }
+
             if (e.PropertyName == nameof(Player.Lives))
             {
                 LivesText = $"LIVES: {Player.Lives}";
