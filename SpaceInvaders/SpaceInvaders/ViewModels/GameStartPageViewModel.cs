@@ -58,7 +58,7 @@ public partial class GameStartPageViewModel : ObservableObject
         FirePlayerWeaponCommand = new RelayCommand(FirePlayerWeapon);
 
         _shootSoundCooldownTimer = new DispatcherTimer();
-        _shootSoundCooldownTimer.Interval = TimeSpan.FromMilliseconds(100); // Cooldown period for shoot sound
+        _shootSoundCooldownTimer.Interval = TimeSpan.FromMilliseconds(GameConstants.PlayerShootCooldownMs); // Cooldown period for shoot sound
         _shootSoundCooldownTimer.Tick += (sender, e) =>
         {
             _canPlayShootSound = true;
@@ -71,12 +71,12 @@ public partial class GameStartPageViewModel : ObservableObject
         LivesText = $"LIVES: {Player.Lives}";
         _livesAwarded = 0;
         Level = 1;
-        GameWidth = 800; // Initialize with default canvas width
-        GameHeight = 600; // Initialize with default canvas height
+        GameWidth = GameConstants.InitialGameWidth; // Initialize with default canvas width
+        GameHeight = GameConstants.InitialGameHeight; // Initialize with default canvas height
         _alienSpeed = GameConstants.InitialAlienSpeed;
 
         _gameTimer = new DispatcherTimer();
-        _gameTimer.Interval = TimeSpan.FromMilliseconds(16); 
+        _gameTimer.Interval = TimeSpan.FromMilliseconds(GameConstants.GameLoopIntervalMs); 
         _gameTimer.Tick += GameTimer_Tick;
         _gameTimer.Start();
 
@@ -86,10 +86,10 @@ public partial class GameStartPageViewModel : ObservableObject
             {
                 ScoreText = $"SCORE: {Player.Score}";
                 // Check for extra life
-                var potentialLives = Player.Score / 1000;
-                if (potentialLives > _livesAwarded && Player.Lives < 6)
+                var potentialLives = Player.Score / GameConstants.ExtraLifeThreshold;
+                if (potentialLives > _livesAwarded && Player.Lives < GameConstants.MaxPlayerLives)
                 {
-                    var livesToAdd = Math.Min(potentialLives - _livesAwarded, 6 - Player.Lives);
+                    var livesToAdd = Math.Min(potentialLives - _livesAwarded, GameConstants.MaxPlayerLives - Player.Lives);
                     if (livesToAdd > 0)
                     {
                         Player.Lives += livesToAdd;

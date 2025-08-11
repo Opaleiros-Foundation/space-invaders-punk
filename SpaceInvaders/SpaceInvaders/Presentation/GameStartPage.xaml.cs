@@ -34,7 +34,7 @@ namespace SpaceInvaders.Presentation
             DataContextChanged += OnDataContextChanged;
 
             _enemyDeathSoundCooldownTimer = new DispatcherTimer();
-            _enemyDeathSoundCooldownTimer.Interval = TimeSpan.FromMilliseconds(50); // Cooldown period for enemy death sound
+            _enemyDeathSoundCooldownTimer.Interval = TimeSpan.FromMilliseconds(GameConstants.EnemyDeathSoundCooldownMs); // Cooldown period for enemy death sound
             _enemyDeathSoundCooldownTimer.Tick += (sender, e) =>
             {
                 _canPlayEnemyDeathSound = true;
@@ -85,21 +85,20 @@ namespace SpaceInvaders.Presentation
             if (DataContext is not GameStartPageViewModel viewModel) return;
 
             var screenWidth = viewModel.GameWidth;
-            var shieldWidth = 32;
-            var spacing = (screenWidth - (4 * shieldWidth)) / 5;
+            var spacing = (screenWidth - (GameConstants.NumberOfShields * GameConstants.ShieldWidth)) / GameConstants.ShieldSpacingDivisor;
 
-            for (var i = 0; i < 4; i++)
+            for (var i = 0; i < GameConstants.NumberOfShields; i++)
             {
-                var shield = new Shield("Shield", 100, shieldWidth, 32);
+                var shield = new Shield("Shield", GameConstants.ShieldHealth, GameConstants.ShieldWidth, GameConstants.ShieldHeight);
                 var shieldImage = new Image
                 {
-                    Width = 32,
-                    Height = 32,
+                    Width = GameConstants.ShieldWidth,
+                    Height = GameConstants.ShieldHeight,
                     Source = new BitmapImage(new Uri(shield.SpritePath))
                 };
 
                 shield.X = spacing * (i + 1) + (shield.Width * i);
-                shield.Y = viewModel.GameHeight - 200;
+                shield.Y = viewModel.GameHeight - GameConstants.ShieldYOffsetFromBottom;
 
                 Canvas.SetLeft(shieldImage, shield.X);
                 Canvas.SetTop(shieldImage, shield.Y);
@@ -120,18 +119,18 @@ namespace SpaceInvaders.Presentation
                     {
                         var projectileImage = new Image
                         {
-                            Width = 16,
-                            Height = 16,
+                            Width = GameConstants.ProjectileImageWidth,
+                            Height = GameConstants.ProjectileImageHeight,
                             Source = new BitmapImage(new Uri(projectile.SpritePath))
                         };
                         
-                        double playerImageWidth = 64;
+                        double playerImageWidth = GameConstants.PlayerWidth;
                         if (_playerImage != null)
                         {
                             playerImageWidth = _playerImage.Width;
                         }
-                        projectile.X = projectile.X + (playerImageWidth / 2) - (projectileImage.Width / 2);
-                        projectile.Y -= 30;
+                        projectile.X = projectile.X + (playerImageWidth / GameConstants.CenteringDivisor) - (projectileImage.Width / GameConstants.CenteringDivisor);
+                        projectile.Y -= GameConstants.ProjectileInitialYOffset;
 
                         Canvas.SetLeft(projectileImage, projectile.X);
                         Canvas.SetTop(projectileImage, projectile.Y);
@@ -149,8 +148,8 @@ namespace SpaceInvaders.Presentation
 
             _playerImage = new Image
             {
-                Width = 32,
-                Height = 32,
+                Width = GameConstants.PlayerImageWidth,
+                Height = GameConstants.PlayerImageHeight,
                 Source = new BitmapImage(new Uri(viewModel.Player.SpritePath))
             };
 
@@ -185,8 +184,8 @@ namespace SpaceInvaders.Presentation
             {
                 var image = new Image
                 {
-                    Width = 32,
-                    Height = 32,
+                    Width = GameConstants.AlienImageWidth,
+                    Height = GameConstants.AlienImageHeight,
                     Source = new BitmapImage(new Uri(alien.SpritePath)),
                     Tag = alien
                 };
@@ -239,7 +238,7 @@ namespace SpaceInvaders.Presentation
 
                 _gameTimer = new DispatcherTimer();
                 _gameTimer.Tick += GameTimer_Tick;
-                _gameTimer.Interval = TimeSpan.FromMilliseconds(45); // Approx. 60 FPS
+                _gameTimer.Interval = TimeSpan.FromMilliseconds(GameConstants.GameTimerIntervalMs); // Approx. 60 FPS
                 _gameTimer.Start();
             });
         }
@@ -265,7 +264,7 @@ namespace SpaceInvaders.Presentation
                 var projectileImage = _projectileImages[i];
 
                 projectile.Move();
-                projectile.CheckBounds(0); // Check if projectile is off-screen
+                projectile.CheckBounds(GameConstants.ScreenBoundaryMin); // Check if projectile is off-screen
                 Canvas.SetTop(projectileImage, projectile.Y);
 
                 if (!projectile.IsVisible)
@@ -437,8 +436,8 @@ namespace SpaceInvaders.Presentation
         {
             if (DataContext is not GameStartPageViewModel viewModel || _playerImage is null) return;
 
-            viewModel.Player.X = (viewModel.GameWidth / 2) - (_playerImage.Width / 2);
-            viewModel.Player.Y = viewModel.GameHeight - _playerImage.Height - 50;
+            viewModel.Player.X = (viewModel.GameWidth / GameConstants.CenteringDivisor) - (_playerImage.Width / GameConstants.CenteringDivisor);
+            viewModel.Player.Y = viewModel.GameHeight - _playerImage.Height - GameConstants.PlayerYOffsetFromBottom;
         }
 
         private void GameStartPage_KeyDown(object sender, KeyRoutedEventArgs e)
