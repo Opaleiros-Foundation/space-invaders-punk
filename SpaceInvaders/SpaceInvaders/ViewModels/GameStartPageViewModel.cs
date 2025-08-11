@@ -159,15 +159,6 @@ public partial class GameStartPageViewModel : ObservableObject
             alien.Y = startY + (4 * yOffsetBetweenRows);
             Aliens.Add(alien);
         }
-
-        // Row 6: Type 1 aliens (bottom row)
-        for (var i = 0; i < 12; i++)
-        {
-            var alien = AlienFactory.CreateAlien(AlienType.Type1);
-            alien.X = startX + (i * xOffset);
-            alien.Y = startY + (5 * yOffsetBetweenRows);
-            Aliens.Add(alien);
-        }
     }
 
     private async void GameTimer_Tick(object? sender, object? e)
