@@ -1,34 +1,27 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
+using SpaceInvaders.Factories.Strategies;
+using SpaceInvaders.Interfaces.Factories;
 using SpaceInvaders.Models;
 
 namespace SpaceInvaders.Factories
 {
     public static class WaveFactory
     {
+        private static readonly IWaveFormationStrategy StandardStrategy = new StandardFormationStrategy();
+        private static readonly IWaveFormationStrategy RandomStrategy = new RandomFormationStrategy();
+
         public static List<AlienType> GenerateWave(int level)
         {
-            // Level 1 starts with 3 rows.
-            // Every 2 levels (at 3, 5, 7...) add a row.
-            int totalRows = 3 + ((level - 1) / 2);
-            
-            // Cap at 6 rows.
-            totalRows = Math.Min(totalRows, 6);
-
-            // Defines the base pattern of rows to be added
-            var rowPattern = new List<AlienType>
+            // Use the standard formation for level 0 or any odd-numbered level.
+            // Use the random formation for any even-numbered level greater than 0.
+            if (level == 0 || level % 2 != 0)
             {
-                AlienType.Type3, // Row 0
-                AlienType.Type2, // Row 1
-                AlienType.Type1, // Row 2
-                AlienType.Type2, // Row 3 (added at level 3)
-                AlienType.Type1, // Row 4 (added at level 5)
-                AlienType.Type1  // Row 5 (added at level 7)
-            };
-
-            // Return the sub-list corresponding to the current level's number of rows
-            return rowPattern.Take(totalRows).ToList();
+                return StandardStrategy.CreateWave(level);
+            }
+            else
+            {
+                return RandomStrategy.CreateWave(level);
+            }
         }
     }
 }
