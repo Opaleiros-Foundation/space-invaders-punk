@@ -37,15 +37,18 @@ A documentação do projeto é mantida em duas plataformas para garantir acesso 
 
 ## 5. Estrutura do Projeto
 
-O projeto está organizado nas seguintes pastas principais:
+O projeto está organizado para seguir o padrão MVVM (Model-View-ViewModel), promovendo uma clara separação de responsabilidades. As principais pastas são:
 
-*   **`SpaceInvaders/Models`**: Contém as classes de modelo de dados, como `Player`, `Alien`, `Projectile`, `Score`, e as classes de configuração da aplicação (`AppConfig`).
-*   **`SpaceInvaders/ViewModels`**: Responsável pela lógica de apresentação e interação com os modelos, incluindo `MainViewModel`, `GameOverViewModel`, `ScoreViewModel`, etc.
-*   **`SpaceInvaders/Services`**: Implementa a lógica de negócio e a interação com o banco de dados, como `PlayerService`, `ScoreService`, e `SoundService`.
-*   **`SpaceInvaders/Data`**: Contém o contexto do banco de dados (`SpaceInvadersDbContext`) e as migrações do Entity Framework Core.
-*   **`SpaceInvaders/Presentation`**: Define a interface do usuário (UI) em XAML, incluindo as páginas (`MainPage.xaml`, `GameOver.xaml`, `ScorePage.xaml`) e o `Shell` da aplicação.
-*   **`SpaceInvaders/Constants`**: Armazena constantes utilizadas no projeto, como caminhos para sons e sprites.
-*   **`SpaceInvaders/Assets`**: Contém todos os recursos visuais e sonoros do jogo, como imagens, fontes e arquivos de áudio.
+*   **`SpaceInvaders/Models`**: Contém as classes de domínio, como `Player`, `Alien`, e `Score`.
+*   **`SpaceInvaders/ViewModels`**: Responsável pela lógica de apresentação e pelo estado da UI. Ele interage com os serviços para obter e manipular os dados que serão exibidos nas Views.
+*   **`SpaceInvaders/Services`**: Implementa a lógica de negócio desacoplada da UI, como `PlayerService` e `ScoreService`, e coordena o acesso aos dados.
+*   **`SpaceInvaders/Presentation`**: Define a interface do usuário (UI) em XAML. Contém as `Views` (páginas como `MainPage.xaml` e `GameOver.xaml`) que se vinculam aos `ViewModels`.
+*   **`SpaceInvaders/Data`**: Inclui o `DbContext` do Entity Framework Core e as migrações, gerenciando toda a comunicação com o banco de dados.
+*   **`SpaceInvaders/Factories`**: Contém classes para a criação de objetos complexos, como `AlienFactory` e `WaveFactory`, abstraindo a lógica de instanciação.
+*   **`SpaceInvaders/Interfaces`**: Define os contratos (abstrações) para os serviços e outras classes, permitindo a injeção de dependência e facilitando os testes.
+*   **`SpaceInvaders/Constants`**: Armazena valores constantes usados em toda a aplicação, como caminhos de arquivos e configurações de jogo.
+*   **`SpaceInvaders/Assets`**: Contém todos os recursos estáticos, como sprites, fontes e arquivos de som.
+*   **`SpaceInvaders/Styles`**: Armazena dicionários de recursos XAML que definem os estilos visuais da aplicação.
 
 ## Diagrama de Estrutura do Projeto
 
@@ -56,52 +59,66 @@ Abaixo, um diagrama que ilustra a organização das principais pastas e a relaç
 skinparam componentStyle rectangle
 
 package "SpaceInvaders" {
-    folder "Models" {
-        [Player]
-        [Alien]
-        [Score]
-        [AppConfig]
+    folder "Presentation" {
+        [MainPage.xaml]
+        [GameOver.xaml]
+        [ScorePage.xaml]
     }
-
+    
     folder "ViewModels" {
         [MainViewModel]
         [GameOverViewModel]
         [ScoreViewModel]
     }
-
+    
     folder "Services" {
         [PlayerService]
         [ScoreService]
         [SoundService]
     }
-
+    
+    folder "Interfaces" {
+        [IPlayerService]
+        [IWaveFormationStrategy]
+    }
+    
+    folder "Factories" {
+        [AlienFactory]
+        [WaveFactory]
+    }
+    
+    folder "Models" {
+        [Player]
+        [Alien]
+        [Score]
+    }
+    
     folder "Data" {
         [SpaceInvadersDbContext]
         [Migrations]
     }
-
-    folder "Presentation" {
-        [MainPage.xaml]
-        [GameOver.xaml]
-        [ScorePage.xaml]
-        [Shell.xaml]
-    }
-
+    
     folder "Constants" {
-        [SoundPaths.cs]
-        [SpritePaths.cs]
+        [GameConstants]
+        [SpritePaths]
     }
-
+    
     folder "Assets" {
         [Images]
-        [Fonts]
         [Sounds]
+    }
+    
+    folder "Styles" {
+        [AppStyles.xaml]
     }
 }
 
-ViewModels --> Models : manipula
-Services --> Models : interage
-Services --> Data : acessa
-Presentation --> ViewModels : exibe dados
+Presentation -down-> ViewModels : exibe dados e encaminha eventos
+ViewModels -down-> Services : invoca lógica de negócio
+Services ..> Interfaces : implementa
+Services -down-> Data : acessa e persiste dados
+Services -down-> Factories : utiliza para criar objetos
+Factories -down-> Models : cria instâncias de
+ViewModels -right-> Models : manipula como DataContext
 @enduml
 ```
