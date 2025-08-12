@@ -16,19 +16,25 @@ namespace SpaceInvaders.Factories.Strategies
 
             // Get all alien types, but exclude Type4 as requested.
             var availableAlienTypes = Enum.GetValues(typeof(AlienType))
-                                          .Cast<AlienType>()
-                                          .Where(t => t != AlienType.Type4)
-                                          .ToList();
+                .Cast<AlienType>()
+                .Where(t => t != AlienType.Type4)
+                .ToList();
 
             var wave = new List<AlienType>();
 
-            for (int i = 0; i < totalRows; i++)
+            // Ensure at least one of each type
+            wave.AddRange(availableAlienTypes);
+
+            int remainingRows = totalRows - availableAlienTypes.Count;
+
+            for (var i = 0; i < remainingRows; i++)
             {
                 int randomIndex = _random.Next(availableAlienTypes.Count);
                 wave.Add(availableAlienTypes[randomIndex]);
             }
 
-            return wave;
+            // Shuffle the wave to randomize the order of rows
+            return wave.OrderBy(x => _random.Next()).ToList();
         }
     }
 }
