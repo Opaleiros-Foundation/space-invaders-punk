@@ -17,6 +17,7 @@ namespace SpaceInvaders.Presentation
     {
         private readonly List<Image> _alienImages = new();
         private readonly List<Image> _projectileImages = new();
+        private readonly List<Image> _enemyProjectileImages = new();
         private readonly List<Image> _shieldImages = new();
         private readonly List<Shield> _shields = new();
         private Image? _playerImage;
@@ -58,7 +59,35 @@ namespace SpaceInvaders.Presentation
             viewModel.PropertyChanged += ViewModel_Aliens_PropertyChanged; // Renamed handler
             viewModel.PropertyChanged += ViewModel_SpecialAlien_PropertyChanged; // New handler for special alien
             viewModel.Player.Projectiles.CollectionChanged += Projectiles_CollectionChanged;
+            viewModel.EnemyProjectiles.CollectionChanged += EnemyProjectiles_CollectionChanged;
             viewModel.Aliens.CollectionChanged += Aliens_CollectionChanged;
+        }
+
+        private void EnemyProjectiles_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
+        {
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                if (e.Action == NotifyCollectionChangedAction.Add)
+                {
+                    foreach (Projectile projectile in e.NewItems)
+                    {
+                        var projectileImage = new Image
+                        {
+                            Width = GameConstants.ProjectileImageWidth,
+                            Height = GameConstants.ProjectileImageHeight,
+                            Source = new BitmapImage(new Uri(projectile.SpritePath))
+                        };
+                        
+                        projectile.X -= (projectileImage.Width / 2);
+
+                        Canvas.SetLeft(projectileImage, projectile.X);
+                        Canvas.SetTop(projectileImage, projectile.Y);
+
+                        GameCanvas.Children.Add(projectileImage);
+                        _enemyProjectileImages.Add(projectileImage);
+                    }
+                }
+            });
         }
 
         private void Aliens_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
@@ -433,6 +462,71 @@ namespace SpaceInvaders.Presentation
                 _projectileImages.Remove(image);
             }
 
+            var enemyProjectilesToRemove = new List<Projectile>();
+            var enemyImagesToRemove = new List<Image>();
+
+            for (var i = _enemyProjectileImages.Count - 1; i >= 0; i--)
+            {
+                var projectile = viewModel.EnemyProjectiles[i];
+                var projectileImage = _enemyProjectileImages[i];
+
+                projectile.Move(); // Moves downwards because speed is positive
+                projectile.CheckBounds(viewModel.GameHeight); // Check if off-screen at the bottom
+                Canvas.SetTop(projectileImage, projectile.Y);
+
+                if (!projectile.IsVisible)
+                {
+                    enemyProjectilesToRemove.Add(projectile);
+                    enemyImagesToRemove.Add(projectileImage);
+                    continue;
+                }
+
+                // Collision with player
+                if (projectile.CheckCollision(viewModel.Player))
+                {
+                    projectile.IsVisible = false;
+                    viewModel.Player.Lives--;
+                    _soundService?.PlaySound(SoundPaths.Explosion);
+                    enemyProjectilesToRemove.Add(projectile);
+                    enemyImagesToRemove.Add(projectileImage);
+                    continue;
+                }
+
+                // Collision with shields
+                for (var j = _shields.Count - 1; j >= 0; j--)
+                {
+                    var shield = _shields[j];
+                    var shieldImage = _shieldImages[j];
+
+                    if (projectile.CheckCollision(shield))
+                    {
+                        projectile.IsVisible = false;
+                        shield.Health -= projectile.Damage;
+                        shieldImage.Opacity = (double)shield.Health / shield.MaxHealth;
+                        if (shield.Health <= 0)
+                        {
+                            shield.IsVisible = false;
+                        }
+                        enemyProjectilesToRemove.Add(projectile);
+                        enemyImagesToRemove.Add(projectileImage);
+                        break;
+                    }
+                }
+            }
+
+            // Remove enemy projectiles
+            foreach (var projectile in enemyProjectilesToRemove)
+            {
+                viewModel.EnemyProjectiles.Remove(projectile);
+            }
+
+            for (var i = enemyImagesToRemove.Count - 1; i >= 0; i--)
+            {
+                var image = enemyImagesToRemove[i];
+                GameCanvas.Children.Remove(image);
+                _enemyProjectileImages.Remove(image);
+            }
+
             // Remove aliens that are no longer visible
             var aliensToRemove = new List<Alien>();
             var alienImagesToRemove = new List<Image>();
@@ -559,6 +653,12 @@ namespace SpaceInvaders.Presentation
             }
         }
 
+        /// <summary>
+        /// Handles the SizeChanged event of the game canvas.
+        /// Updates the game dimensions in the ViewModel to ensure proper boundaries.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void GameCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (DataContext is GameStartPageViewModel viewModel)

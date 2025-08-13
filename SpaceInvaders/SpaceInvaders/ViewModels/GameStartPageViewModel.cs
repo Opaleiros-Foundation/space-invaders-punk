@@ -11,6 +11,7 @@ using System.Windows.Input;
 using Microsoft.UI.Xaml;
 using Windows.System;
 using SpaceInvaders.Interfaces.Services;
+using SpaceInvaders.Models.Aliens;
 
 namespace SpaceInvaders.Presentation;
 
@@ -36,6 +37,12 @@ public partial class GameStartPageViewModel : ObservableObject
     /// </summary>
     [ObservableProperty]
     private ObservableCollection<Alien> _aliens;
+    
+    /// <summary>
+    /// Gets or sets the collection of enemy projectiles currently in the game.
+    /// </summary>
+    [ObservableProperty]
+    private ObservableCollection<Projectile> _enemyProjectiles = new();
     
     /// <summary>
     /// Gets or sets the special alien instance currently in the game.
@@ -76,6 +83,9 @@ public partial class GameStartPageViewModel : ObservableObject
     private bool _isSpecialAlienMovingRight;
     private bool _isMovingLeft;
     private bool _isMovingRight;
+    /// <summary>
+    /// Tracks the number of extra lives awarded to the player based on score.
+    /// </summary>
     private int _livesAwarded;
     /// <summary>
     /// Flag to control if the initial alien movement is paused.
@@ -102,6 +112,7 @@ public partial class GameStartPageViewModel : ObservableObject
 
     private bool _canPlayShootSound = true;
     private readonly DispatcherTimer _shootSoundCooldownTimer;
+    private readonly Random _random = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="GameStartPageViewModel"/> class.
@@ -126,6 +137,7 @@ public partial class GameStartPageViewModel : ObservableObject
 
         Player = player;
         Aliens = new ObservableCollection<Alien>();
+        EnemyProjectiles = new ObservableCollection<Projectile>();
         ScoreText = $"SCORE: {Player.Score}";
         LivesText = $"LIVES: {Player.Lives}";
         _livesAwarded = 0;
@@ -308,6 +320,29 @@ public partial class GameStartPageViewModel : ObservableObject
                 foreach (var alien in Aliens)
                 {
                     alien.Y += GameHeight / GameConstants.AlienVerticalStepDivisor;
+                }
+            }
+            
+            // Alien Shooting Logic
+            var potentialShooters = Aliens.OfType<AlienType3>().ToList();
+            if (potentialShooters.Any())
+            {
+                var shootersByColumn = potentialShooters
+                    .GroupBy(a => a.X)
+                    .Select(g => g.OrderByDescending(a => a.Y).First())
+                    .ToList();
+                
+                foreach (var shooter in shootersByColumn)
+                {
+                    if (_random.Next(800) < 1) 
+                    {
+                        var projectile = new Projectile(true, "EnemyProjectile", SpritePaths.Projectile, 1, 5, 1)
+                        {
+                            X = shooter.X + (GameConstants.AlienImageWidth / 2),
+                            Y = shooter.Y + GameConstants.AlienImageHeight,
+                        };
+                        EnemyProjectiles.Add(projectile);
+                    }
                 }
             }
         }
