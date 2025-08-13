@@ -9,13 +9,23 @@ using System.Globalization;
 
 namespace SpaceInvaders.Presentation;
 
+/// <summary>
+/// ViewModel for the Score page, responsible for loading and displaying high scores.
+/// </summary>
 public partial class ScoreViewModel : ObservableObject
 {
     private readonly IScoreService _scoreService;
 
+    /// <summary>
+    /// Gets or sets the observable collection of scores to be displayed.
+    /// </summary>
     [ObservableProperty]
     private ObservableCollection<ScoreDisplayItem> _scores;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ScoreViewModel"/> class.
+    /// </summary>
+    /// <param name="scoreService">The score service for retrieving scores.</param>
     public ScoreViewModel(IScoreService scoreService)
     {
         _scoreService = scoreService;
@@ -23,8 +33,14 @@ public partial class ScoreViewModel : ObservableObject
         LoadScoresCommand = new AsyncRelayCommand(LoadScoresAsync);
     }
 
+    /// <summary>
+    /// Gets the asynchronous command to load scores.
+    /// </summary>
     public IAsyncRelayCommand LoadScoresCommand { get; }
 
+    /// <summary>
+    /// Asynchronously loads scores from the score service, orders them, and populates the Scores collection.
+    /// </summary>
     private async Task LoadScoresAsync()
     {
         var allScores = (await _scoreService.GetAllScoresAsync())
@@ -45,6 +61,9 @@ public partial class ScoreViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Called when the ViewModel is navigated to, triggers the loading of scores.
+    /// </summary>
     public async Task OnNavigatedTo()
     {
         await LoadScoresCommand.ExecuteAsync(null);
