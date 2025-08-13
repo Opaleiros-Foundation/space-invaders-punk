@@ -54,6 +54,7 @@ public partial class GameStartPageViewModel : ObservableObject
 
     private readonly DispatcherTimer _gameTimer;
     private readonly DispatcherTimer _specialAlienTimer;
+    private readonly DispatcherTimer _initialPauseTimer; // New timer for initial pause
     private double _alienSpeed;
     private double _specialAlienSpeed;
     private bool _movingRight = true;
@@ -61,6 +62,7 @@ public partial class GameStartPageViewModel : ObservableObject
     private bool _isMovingLeft;
     private bool _isMovingRight;
     private int _livesAwarded;
+    private bool _initialAlienMovementPaused = true; // New flag for initial pause
 
     /// <summary>
     /// Gets or sets the current width of the game area.
@@ -124,6 +126,16 @@ public partial class GameStartPageViewModel : ObservableObject
         _specialAlienTimer.Tick += SpecialAlienTimer_Tick;
         SetSpecialAlienTimer();
         _specialAlienTimer.Start();
+
+        // Initialize and start initial pause timer
+        _initialPauseTimer = new DispatcherTimer();
+        _initialPauseTimer.Interval = TimeSpan.FromSeconds(2); // Pause for 2 seconds
+        _initialPauseTimer.Tick += (sender, e) =>
+        {
+            _initialAlienMovementPaused = false;
+            _initialPauseTimer.Stop();
+        };
+        _initialPauseTimer.Start();
 
         Player.PropertyChanged += (s, e) =>
         {
@@ -212,6 +224,7 @@ public partial class GameStartPageViewModel : ObservableObject
         {
             _gameTimer.Stop();
             _specialAlienTimer.Stop();
+            _initialPauseTimer.Stop(); // Stop initial pause timer on game over
             await _navigator.NavigateViewModelAsync<GameOverViewModel>(this, data: Player);
             return;
         }
@@ -230,38 +243,41 @@ public partial class GameStartPageViewModel : ObservableObject
         // Special Alien Movement
         UpdateSpecialAlienPosition();
 
-        // Alien Movement
-        foreach (var alien in Aliens)
+        // Alien Movement (only if not paused)
+        if (!_initialAlienMovementPaused)
         {
-            if (_movingRight)
-            {
-                alien.X += _alienSpeed;
-            }
-            else
-            {
-                alien.X -= _alienSpeed;
-            }
-        }
-
-        if (!Aliens.Any()) return;
-
-        var rightmostAlien = Aliens.Max(a => a.X);
-        var leftmostAlien = Aliens.Min(a => a.X);
-
-        if (GameWidth > 0 && rightmostAlien + GameConstants.AlienWidth > GameWidth - GameConstants.ScreenMargin)
-        {
-            _movingRight = false;
             foreach (var alien in Aliens)
             {
-                alien.Y += GameHeight / GameConstants.AlienVerticalStepDivisor;
+                if (_movingRight)
+                {
+                    alien.X += _alienSpeed;
+                }
+                else
+                {
+                    alien.X -= _alienSpeed;
+                }
             }
-        }
-        else if (leftmostAlien < GameConstants.ScreenMargin)
-        {
-            _movingRight = true;
-            foreach (var alien in Aliens)
+
+            if (!Aliens.Any()) return;
+
+            var rightmostAlien = Aliens.Max(a => a.X);
+            var leftmostAlien = Aliens.Min(a => a.X);
+
+            if (GameWidth > 0 && rightmostAlien + GameConstants.AlienWidth > GameWidth - GameConstants.ScreenMargin)
             {
-                alien.Y += GameHeight / GameConstants.AlienVerticalStepDivisor;
+                _movingRight = false;
+                foreach (var alien in Aliens)
+                {
+                    alien.Y += GameHeight / GameConstants.AlienVerticalStepDivisor;
+                }
+            }
+            else if (leftmostAlien < GameConstants.ScreenMargin)
+            {
+                _movingRight = true;
+                foreach (var alien in Aliens)
+                {
+                    alien.Y += GameHeight / GameConstants.AlienVerticalStepDivisor;
+                }
             }
         }
     }
