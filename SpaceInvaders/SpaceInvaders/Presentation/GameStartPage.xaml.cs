@@ -653,6 +653,12 @@ namespace SpaceInvaders.Presentation
             }
         }
 
+        /// <summary>
+        /// Handles the SizeChanged event of the game canvas.
+        /// Updates the game dimensions in the ViewModel to ensure proper boundaries.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The event data.</param>
         private void GameCanvas_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             if (DataContext is GameStartPageViewModel viewModel)

@@ -83,6 +83,9 @@ public partial class GameStartPageViewModel : ObservableObject
     private bool _isSpecialAlienMovingRight;
     private bool _isMovingLeft;
     private bool _isMovingRight;
+    /// <summary>
+    /// Tracks the number of extra lives awarded to the player based on score.
+    /// </summary>
     private int _livesAwarded;
     /// <summary>
     /// Flag to control if the initial alien movement is paused.
