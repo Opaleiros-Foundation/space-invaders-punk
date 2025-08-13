@@ -88,13 +88,12 @@ public partial class Player : Actor
         }
 
         var projectile = new Projectile(
+            false, // isEnemy
             "Laser",
             Weapon.ProjectileSpritePath,
             1, // Health
             10, // Speed
-            Weapon.Damage,
-            16, // Width
-            16 // Height
+            Weapon.Damage
         );
         projectile.X = this.X;
         projectile.Y = this.Y;
