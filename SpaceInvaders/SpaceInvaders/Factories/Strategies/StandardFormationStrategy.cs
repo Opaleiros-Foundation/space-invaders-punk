@@ -6,8 +6,18 @@ using SpaceInvaders.Models;
 
 namespace SpaceInvaders.Factories.Strategies
 {
+    /// <summary>
+    /// Implements <see cref="IWaveFormationStrategy"/> to create alien waves with a standard, predefined formation.
+    /// The number of rows increases with the game level.
+    /// </summary>
     public class StandardFormationStrategy : IWaveFormationStrategy
     {
+        /// <summary>
+        /// Creates a new wave of aliens based on a standard formation pattern.
+        /// The number of rows is determined by the current game level, capped at 6 rows.
+        /// </summary>
+        /// <param name="level">The current game level.</param>
+        /// <returns>A list of <see cref="AlienType"/> representing the alien wave in a standard formation.</returns>
         public List<AlienType> CreateWave(int level)
         {
             // Level 1 starts with 3 rows.

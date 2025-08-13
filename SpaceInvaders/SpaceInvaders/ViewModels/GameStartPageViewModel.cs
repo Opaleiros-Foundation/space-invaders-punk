@@ -14,20 +14,38 @@ using SpaceInvaders.Interfaces.Services;
 
 namespace SpaceInvaders.Presentation;
 
+/// <summary>
+/// ViewModel for the main game screen, handling game logic, player and alien movements, and interactions.
+/// </summary>
 public partial class GameStartPageViewModel : ObservableObject
 {
     private readonly INavigator _navigator;
+    /// <summary>
+    /// Gets the sound service for playing in-game sounds.
+    /// </summary>
     public ISoundService SoundService { get; } // Expose SoundService
 
+    /// <summary>
+    /// Gets or sets the player instance.
+    /// </summary>
     [ObservableProperty]
     private Player _player;
 
+    /// <summary>
+    /// Gets or sets the collection of aliens currently in the game.
+    /// </summary>
     [ObservableProperty]
     private ObservableCollection<Alien> _aliens;
 
+    /// <summary>
+    /// Gets or sets the formatted score text to display.
+    /// </summary>
     [ObservableProperty]
     private string _scoreText;
 
+    /// <summary>
+    /// Gets or sets the formatted lives text to display.
+    /// </summary>
     [ObservableProperty]
     private string _livesText;
 
@@ -38,18 +56,33 @@ public partial class GameStartPageViewModel : ObservableObject
     private bool _isMovingRight;
     private int _livesAwarded;
 
+    /// <summary>
+    /// Gets or sets the current width of the game area.
+    /// </summary>
     [ObservableProperty]
     private double _gameWidth;
 
+    /// <summary>
+    /// Gets or sets the current height of the game area.
+    /// </summary>
     [ObservableProperty]
     private double _gameHeight;
 
+    /// <summary>
+    /// Gets or sets the current game level.
+    /// </summary>
     [ObservableProperty]
     private int _level;
 
     private bool _canPlayShootSound = true;
     private readonly DispatcherTimer _shootSoundCooldownTimer;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="GameStartPageViewModel"/> class.
+    /// </summary>
+    /// <param name="navigator">The navigation service.</param>
+    /// <param name="soundService">The sound service.</param>
+    /// <param name="player">The player instance for the game.</param>
     public GameStartPageViewModel(INavigator navigator, ISoundService soundService, Player player)
     {
         _navigator = navigator;
@@ -106,6 +139,9 @@ public partial class GameStartPageViewModel : ObservableObject
         };
     }
 
+    /// <summary>
+    /// Generates a new wave of aliens based on the current game level.
+    /// </summary>
     public void GenerateAliens()
     {
         Aliens.Clear();
@@ -131,6 +167,9 @@ public partial class GameStartPageViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Handles the game loop tick, updating game state, movements, and checking for game over conditions.
+    /// </summary>
     private async void GameTimer_Tick(object? sender, object? e)
     {
         // Game over conditions
@@ -189,6 +228,9 @@ public partial class GameStartPageViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Updates the player's position based on input.
+    /// </summary>
     private void UpdatePlayerPosition()
     {
         if (_isMovingLeft && Player.X - GameConstants.PlayerSpeed > 0)
@@ -202,6 +244,10 @@ public partial class GameStartPageViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Handles key down events for player input.
+    /// </summary>
+    /// <param name="key">The virtual key that was pressed.</param>
     public void HandleKeyDown(VirtualKey key)
     {
         switch (key)
@@ -220,6 +266,10 @@ public partial class GameStartPageViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Handles key up events for player input.
+    /// </summary>
+    /// <param name="key">The virtual key that was released.</param>
     public void HandleKeyUp(VirtualKey key)
     {
         switch (key)
@@ -235,14 +285,26 @@ public partial class GameStartPageViewModel : ObservableObject
         }
     }
 
+    /// <summary>
+    /// Gets the command to navigate to the main menu.
+    /// </summary>
     public ICommand GoToMain { get; }
+    /// <summary>
+    /// Gets the command to fire the player's weapon.
+    /// </summary>
     public ICommand FirePlayerWeaponCommand { get; }
 
+    /// <summary>
+    /// Navigates to the main view asynchronously.
+    /// </summary>
     private async Task GoToMainView()
     {
         await _navigator.NavigateBackAsync(this);
     }
 
+    /// <summary>
+    /// Fires the player's weapon, plays a sound, and manages the shooting cooldown.
+    /// </summary>
     private void FirePlayerWeapon()
     {
         if (!_canPlayShootSound) return;
