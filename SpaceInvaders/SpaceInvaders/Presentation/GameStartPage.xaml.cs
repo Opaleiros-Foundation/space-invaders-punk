@@ -20,7 +20,11 @@ namespace SpaceInvaders.Presentation
         private readonly List<Image> _shieldImages = new();
         private readonly List<Shield> _shields = new();
         private Image? _playerImage;
-        private Image? _specialAlienImage; // New field for special alien
+        private Image? _specialAlienImage;
+
+        /// <summary>
+        /// Represents the image control for the special alien.
+        /// </summary>
         private DispatcherTimer? _gameTimer;
         private ISoundService? _soundService;
 
@@ -216,7 +220,11 @@ namespace SpaceInvaders.Presentation
             }
         }
 
-        // New method for special alien image creation
+        /// <summary>
+        /// Creates and adds the image control for the special alien to the game canvas.
+        /// Subscribes to the special alien's property changes to update its position.
+        /// </summary>
+        /// <param name="viewModel">The GameStartPageViewModel instance.</param>
         private void CreateSpecialAlienImage(GameStartPageViewModel viewModel)
         {
             if (viewModel.SpecialAlien == null) return;
@@ -254,6 +262,12 @@ namespace SpaceInvaders.Presentation
             };
         }
 
+        /// <summary>
+        /// Handles property changed events from the ViewModel, specifically for the Aliens collection.
+        /// Recreates alien images when the Aliens collection changes.
+        /// </summary>
+        /// <param name="sender">The source of the event (GameStartPageViewModel).</param>
+        /// <param name="e">The PropertyChangedEventArgs instance containing event data.</param>
         private void ViewModel_Aliens_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(GameStartPageViewModel.Aliens)) return;
@@ -263,6 +277,12 @@ namespace SpaceInvaders.Presentation
             }
         }
 
+        /// <summary>
+        /// Handles property changed events from the ViewModel, specifically for the SpecialAlien property.
+        /// Creates or removes the special alien image based on the SpecialAlien property's value.
+        /// </summary>
+        /// <param name="sender">The source of the event (GameStartPageViewModel).</param>
+        /// <param name="e">The PropertyChangedEventArgs instance containing event data.</param>
         private void ViewModel_SpecialAlien_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(GameStartPageViewModel.SpecialAlien)) return;
@@ -342,9 +362,9 @@ namespace SpaceInvaders.Presentation
                 if (viewModel.SpecialAlien != null && projectile.CheckCollision(viewModel.SpecialAlien))
                 {
                     projectile.IsVisible = false;
-                    viewModel.Player.Score += viewModel.SpecialAlien.ScoreValue; // Update score
+                    viewModel.Player.Score += viewModel.SpecialAlien.ScoreValue; // Update score with variable value
                     _soundService?.PlaySound(SoundPaths.Explosion); // Play explosion sound for special alien
-                    viewModel.SpecialAlien = null; // Remove special alien from game
+                    viewModel.SpecialAlien = null; // Remove special alien from game by setting to null
                     
                     projectilesToRemove.Add(projectile);
                     imagesToRemove.Add(projectileImage);

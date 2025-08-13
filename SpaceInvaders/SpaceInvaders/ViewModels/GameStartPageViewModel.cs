@@ -37,6 +37,9 @@ public partial class GameStartPageViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<Alien> _aliens;
     
+    /// <summary>
+    /// Gets or sets the special alien instance currently in the game.
+    /// </summary>
     [ObservableProperty]
     private Alien _specialAlien;
 
@@ -53,15 +56,30 @@ public partial class GameStartPageViewModel : ObservableObject
     private string _livesText;
 
     private readonly DispatcherTimer _gameTimer;
+    /// <summary>
+    /// Timer responsible for spawning the special alien at random intervals.
+    /// </summary>
     private readonly DispatcherTimer _specialAlienTimer;
+    /// <summary>
+    /// Timer responsible for pausing alien movement at the start of the game.
+    /// </summary>
     private readonly DispatcherTimer _initialPauseTimer; // New timer for initial pause
     private double _alienSpeed;
+    /// <summary>
+    /// The current speed of the special alien.
+    /// </summary>
     private double _specialAlienSpeed;
     private bool _movingRight = true;
+    /// <summary>
+    /// Indicates if the special alien is currently moving to the right.
+    /// </summary>
     private bool _isSpecialAlienMovingRight;
     private bool _isMovingLeft;
     private bool _isMovingRight;
     private int _livesAwarded;
+    /// <summary>
+    /// Flag to control if the initial alien movement is paused.
+    /// </summary>
     private bool _initialAlienMovementPaused = true; // New flag for initial pause
 
     /// <summary>
@@ -163,11 +181,20 @@ public partial class GameStartPageViewModel : ObservableObject
         };
     }
     
+    /// <summary>
+    /// Sets a random interval for the special alien timer.
+    /// </summary>
     private void SetSpecialAlienTimer()
     {
         _specialAlienTimer.Interval = TimeSpan.FromSeconds(new Random().Next(10, 21));
     }
     
+    /// <summary>
+    /// Handles the tick event for the special alien timer.
+    /// Spawns a new special alien if one is not already present.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The event data.</param>
     private void SpecialAlienTimer_Tick(object sender, object e)
     {
         if (SpecialAlien is null)
@@ -177,6 +204,10 @@ public partial class GameStartPageViewModel : ObservableObject
         SetSpecialAlienTimer(); // Reset timer for the next spawn
     }
     
+    /// <summary>
+    /// Spawns a new special alien (AlienType4) at a random horizontal position at the top of the screen.
+    /// Sets its initial movement direction randomly.
+    /// </summary>
     private void SpawnSpecialAlien()
     {
         SpecialAlien = AlienFactory.CreateAlien(Models.AlienType.Type4);
@@ -282,6 +313,10 @@ public partial class GameStartPageViewModel : ObservableObject
         }
     }
     
+    /// <summary>
+    /// Updates the position of the special alien.
+    /// If the special alien moves off-screen, it is removed from the game.
+    /// </summary>
     private void UpdateSpecialAlienPosition()
     {
         if (SpecialAlien is null) return;
