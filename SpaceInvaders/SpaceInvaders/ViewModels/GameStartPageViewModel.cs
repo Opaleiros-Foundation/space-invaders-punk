@@ -129,7 +129,7 @@ public partial class GameStartPageViewModel : ObservableObject
 
         // Initialize and start initial pause timer
         _initialPauseTimer = new DispatcherTimer();
-        _initialPauseTimer.Interval = TimeSpan.FromSeconds(2); // Pause for 2 seconds
+        _initialPauseTimer.Interval = TimeSpan.FromSeconds(1); // Pause for 1 second
         _initialPauseTimer.Tick += (sender, e) =>
         {
             _initialAlienMovementPaused = false;
