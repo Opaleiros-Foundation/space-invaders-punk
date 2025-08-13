@@ -20,6 +20,7 @@ namespace SpaceInvaders.Presentation
         private readonly List<Image> _shieldImages = new();
         private readonly List<Shield> _shields = new();
         private Image? _playerImage;
+        private Image? _specialAlienImage; // New field for special alien
         private DispatcherTimer? _gameTimer;
         private ISoundService? _soundService;
 
@@ -50,7 +51,8 @@ namespace SpaceInvaders.Presentation
 
             CreatePlayerImage(viewModel);
             CreateAlienImages(viewModel);
-            viewModel.PropertyChanged += ViewModel_PropertyChanged;
+            viewModel.PropertyChanged += ViewModel_Aliens_PropertyChanged; // Renamed handler
+            viewModel.PropertyChanged += ViewModel_SpecialAlien_PropertyChanged; // New handler for special alien
             viewModel.Player.Projectiles.CollectionChanged += Projectiles_CollectionChanged;
             viewModel.Aliens.CollectionChanged += Aliens_CollectionChanged;
         }
@@ -214,13 +216,75 @@ namespace SpaceInvaders.Presentation
             }
         }
 
-        private void ViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        // New method for special alien image creation
+        private void CreateSpecialAlienImage(GameStartPageViewModel viewModel)
+        {
+            if (viewModel.SpecialAlien == null) return;
+
+            _specialAlienImage = new Image
+            {
+                Width = GameConstants.AlienImageWidth, // Assuming same size as regular aliens
+                Height = GameConstants.AlienImageHeight,
+                Source = new BitmapImage(new Uri(viewModel.SpecialAlien.SpritePath)),
+                Tag = viewModel.SpecialAlien // Tag for easy reference
+            };
+
+            Canvas.SetLeft(_specialAlienImage, viewModel.SpecialAlien.X);
+            Canvas.SetTop(_specialAlienImage, viewModel.SpecialAlien.Y);
+
+            GameCanvas.Children.Add(_specialAlienImage);
+
+            // Subscribe to property changes for the special alien
+            viewModel.SpecialAlien.PropertyChanged += (s, e) =>
+            {
+                DispatcherQueue.TryEnqueue(() =>
+                {
+                    if (_specialAlienImage == null) return; // Image might have been removed
+
+                    switch (e.PropertyName)
+                    {
+                        case nameof(Alien.X):
+                            Canvas.SetLeft(_specialAlienImage, viewModel.SpecialAlien.X);
+                            break;
+                        case nameof(Alien.Y):
+                            Canvas.SetTop(_specialAlienImage, viewModel.SpecialAlien.Y);
+                            break;
+                    }
+                });
+            };
+        }
+
+        private void ViewModel_Aliens_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             if (e.PropertyName != nameof(GameStartPageViewModel.Aliens)) return;
             if (sender is GameStartPageViewModel viewModel)
             {
                 CreateAlienImages(viewModel);
             }
+        }
+
+        private void ViewModel_SpecialAlien_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(GameStartPageViewModel.SpecialAlien)) return;
+            if (sender is not GameStartPageViewModel viewModel) return;
+
+            DispatcherQueue.TryEnqueue(() =>
+            {
+                if (viewModel.SpecialAlien != null)
+                {
+                    // Special alien appeared, create its image
+                    CreateSpecialAlienImage(viewModel);
+                }
+                else
+                {
+                    // Special alien disappeared, remove its image
+                    if (_specialAlienImage != null)
+                    {
+                        GameCanvas.Children.Remove(_specialAlienImage);
+                        _specialAlienImage = null;
+                    }
+                }
+            });
         }
 
         private void GameStartPage_Loaded(object sender, RoutedEventArgs e)
@@ -272,6 +336,19 @@ namespace SpaceInvaders.Presentation
                     projectilesToRemove.Add(projectile);
                     imagesToRemove.Add(projectileImage);
                     continue; // Skip collision check if already off-screen
+                }
+
+                // Collision detection with special alien
+                if (viewModel.SpecialAlien != null && projectile.CheckCollision(viewModel.SpecialAlien))
+                {
+                    projectile.IsVisible = false;
+                    viewModel.Player.Score += viewModel.SpecialAlien.ScoreValue; // Update score
+                    _soundService?.PlaySound(SoundPaths.Explosion); // Play explosion sound for special alien
+                    viewModel.SpecialAlien = null; // Remove special alien from game
+                    
+                    projectilesToRemove.Add(projectile);
+                    imagesToRemove.Add(projectileImage);
+                    continue; // Projectile hit special alien, no need to check other aliens
                 }
 
                 // Collision detection with aliens
