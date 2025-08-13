@@ -38,4 +38,9 @@ public static class SoundPaths
     /// The path to the extra life sound effect.
     /// </summary>
     public const string ExtraLife = "ms-appx:///Assets/sounds/musics/extra_life.mp3";
+
+    /// <summary>
+    /// The path to the explosion sound effect.
+    /// </summary>
+    public const string Explosion = "ms-appx:///Assets/sounds/enemies/die/sound1.mp3";
 }

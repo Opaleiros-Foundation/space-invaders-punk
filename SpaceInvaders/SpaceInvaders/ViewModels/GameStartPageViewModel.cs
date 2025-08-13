@@ -36,6 +36,12 @@ public partial class GameStartPageViewModel : ObservableObject
     /// </summary>
     [ObservableProperty]
     private ObservableCollection<Alien> _aliens;
+    
+    /// <summary>
+    /// Gets or sets the special alien instance currently in the game.
+    /// </summary>
+    [ObservableProperty]
+    private Alien _specialAlien;
 
     /// <summary>
     /// Gets or sets the formatted score text to display.
@@ -50,11 +56,31 @@ public partial class GameStartPageViewModel : ObservableObject
     private string _livesText;
 
     private readonly DispatcherTimer _gameTimer;
+    /// <summary>
+    /// Timer responsible for spawning the special alien at random intervals.
+    /// </summary>
+    private readonly DispatcherTimer _specialAlienTimer;
+    /// <summary>
+    /// Timer responsible for pausing alien movement at the start of the game.
+    /// </summary>
+    private readonly DispatcherTimer _initialPauseTimer; // New timer for initial pause
     private double _alienSpeed;
+    /// <summary>
+    /// The current speed of the special alien.
+    /// </summary>
+    private double _specialAlienSpeed;
     private bool _movingRight = true;
+    /// <summary>
+    /// Indicates if the special alien is currently moving to the right.
+    /// </summary>
+    private bool _isSpecialAlienMovingRight;
     private bool _isMovingLeft;
     private bool _isMovingRight;
     private int _livesAwarded;
+    /// <summary>
+    /// Flag to control if the initial alien movement is paused.
+    /// </summary>
+    private bool _initialAlienMovementPaused = true; // New flag for initial pause
 
     /// <summary>
     /// Gets or sets the current width of the game area.
@@ -107,11 +133,27 @@ public partial class GameStartPageViewModel : ObservableObject
         GameWidth = GameConstants.InitialGameWidth; // Initialize with default canvas width
         GameHeight = GameConstants.InitialGameHeight; // Initialize with default canvas height
         _alienSpeed = GameConstants.InitialAlienSpeed;
+        _specialAlienSpeed = GameConstants.InitialAlienSpeed; // Special alien speed is now normal alien speed
 
         _gameTimer = new DispatcherTimer();
         _gameTimer.Interval = TimeSpan.FromMilliseconds(GameConstants.GameLoopIntervalMs); 
         _gameTimer.Tick += GameTimer_Tick;
         _gameTimer.Start();
+        
+        _specialAlienTimer = new DispatcherTimer();
+        _specialAlienTimer.Tick += SpecialAlienTimer_Tick;
+        SetSpecialAlienTimer();
+        _specialAlienTimer.Start();
+
+        // Initialize and start initial pause timer
+        _initialPauseTimer = new DispatcherTimer();
+        _initialPauseTimer.Interval = TimeSpan.FromSeconds(1); // Pause for 1 second
+        _initialPauseTimer.Tick += (sender, e) =>
+        {
+            _initialAlienMovementPaused = false;
+            _initialPauseTimer.Stop();
+        };
+        _initialPauseTimer.Start();
 
         Player.PropertyChanged += (s, e) =>
         {
@@ -137,6 +179,41 @@ public partial class GameStartPageViewModel : ObservableObject
                 LivesText = $"LIVES: {Player.Lives}";
             }
         };
+    }
+    
+    /// <summary>
+    /// Sets a random interval for the special alien timer.
+    /// </summary>
+    private void SetSpecialAlienTimer()
+    {
+        _specialAlienTimer.Interval = TimeSpan.FromSeconds(new Random().Next(10, 21));
+    }
+    
+    /// <summary>
+    /// Handles the tick event for the special alien timer.
+    /// Spawns a new special alien if one is not already present.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The event data.</param>
+    private void SpecialAlienTimer_Tick(object sender, object e)
+    {
+        if (SpecialAlien is null)
+        {
+            SpawnSpecialAlien();
+        }
+        SetSpecialAlienTimer(); // Reset timer for the next spawn
+    }
+    
+    /// <summary>
+    /// Spawns a new special alien (AlienType4) at a random horizontal position at the top of the screen.
+    /// Sets its initial movement direction randomly.
+    /// </summary>
+    private void SpawnSpecialAlien()
+    {
+        SpecialAlien = AlienFactory.CreateAlien(Models.AlienType.Type4);
+        _isSpecialAlienMovingRight = new Random().Next(0, 2) == 0; // Random direction
+        SpecialAlien.Y = GameConstants.WaveStartY; // Top of the screen
+        SpecialAlien.X = _isSpecialAlienMovingRight ? 0 : GameWidth - SpecialAlien.Width;
     }
 
     /// <summary>
@@ -177,6 +254,8 @@ public partial class GameStartPageViewModel : ObservableObject
         if (Player.Lives <= 0 || aliensReachedBottom)
         {
             _gameTimer.Stop();
+            _specialAlienTimer.Stop();
+            _initialPauseTimer.Stop(); // Stop initial pause timer on game over
             await _navigator.NavigateViewModelAsync<GameOverViewModel>(this, data: Player);
             return;
         }
@@ -191,39 +270,71 @@ public partial class GameStartPageViewModel : ObservableObject
 
         // Player Movement
         UpdatePlayerPosition();
+        
+        // Special Alien Movement
+        UpdateSpecialAlienPosition();
 
-        // Alien Movement
-        foreach (var alien in Aliens)
+        // Alien Movement (only if not paused)
+        if (!_initialAlienMovementPaused)
         {
-            if (_movingRight)
-            {
-                alien.X += _alienSpeed;
-            }
-            else
-            {
-                alien.X -= _alienSpeed;
-            }
-        }
-
-        if (!Aliens.Any()) return;
-
-        var rightmostAlien = Aliens.Max(a => a.X);
-        var leftmostAlien = Aliens.Min(a => a.X);
-
-        if (GameWidth > 0 && rightmostAlien + GameConstants.AlienWidth > GameWidth - GameConstants.ScreenMargin)
-        {
-            _movingRight = false;
             foreach (var alien in Aliens)
             {
-                alien.Y += GameHeight / GameConstants.AlienVerticalStepDivisor;
+                if (_movingRight)
+                {
+                    alien.X += _alienSpeed;
+                }
+                else
+                {
+                    alien.X -= _alienSpeed;
+                }
+            }
+
+            if (!Aliens.Any()) return;
+
+            var rightmostAlien = Aliens.Max(a => a.X);
+            var leftmostAlien = Aliens.Min(a => a.X);
+
+            if (GameWidth > 0 && rightmostAlien + GameConstants.AlienWidth > GameWidth - GameConstants.ScreenMargin)
+            {
+                _movingRight = false;
+                foreach (var alien in Aliens)
+                {
+                    alien.Y += GameHeight / GameConstants.AlienVerticalStepDivisor;
+                }
+            }
+            else if (leftmostAlien < GameConstants.ScreenMargin)
+            {
+                _movingRight = true;
+                foreach (var alien in Aliens)
+                {
+                    alien.Y += GameHeight / GameConstants.AlienVerticalStepDivisor;
+                }
             }
         }
-        else if (leftmostAlien < GameConstants.ScreenMargin)
+    }
+    
+    /// <summary>
+    /// Updates the position of the special alien.
+    /// If the special alien moves off-screen, it is removed from the game.
+    /// </summary>
+    private void UpdateSpecialAlienPosition()
+    {
+        if (SpecialAlien is null) return;
+
+        if (_isSpecialAlienMovingRight)
         {
-            _movingRight = true;
-            foreach (var alien in Aliens)
+            SpecialAlien.X += _specialAlienSpeed;
+            if (SpecialAlien.X > GameWidth)
             {
-                alien.Y += GameHeight / GameConstants.AlienVerticalStepDivisor;
+                SpecialAlien = null; // Disappears off the right edge
+            }
+        }
+        else
+        {
+            SpecialAlien.X -= _specialAlienSpeed;
+            if (SpecialAlien.X + SpecialAlien.Width < 0)
+            {
+                SpecialAlien = null; // Disappears off the left edge
             }
         }
     }
