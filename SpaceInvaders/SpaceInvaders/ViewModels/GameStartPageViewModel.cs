@@ -115,7 +115,7 @@ public partial class GameStartPageViewModel : ObservableObject
         GameWidth = GameConstants.InitialGameWidth; // Initialize with default canvas width
         GameHeight = GameConstants.InitialGameHeight; // Initialize with default canvas height
         _alienSpeed = GameConstants.InitialAlienSpeed;
-        _specialAlienSpeed = GameConstants.InitialAlienSpeed * 2; // Special alien is faster
+        _specialAlienSpeed = GameConstants.InitialAlienSpeed; // Special alien speed is now normal alien speed
 
         _gameTimer = new DispatcherTimer();
         _gameTimer.Interval = TimeSpan.FromMilliseconds(GameConstants.GameLoopIntervalMs); 
