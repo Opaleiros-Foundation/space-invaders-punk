@@ -12,6 +12,7 @@ public partial class MainViewModel : ObservableObject
 {
     private INavigator _navigator;
     private IPlayerService _playerService;
+    private IScoreCacheService _scoreCacheService;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="MainViewModel"/> class.
@@ -20,15 +21,21 @@ public partial class MainViewModel : ObservableObject
     /// <param name="appInfo">Application configuration options.</param>
     /// <param name="navigator">The navigation service.</param>
     /// <param name="playerService">The player service.</param>
+    /// <param name="scoreCacheService">The score cache service.</param>
     public MainViewModel(
         IStringLocalizer localizer,
         IOptions<AppConfig> appInfo,
         INavigator navigator,
-        IPlayerService playerService
+        IPlayerService playerService,
+        IScoreCacheService scoreCacheService
     )
     {
         _navigator = navigator;
         _playerService = playerService;
+        _scoreCacheService = scoreCacheService;
+
+        // Preload scores in the background
+        _ = _scoreCacheService.PreloadScoresAsync();
         
         GoToControllers = new AsyncRelayCommand(GoToControllersView);
         GoToScore = new AsyncRelayCommand(GoToScoreView);

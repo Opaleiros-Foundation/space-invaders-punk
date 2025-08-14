@@ -26,4 +26,12 @@ public interface IScoreService
     /// </summary>
     /// <returns>A task that represents the asynchronous operation, containing a list of all scores.</returns>
     Task<List<Score>> GetAllScoresAsync();
+
+    /// <summary>
+    /// Asynchronously retrieves a paginated list of scores.
+    /// </summary>
+    /// <param name="pageNumber">The page number to retrieve.</param>
+    /// <param name="pageSize">The number of scores per page.</param>
+    /// <returns>A task that represents the asynchronous operation, containing a list of scores for the specified page.</returns>
+    Task<List<Score>> GetScoresByPageAsync(int pageNumber, int pageSize);
 }

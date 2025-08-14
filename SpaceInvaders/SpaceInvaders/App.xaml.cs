@@ -78,6 +78,7 @@ public partial class App : Application
                     services.AddSingleton<ISoundService, SoundService>();
                     services.AddSingleton<IPlayerService, PlayerService>();
                     services.AddSingleton<IScoreService, ScoreService>();
+                    services.AddSingleton<IScoreCacheService, ScoreCacheService>();
                     services.AddSingleton<Player>();
                     services.AddTransient<ScoreViewModel>();
                     services.AddTransient<ScorePage>();

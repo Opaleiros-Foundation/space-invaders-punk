@@ -11,14 +11,24 @@ using NAudio.Wave;
 
 namespace SpaceInvaders.Services;
 
+/// <summary>
+/// Provides services for playing sounds within the application.
+/// </summary>
 public class SoundService : ISoundService
 {
 #if !__MACCATALYST__ && !WINDOWS && !ANDROID && !IOS
     private readonly List<IWavePlayer> _activePlayers = new();
 #endif
 
+    /// <summary>
+    /// Gets or sets the global volume for sounds played by this service.
+    /// </summary>
     public float Volume { get; set; } = 1.0f; // Default volume to 1.0 (max)
 
+    /// <summary>
+    /// Plays a sound from the specified path.
+    /// </summary>
+    /// <param name="soundPath">The path to the sound file (e.g., "ms-appx:///Assets/sounds/my_sound.mp3").</param>
     public void PlaySound(string soundPath)
     {
         try

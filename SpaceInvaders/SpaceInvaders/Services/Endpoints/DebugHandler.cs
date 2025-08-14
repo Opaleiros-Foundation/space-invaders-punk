@@ -1,15 +1,29 @@
 namespace SpaceInvaders.Services.Endpoints;
 
+/// <summary>
+/// Intercepts HTTP requests and logs details, especially for unsuccessful calls, in debug mode.
+/// </summary>
 internal class DebugHttpHandler : DelegatingHandler
 {
   private readonly ILogger _logger;
 
+  /// <summary>
+  /// Initializes a new instance of the <see cref="DebugHttpHandler"/> class.
+  /// </summary>
+  /// <param name="logger">The logger instance.</param>
+  /// <param name="innerHandler">The inner HTTP message handler.</param>
   public DebugHttpHandler(ILogger<DebugHttpHandler> logger, HttpMessageHandler? innerHandler = null)
     : base(innerHandler ?? new HttpClientHandler())
   {
     _logger = logger;
   }
 
+  /// <summary>
+  /// Sends an HTTP request and logs details of unsuccessful responses in debug mode.
+  /// </summary>
+  /// <param name="request">The HTTP request message.</param>
+  /// <param name="cancellationToken">A token to cancel the operation.</param>
+  /// <returns>The HTTP response message.</returns>
   protected async override Task<HttpResponseMessage> SendAsync(
     HttpRequestMessage request,
     CancellationToken cancellationToken)

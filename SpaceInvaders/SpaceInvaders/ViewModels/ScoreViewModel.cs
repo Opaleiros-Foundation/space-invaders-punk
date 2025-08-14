@@ -1,71 +1,76 @@
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+using Microsoft.UI.Dispatching;
 using SpaceInvaders.Interfaces.Services;
 using SpaceInvaders.Models;
-using System.Collections.ObjectModel;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Globalization;
+using SpaceInvaders.Utils;
 
 namespace SpaceInvaders.Presentation;
 
-/// <summary>
-/// ViewModel for the Score page, responsible for loading and displaying high scores.
-/// </summary>
 public partial class ScoreViewModel : ObservableObject
 {
     private readonly IScoreService _scoreService;
+    private readonly IScoreCacheService _scoreCacheService;
+    private const int PageSize = 25;
 
-    /// <summary>
-    /// Gets or sets the observable collection of scores to be displayed.
-    /// </summary>
     [ObservableProperty]
-    private ObservableCollection<ScoreDisplayItem> _scores;
+    [NotifyPropertyChangedFor(nameof(IsLoaded))]
+    private bool _isLoading;
 
-    /// <summary>
-    /// Initializes a new instance of the <see cref="ScoreViewModel"/> class.
-    /// </summary>
-    /// <param name="scoreService">The score service for retrieving scores.</param>
-    public ScoreViewModel(IScoreService scoreService)
+    public bool IsLoaded => !_isLoading;
+
+    [ObservableProperty]
+    private IncrementalLoadingCollection<ScoreDisplayItem> _scores;
+
+    public List<int> SkeletonItems { get; } = Enumerable.Range(1, 7).ToList();
+
+    public ScoreViewModel(IScoreService scoreService, IScoreCacheService scoreCacheService)
     {
         _scoreService = scoreService;
-        _scores = new ObservableCollection<ScoreDisplayItem>();
-        LoadScoresCommand = new AsyncRelayCommand(LoadScoresAsync);
+        _scoreCacheService = scoreCacheService;
+        _scores = new IncrementalLoadingCollection<ScoreDisplayItem>(async (page) => new List<ScoreDisplayItem>(), DispatcherQueue.GetForCurrentThread());
     }
 
-    /// <summary>
-    /// Gets the asynchronous command to load scores.
-    /// </summary>
-    public IAsyncRelayCommand LoadScoresCommand { get; }
-
-    /// <summary>
-    /// Asynchronously loads scores from the score service, orders them, and populates the Scores collection.
-    /// </summary>
-    private async Task LoadScoresAsync()
+    public async Task OnNavigatedTo(DispatcherQueue dispatcher)
     {
-        var allScores = (await _scoreService.GetAllScoresAsync())
-            .OrderByDescending(s => s.PlayerScore)
-            .ToList();
+        IsLoading = true;
 
-        Scores.Clear();
-        for (int i = 0; i < allScores.Count; i++)
+        // Ensure the cache is populated, waiting if necessary.
+        await _scoreCacheService.PreloadScoresAsync();
+        var cachedScores = _scoreCacheService.GetScores();
+
+        // Map the cached models to display items.
+        var initialItems = cachedScores.Select((score, index) => new ScoreDisplayItem
         {
-            var score = allScores[i];
-            Scores.Add(new ScoreDisplayItem
+            Rank = index + 1,
+            PlayerName = score.Player?.Name ?? "Unknown Player",
+            PlayerScore = score.PlayerScore,
+            DateAchievedFormatted = score.DateAchieved.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture)
+        }).ToList();
+
+        // The delegate for fetching subsequent pages.
+        Func<int, Task<List<ScoreDisplayItem>>> fetchMoreFunc = async (page) =>
+        {
+            var newScores = await _scoreService.GetScoresByPageAsync(page, PageSize);
+            if (newScores == null || !newScores.Any()) return new List<ScoreDisplayItem>();
+
+            var rankStart = (page - 1) * PageSize + 1;
+            return newScores.Select((score, index) => new ScoreDisplayItem
             {
-                Rank = i + 1,
+                Rank = rankStart + index,
                 PlayerName = score.Player?.Name ?? "Unknown Player",
                 PlayerScore = score.PlayerScore,
                 DateAchievedFormatted = score.DateAchieved.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture)
-            });
-        }
-    }
+            }).ToList();
+        };
 
-    /// <summary>
-    /// Called when the ViewModel is navigated to, triggers the loading of scores.
-    /// </summary>
-    public async Task OnNavigatedTo()
-    {
-        await LoadScoresCommand.ExecuteAsync(null);
+        // Create the collection with the pre-loaded data.
+        Scores = new IncrementalLoadingCollection<ScoreDisplayItem>(initialItems, fetchMoreFunc, dispatcher);
+        OnPropertyChanged(nameof(Scores));
+
+        IsLoading = false;
     }
 }

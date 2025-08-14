@@ -6,11 +6,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:SpaceInvaders.Presentation"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
-    <Page.Resources>
-        <ResourceDictionary Source="ms-appx:///Styles/GameOverStyles.xaml" />
-    </Page.Resources>
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:utils="using:SpaceInvaders.Utils">
 
     <Grid>
         <Grid.Background>
@@ -30,7 +27,10 @@
                 Command="{Binding SaveScoreCommand}"
                 Content="Save Score"
                 Style="{StaticResource GameOverButtonStyle}" />
-            <TextBlock Style="{StaticResource GameOverConfirmationMessageStyle}" Text="{Binding ConfirmationMessage}" />
+            <TextBlock 
+                Style="{StaticResource GameOverConfirmationMessageStyle}" 
+                Text="{Binding ConfirmationMessage}" 
+                Visibility="{Binding ConfirmationVisibility}" />
             <Button
                 Command="{Binding PlayAgain}"
                 Content="Play Again"
