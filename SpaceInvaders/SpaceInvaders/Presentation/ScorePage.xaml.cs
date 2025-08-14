@@ -21,7 +21,7 @@ public sealed partial class ScorePage : Page
     protected override async void OnNavigatedTo(NavigationEventArgs e)
     {
         base.OnNavigatedTo(e);
-        await ViewModel.OnNavigatedTo();
+        await ViewModel.OnNavigatedTo(this.DispatcherQueue);
     }
 
     private void BackToMainMenu_Click(object sender, Microsoft.UI.Xaml.RoutedEventArgs e)
