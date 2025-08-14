@@ -22,6 +22,9 @@ public partial class ScoreViewModel : ObservableObject
     [ObservableProperty]
     private ObservableCollection<ScoreDisplayItem> _scores;
 
+    private const int PageSize = 25;
+    private int _currentPage = 1;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="ScoreViewModel"/> class.
     /// </summary>
@@ -43,17 +46,17 @@ public partial class ScoreViewModel : ObservableObject
     /// </summary>
     private async Task LoadScoresAsync()
     {
-        var allScores = (await _scoreService.GetAllScoresAsync())
-            .OrderByDescending(s => s.PlayerScore)
-            .ToList();
-
         Scores.Clear();
-        for (int i = 0; i < allScores.Count; i++)
+        _currentPage = 1;
+
+        var newScores = await _scoreService.GetScoresByPageAsync(_currentPage, PageSize);
+
+        var rankStart = (_currentPage - 1) * PageSize + 1;
+        foreach (var score in newScores)
         {
-            var score = allScores[i];
             Scores.Add(new ScoreDisplayItem
             {
-                Rank = i + 1,
+                Rank = rankStart++,
                 PlayerName = score.Player?.Name ?? "Unknown Player",
                 PlayerScore = score.PlayerScore,
                 DateAchievedFormatted = score.DateAchieved.ToString("MM/dd/yyyy HH:mm:ss", CultureInfo.InvariantCulture)

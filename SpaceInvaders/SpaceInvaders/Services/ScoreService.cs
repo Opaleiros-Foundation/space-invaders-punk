@@ -36,4 +36,14 @@ public class ScoreService : IScoreService
     {
         return await _context.Scores.Include(s => s.Player).ToListAsync();
     }
+
+    public async Task<List<Score>> GetScoresByPageAsync(int pageNumber, int pageSize)
+    {
+        return await _context.Scores
+            .Include(s => s.Player)
+            .OrderByDescending(s => s.PlayerScore)
+            .Skip((pageNumber - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+    }
 }
