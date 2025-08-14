@@ -72,6 +72,8 @@ public partial class GameStartPageViewModel : ObservableObject
     /// </summary>
     private readonly DispatcherTimer _initialPauseTimer; // New timer for initial pause
     private double _alienSpeed;
+    private int _alienFireProbability;
+
     /// <summary>
     /// The current speed of the special alien.
     /// </summary>
@@ -145,6 +147,7 @@ public partial class GameStartPageViewModel : ObservableObject
         GameWidth = GameConstants.InitialGameWidth; // Initialize with default canvas width
         GameHeight = GameConstants.InitialGameHeight; // Initialize with default canvas height
         _alienSpeed = GameConstants.InitialAlienSpeed;
+        _alienFireProbability = GameConstants.InitialAlienFireProbability;
         _specialAlienSpeed = GameConstants.InitialAlienSpeed; // Special alien speed is now normal alien speed
 
         _gameTimer = new DispatcherTimer();
@@ -276,6 +279,10 @@ public partial class GameStartPageViewModel : ObservableObject
         {
             Level++;
             _alienSpeed += GameConstants.AlienSpeedIncrement; // Increase speed every level
+            if (_alienFireProbability > GameConstants.MinAlienFireProbability)
+            {
+                _alienFireProbability -= GameConstants.AlienFireProbabilityDecrement;
+            }
             GenerateAliens();
             return;
         }
@@ -334,7 +341,7 @@ public partial class GameStartPageViewModel : ObservableObject
                 
                 foreach (var shooter in shootersByColumn)
                 {
-                    if (_random.Next(800) < 1) 
+                    if (_random.Next(_alienFireProbability) < 1) 
                     {
                         var projectile = new Projectile(true, "EnemyProjectile", SpritePaths.Projectile, 1, 5, 1)
                         {

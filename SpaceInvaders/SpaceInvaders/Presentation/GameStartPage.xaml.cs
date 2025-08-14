@@ -370,6 +370,8 @@ namespace SpaceInvaders.Presentation
 
             var projectilesToRemove = new List<Projectile>();
             var imagesToRemove = new List<Image>();
+            var enemyProjectilesToRemove = new List<Projectile>();
+            var enemyImagesToRemove = new List<Image>();
 
             for (var i = _projectileImages.Count - 1; i >= 0; i--)
             {
@@ -447,6 +449,27 @@ namespace SpaceInvaders.Presentation
                         break; // Projectile hit a shield, no need to check other shields
                     }
                 }
+                
+                // Collision detection with enemy projectiles
+                for (var j = _enemyProjectileImages.Count - 1; j >= 0; j--)
+                {
+                    var enemyProjectile = viewModel.EnemyProjectiles[j];
+                    var enemyProjectileImage = _enemyProjectileImages[j];
+
+                    if (projectile.CheckCollision(enemyProjectile))
+                    {
+                        projectile.IsVisible = false;
+                        enemyProjectile.IsVisible = false;
+                        
+                        projectilesToRemove.Add(projectile);
+                        imagesToRemove.Add(projectileImage);
+                        
+                        enemyProjectilesToRemove.Add(enemyProjectile);
+                        enemyImagesToRemove.Add(enemyProjectileImage);
+                        
+                        break;
+                    }
+                }
             }
 
             // Remove projectiles
@@ -461,9 +484,6 @@ namespace SpaceInvaders.Presentation
                 GameCanvas.Children.Remove(image);
                 _projectileImages.Remove(image);
             }
-
-            var enemyProjectilesToRemove = new List<Projectile>();
-            var enemyImagesToRemove = new List<Image>();
 
             for (var i = _enemyProjectileImages.Count - 1; i >= 0; i--)
             {
