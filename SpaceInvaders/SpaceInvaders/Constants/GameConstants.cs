@@ -45,6 +45,20 @@ namespace SpaceInvaders.Constants
         /// </summary>
         public const double AlienVerticalStepDivisor = 90.0;
 
+        // Alien Firing
+        /// <summary>
+        /// The initial probability for an alien to fire (1 in X).
+        /// </summary>
+        public const int InitialAlienFireProbability = 800;
+        /// <summary>
+        /// The decrement value for the alien firing probability per level.
+        /// </summary>
+        public const int AlienFireProbabilityDecrement = 50;
+        /// <summary>
+        /// The minimum probability for an alien to fire (1 in X).
+        /// </summary>
+        public const int MinAlienFireProbability = 100;
+
         // Player
         /// <summary>
         /// The movement speed of the player.
