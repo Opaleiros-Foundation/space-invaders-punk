@@ -12,6 +12,8 @@ Ao iniciar a aplicação, você será levado à **Tela Inicial**. Nela, você en
 *   **Placares**: Exibe as pontuações mais altas salvas.
 *   **Controles**: Mostra este manual de controles.
 
+![Main Page](Main Page)
+
 Selecione "Iniciar Jogo" para começar sua aventura e defender a Terra dos invasores!
 
 ### 1.2. Objetivo do Jogo
@@ -23,20 +25,34 @@ Seu objetivo é destruir todas as ondas de alienígenas que descem em direção 
 Os controles são simples e intuitivos:
 
 *   **Mover para a Esquerda**: Use a tecla `Seta Esquerda` ou `A`.
-*   **Mover para a Direita**: Use a tecla `Seta Direita` ou `D`.
+
+![Mover para a Esquerda](Mover para a Esquerda)
+  
+* **Mover para a Direita**: Use a tecla `Seta Direita` ou `D`.
+
+![Mover para a Direita](Mover para a Direita)
+
 *   **Disparar Laser**: Use a tecla `Barra de Espaço`.
 
-## 3. Elementos da Interface (HUD)
+![Disparar Laser](Disparar Laser)
 
+## 3. Elementos da Interface (HUD)
 Durante o jogo, você verá informações importantes na parte superior da tela:
 
 *   **Pontuação**: Exibida no canto superior esquerdo. Aumenta à medida que você destrói alienígenas.
 *   **Vidas**: Exibidas no canto superior direito. Representam quantas vezes sua nave pode ser atingida antes do jogo terminar.
 
+![Parte superior da tela](Parte superior da tela)
+
 ## 4. Inimigos e Barreiras
 
 *   **Alienígenas**: Eles descem em ondas e disparam contra sua nave. Destrua-os para ganhar pontos.
-*   **Barreiras de Proteção**: Existem barreiras na parte inferior da tela que podem protegê-lo dos tiros inimigos. Elas se degradam e desaparecem ao serem atingidas.
+
+![Alienígenas](Alienígenas)
+
+* **Barreiras de Proteção**: Existem barreiras na parte inferior da tela que podem protegê-lo dos tiros inimigos. Elas se degradam e desaparecem ao serem atingidas.
+
+![Barreiras de Proteção](Barreiras de Proteção)
 
 ## 5. Fim de Jogo
 
@@ -51,3 +67,4 @@ Ao final do jogo, a **Tela de Fim de Jogo** será exibida, onde você poderá:
 *   **Jogar Novamente**: Inicia uma nova partida.
 *   **Voltar ao Menu Principal**: Retorna à tela inicial.
 
+![Tela de Fim de Jogo](Tela de Fim de Jogo)

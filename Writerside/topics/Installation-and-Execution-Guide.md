@@ -27,7 +27,8 @@ O projeto utiliza PostgreSQL para persistência de dados (placares), gerenciado 
 2.  **Inicie o serviço do banco de dados** usando Docker Compose:
 
     ```bash
-    docker-compose up -d db
+    docker compose up 
+    # ou docker compose up
     ```
 
     Este comando irá baixar a imagem do PostgreSQL (se ainda não tiver), criar e iniciar um contêiner de banco de dados configurado para o projeto. O banco de dados estará acessível na porta `5432`.
