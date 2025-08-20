@@ -34,6 +34,15 @@ package "SpaceInvaders" {
         [SoundService]
     }
 
+    folder "Factories" {
+        [AlienFactory]
+        [WaveFactory]
+        folder "Strategies" {
+            [StandardFormationStrategy]
+            [RandomFormationStrategy]
+        }
+    }
+
     folder "Data" {
         [SpaceInvadersDbContext]
         [Migrations]
@@ -62,109 +71,51 @@ ViewModels --> Models : manipula
 Services --> Models : interage
 Services --> Data : acessa
 Presentation --> ViewModels : exibe dados
+Factories --> Models : cria
 @enduml
 ```
 
-### 1.2. Diagrama de Classes
+### 1.2. Diagrama de Classes: Domínio Principal
 
-Este diagrama detalha as classes do sistema, seus atributos, métodos e relacionamentos, fornecendo uma visão estrutural do modelo de domínio do jogo.
+Este diagrama detalha as classes centrais da jogabilidade, seus atributos e relacionamentos, fornecendo uma visão estrutural do modelo de domínio do jogo.
 
 ```plantuml
 @startuml
 skinparam classAttributeIconStyle hidden
+title Diagrama de Classes: Domínio Principal
 
 abstract class Actor {
-    + Id: int
-    + Name: string
     + X: double
     + Y: double
-    + Width: double
-    + Height: double
-    + SpritePath: string
     + Health: int
-    + IsVisible: bool
+    + SpritePath: string
     + CheckCollision(other: Actor): bool
 }
 
 class Player {
     + Score: int
-    + Weapon: Weapon
-    + Projectiles: ObservableCollection<Projectile>
-    + Scores: ICollection<Score>
+    + Lives: int
     + CanShoot: bool
     + Shoot(): void
 }
 
 abstract class Alien {
     + ScoreValue: int
-    + Weapon: Weapon
 }
-
-class AlienType1
-class AlienType2
-class AlienType3
-class AlienType4
 
 class Projectile {
     + Speed: int
     + Damage: int
-    + PlayerId: int
-    + Player: Player
     + Move(): void
-    + CheckBounds(topScreenY: double): bool
-}
-
-class Weapon {
-    + Id: int
-    + Damage: int
-    + FireRate: double
-    + ProjectileSpritePath: string
-    + PlayerId: int
-    + Player: Player
-}
-
-class Score {
-    + Id: int
-    + PlayerScore: int
-    + DateAchieved: DateTime
-    + PlayerId: int?
-    + Player: Player?
 }
 
 class Shield {
     + MaxHealth: int
 }
 
-class SpaceInvadersDbContext {
-    + Players: DbSet<Player>
-    + Aliens: DbSet<DbSet<Alien>>
-    + AlienType1s: DbSet<AlienType1>
-    + AlienType2s: DbSet<AlienType2>
-    + AlienType3s: DbSet<AlienType3>
-    + AlienType4s: DbSet<AlienType4>
-    + Projectiles: DbSet<Projectile>
-    + Shields: DbSet<Shield>
-    + Weapons: DbSet<DbSet<Weapon>>
-    + Scores: DbSet<Score>
-    + OnModelCreating(modelBuilder: ModelBuilder): void
-}
-
-interface IProjectile {
-  + Speed: int
-  + Damage: int
-  + Move(): void
-  + CheckBounds(topScreenY: double): bool
-}
-
-interface ISoundService {
-  + Volume: float
-  + PlaySound(soundPath: string): void
-}
-
-interface IScoreService {
-  + AddScoreAsync(score: Score): Task<Score>
-  + GetTopScoresAsync(count: int): Task<List<Score>>
-  + GetAllScoresAsync(): Task<List<Score>>
+class Weapon {
+    + Damage: int
+    + FireRate: double
 }
 
 Actor <|-- Player
@@ -172,33 +123,100 @@ Actor <|-- Alien
 Actor <|-- Projectile
 Actor <|-- Shield
 
-Projectile ..|> IProjectile
-
-Alien <|-- AlienType1
-Alien <|-- AlienType2
-Alien <|-- AlienType3
-Alien <|-- AlienType4
-
 Player "1" -- "1" Weapon : has >
 Player "1" -- "*" Projectile : shoots >
-Player "1" -- "*" Score : earns >
-
-SpaceInvadersDbContext ..> Player
-SpaceInvadersDbContext ..> Alien
-SpaceInvadersDbContext ..> Projectile
-SpaceInvadersDbContext ..> Shield
-SpaceInvadersDbContext ..> Weapon
-SpaceInvadersDbContext ..> Score
-
-ScoreService ..|> IScoreService
-ScoreService ..> SpaceInvadersDbContext
-
-SoundService ..|> ISoundService
-
+Alien "1" -- "1" Weapon : has >
+Alien "1" -- "*" Projectile : shoots >
 @enduml
 ```
 
-### 1.3. Diagrama de Componentes
+### 1.3. Diagrama de Classes: Factories e Strategies
+
+Este diagrama foca em como os objetos do jogo são criados, ilustrando o uso dos padrões de design Factory e Strategy.
+
+```plantuml
+@startuml
+skinparam classAttributeIconStyle hidden
+title Diagrama de Classes: Factories e Strategies
+
+class AlienFactory {
+    + CreateAlien(alienType: AlienType): Alien
+}
+
+class WaveFactory <<static>> {
+    + GenerateWave(level: int): List<AlienType>
+}
+
+interface IWaveFormationStrategy {
+    + CreateWave(level: int): List<AlienType>
+}
+
+class StandardFormationStrategy implements IWaveFormationStrategy
+class RandomFormationStrategy implements IWaveFormationStrategy
+
+note right of WaveFactory
+  Usa uma estratégia (Standard ou Random)
+  para gerar uma lista de 'AlienType'
+  baseado no nível do jogo.
+end note
+
+abstract class "Alien" as Alien
+enum "AlienType" as AlienType
+
+AlienFactory ..> Alien : cria
+WaveFactory .right.> IWaveFormationStrategy : usa
+IWaveFormationStrategy <|.. StandardFormationStrategy
+IWaveFormationStrategy <|.. RandomFormationStrategy
+WaveFactory ..> AlienType
+@enduml
+```
+
+### 1.4. Diagrama de Classes: Serviços e Persistência
+
+Este diagrama ilustra como os serviços da aplicação interagem com a camada de persistência de dados e outros serviços externos.
+
+```plantuml
+@startuml
+skinparam classAttributeIconStyle hidden
+title Diagrama de Classes: Serviços e Persistência
+
+class SpaceInvadersDbContext {
+    + Players: DbSet<Player>
+    + Scores: DbSet<Score>
+    + OnModelCreating(modelBuilder: ModelBuilder): void
+}
+
+class Score {
+    + PlayerScore: int
+    + DateAchieved: DateTime
+}
+
+class Player {
+    + Name: string
+}
+
+interface IScoreService {
+  + AddScoreAsync(score: Score): Task<Score>
+  + GetTopScoresAsync(count: int): Task<List<Score>>
+}
+
+class ScoreService implements IScoreService
+
+interface ISoundService {
+  + Volume: float
+  + PlaySound(soundPath: string): void
+}
+
+class SoundService implements ISoundService
+
+Player "1" -- "*" Score : tem >
+ScoreService ..> SpaceInvadersDbContext : acessa
+ScoreService ..> Score : manipula
+SoundService ..> "NAudio" : usa
+@enduml
+```
+
+### 1.5. Diagrama de Componentes
 
 Este diagrama ilustra a estrutura dos componentes de software do projeto e suas dependências, fornecendo uma visão de alto nível de como as diferentes partes do sistema se interligam.
 
@@ -214,6 +232,7 @@ component "SpaceInvaders.Application" as App {
   [ViewModels]
   [Models]
   [Services]
+  [Factories]
   [Constants]
   [Assets]
 }
@@ -402,6 +421,8 @@ switch (Opção selecionada)
 case (Iniciar Jogo)
   :Inicializar Jogo;
   :Carregar Assets;
+  :Gerar Primeira Onda de Alienígenas
+(usando WaveFactory);
   :Exibir Tela de Jogo;
 
   while (Jogo Ativo) is (true)
@@ -411,6 +432,12 @@ case (Iniciar Jogo)
     :Gerenciar Alienígenas (Movimento, Disparo);
     :Gerenciar Colisões (Nave, Projéteis, Alienígenas, Barreiras);
     :Atualizar Pontuação e Vidas;
+
+    if (Todos os alienígenas foram destruídos) then (sim)
+        :Avançar Nível;
+        :Gerar Nova Onda de Alienígenas
+(usando WaveFactory);
+    endif
 
     if (Condição de Fim de Jogo) then (true)
       break

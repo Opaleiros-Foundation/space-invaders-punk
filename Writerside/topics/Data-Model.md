@@ -7,8 +7,7 @@ O modelo de dados define a estrutura das informações que são gerenciadas e pe
 As principais entidades que compõem o modelo de dados são representadas pelas classes `DbSet` no `SpaceInvadersDbContext`:
 
 *   **`Player`**: Representa o jogador principal, suas características e relacionamentos com outros dados.
-*   **`Alien`**: Classe base para os diferentes tipos de alienígenas no jogo.
-*   **`AlienType1`, `AlienType2`, `AlienType3`, `AlienType4`**: Tipos específicos de alienígenas que herdam de `Alien`.
+*   **`Alien`**: Classe base abstrata para os diferentes tipos de alienígenas no jogo. As implementações concretas (`AlienType1`, `AlienType2`, etc.) herdam desta classe.
 *   **`Projectile`**: Representa os projéteis disparados por jogadores ou alienígenas.
 *   **`Shield`**: Representa as barreiras de proteção no jogo.
 *   **`Weapon`**: Define as características das armas, como dano e taxa de disparo.
@@ -34,65 +33,38 @@ Este diagrama ilustra as entidades principais do modelo de dados e seus relacion
 
 ```plantuml
 @startuml
-entity Player {
+abstract class Actor {
   *Id: int <<PK>>
   --
   Name: string
+  Health: int
+  X: double
+  Y: double
+  Width: double
+  Height: double
+  SpritePath: string
+  IsVisible: bool
+}
+
+class Player extends Actor {
   Score: int
+  Lives: int
   CanShoot: bool
-  Health: int
-  X: double
-  Y: double
-  Width: double
-  Height: double
-  SpritePath: string
-  IsVisible: bool
 }
 
-entity Alien {
-  *Id: int <<PK>>
-  --
+abstract class Alien extends Actor {
   ScoreValue: int
-  WeaponId: int <<FK>>
-  Discriminator: string
-  Name: string
-  Health: int
-  X: double
-  Y: double
-  Width: double
-  Height: double
-  SpritePath: string
-  IsVisible: bool
 }
 
-entity Projectile {
-  *Id: int <<PK>>
-  --
+class Projectile extends Actor {
   Speed: int
   Damage: int
+  IsEnemy: bool
   PlayerId: int <<FK>>
-  Name: string
-  Health: int
-  X: double
-  Y: double
-  Width: double
-  Height: double
-  SpritePath: string
-  IsVisible: bool
 }
 
-entity Shield {
-  *Id: int <<PK>>
-  --
+class Shield extends Actor {
   MaxHealth: int
-  Name: string
-  Health: int
-  X: double
-  Y: double
-  Width: double
-  Height: double
-  SpritePath: string
-  IsVisible: bool
 }
 
 entity Weapon {
@@ -112,10 +84,10 @@ entity Score {
   PlayerId: int <<FK>>
 }
 
-Player ||--o{ Projectile : "shoots"
-Player ||--o{ Score : "earns"
-Player ||--|{ Weapon : "has"
-Alien ||--|{ Weapon : "has"
+Player "1" -- "1" Weapon : has
+Player "1" -- "0..*" Score : earns
+Player "1" -- "0..*" Projectile : shoots
+Alien "1" -- "1" Weapon : has
 
 @enduml
 ```
