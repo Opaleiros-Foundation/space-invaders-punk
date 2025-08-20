@@ -53,79 +53,92 @@ A documentação do projeto é mantida em duas plataformas para garantir acesso 
 
 ## 5. Instalação e Execução
 
-Para configurar e executar o projeto Space Invaders, siga os passos abaixo:
+Este guia detalha os passos necessários para configurar o ambiente de desenvolvimento, instalar as dependências e executar o projeto Space Invaders.
 
 ### 5.1. Pré-requisitos
 
-Certifique-se de ter os seguintes softwares instalados em sua máquina:
+Certifique-se de que os seguintes softwares estejam instalados em sua máquina:
 
-*   **[.NET SDK 8.0 ou superior](https://dotnet.microsoft.com/download/dotnet/8.0)**: Necessário para compilar e executar aplicações C#.
-*   **[PostgreSQL](https://www.postgresql.org/download/)**: Banco de dados utilizado para persistir os placares.
-*   **[Docker](https://www.docker.com/products/docker-desktop/) (Opcional)**: Para facilitar a configuração do banco de dados via `docker-compose`.
-
-### 5.2. Configuração do Banco de Dados
-
-O projeto utiliza PostgreSQL para armazenamento de dados. Você pode configurá-lo de duas maneiras:
-
-#### 5.2.1. Usando Docker Compose (Recomendado)
-
-1.  Navegue até a raiz do projeto onde o arquivo `docker-compose.yml` está localizado.
-2.  Execute o seguinte comando para iniciar o serviço do PostgreSQL:
+*   **SDK do .NET 9.0 (ou superior)**: Essencial para compilar e executar aplicações .NET. Você pode baixá-lo em [dotnet.microsoft.com/download](https://dotnet.microsoft.com/download).
+*   **Docker Desktop (ou Docker Engine)**: Necessário para rodar o banco de dados PostgreSQL. Disponível em [docker.com/products/docker-desktop](https://www.docker.com/products/docker-desktop).
+*   **Visual Studio 2022 (ou Visual Studio Code ou Rider)**: IDEs recomendadas para desenvolvimento C# e Uno Platform. Embora não sejam estritamente obrigatórias, facilitam muito o processo.
+    *   **Visual Studio**: Certifique-se de ter as cargas de trabalho "Desenvolvimento para desktop com .NET" e "Desenvolvimento multiplataforma de interface do usuário .NET" instaladas.
+*   **Templates do Uno Platform**: Para criar e gerenciar projetos Uno Platform, você precisará instalar os templates. Execute o seguinte comando no terminal:
 
     ```c#
-    docker-compose up -d
+    dotnet new install Uno.Templates
     ```
 
-    Este comando irá baixar a imagem do PostgreSQL (se necessário) e iniciar um contêiner de banco de dados.
+    Para mais detalhes, consulte a documentação oficial: [platform.uno/docs/articles/get-started.html](https://platform.uno/docs/articles/get-started.html)
 
-#### 5.2.2. Configuração Manual do PostgreSQL
+### 5.2. Configuração do Banco de Dados (PostgreSQL com Docker)
 
-1.  Instale o PostgreSQL em sua máquina.
-2.  Crie um novo banco de dados com o nome `SpaceInvadersDb`.
-3.  Certifique-se de que as credenciais de conexão no arquivo `appsettings.json` (localizado em `SpaceInvaders/SpaceInvaders/appsettings.json`) correspondam às suas configurações locais do PostgreSQL. Por padrão, a string de conexão é:
+O projeto utiliza PostgreSQL para persistência de dados (placares), gerenciado via Docker para simplificar a configuração.
 
-    ```json
-    "ConnectionStrings": {
-      "DefaultConnection": "Host=localhost;Port=5432;Database=SpaceInvadersDb;Username=postgres;Password=postgres"
-    }
+1.  **Navegue até o diretório raiz do projeto** no seu terminal (onde o arquivo `docker-compose.yml` está localizado):
+
+2.  **Inicie o serviço do banco de dados** usando Docker Compose:
+
+    ```c#
+    docker-compose up -d db
     ```
 
-### 5.3. Aplicação das Migrações do Banco de Dados
+    Este comando irá baixar a imagem do PostgreSQL (se ainda não tiver), criar e iniciar um contêiner de banco de dados configurado para o projeto. O banco de dados estará acessível na porta `5432`.
 
-Após configurar o banco de dados (seja via Docker ou manualmente), você precisa aplicar as migrações para criar o esquema do banco de dados:
+3.  **Verifique se o contêiner está rodando** (opcional):
 
-1.  Abra um terminal na pasta raiz do projeto (`/home/mrpunkdasilva/RiderProjects/capstone-programming-3`).
-2.  Navegue até o diretório do projeto principal:
+    ```c#
+    docker ps
+    ```
+
+    Você deverá ver um contêiner chamado `capstone-programming-3-db-1` (ou similar) na lista.
+
+### 5.3. Configuração e Compilação do Projeto
+
+1.  **Navegue até o diretório do projeto SpaceInvaders**:
 
     ```c#
     cd SpaceInvaders/SpaceInvaders
     ```
 
-3.  Execute o comando do Entity Framework Core para aplicar as migrações:
+2.  **Restaure as dependências do projeto**:
 
     ```c#
-    dotnet ef database update
+    dotnet restore
     ```
 
-    Isso criará as tabelas necessárias no seu banco de dados `SpaceInvadersDb`.
+3.  **Compile o projeto**:
+
+    ```c#
+    dotnet build
+    ```
+
+    Este comando irá compilar o código-fonte e verificar se há erros.
 
 ### 5.4. Execução do Projeto
 
-Com o banco de dados configurado e as migrações aplicadas, você pode executar a aplicação:
+Após a compilação bem-sucedida e com o banco de dados rodando, você pode executar a aplicação.
 
-1.  Certifique-se de que você ainda está no diretório `SpaceInvaders/SpaceInvaders`. Se não estiver, navegue até ele:
-
-    ```c#
-    cd SpaceInvaders/SpaceInvaders
-    ```
-
-2.  Execute a aplicação usando o comando `dotnet run`:
+1.  **Execute a aplicação desktop**:
 
     ```c#
-    dotnet run
+    dotnet run --project SpaceInvaders/SpaceInvaders.csproj -f net9.0-desktop
     ```
 
-    A aplicação Space Invaders será iniciada em uma nova janela.
+    A aplicação Space Invaders deverá ser iniciada em uma nova janela.
+
+#### Nota sobre Áudio no Linux
+
+Se você estiver executando o projeto em um ambiente Linux, certifique-se de ter o `mpg123` instalado para a reprodução de áudio. O `SoundService` do projeto utiliza este utilitário externo para garantir a compatibilidade de áudio no Linux.
+
+Para instalar o `mpg123` (exemplo para sistemas baseados em Debian/Ubuntu):
+
+```c#
+sudo apt-get update
+sudo apt-get install mpg123
+```
+
+Com esses passos, você estará pronto para desenvolver e testar o projeto Space Invaders em sua máquina.
 
 ## 6. Estrutura do Projeto
 
