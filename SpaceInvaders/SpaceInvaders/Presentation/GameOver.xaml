@@ -6,8 +6,16 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:SpaceInvaders.Presentation"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:utils="using:SpaceInvaders.Utils">
+    xmlns:utils="using:SpaceInvaders.Utils"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ms-appx:///Styles/GameOverStyles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Page.Resources>
 
     <Grid>
         <Grid.Background>
@@ -17,8 +25,12 @@
                 Stretch="UniformToFill" />
         </Grid.Background>
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBlock Style="{StaticResource GameOverTitleStyle}" Text="GAME OVER" />
-            <TextBlock Style="{StaticResource GameOverScoreStyle}" Text="{Binding ScoreText}" />
+            <TextBlock Style="{StaticResource GameOverTitleStyle}" Text="Vérme zhão ⸓ ánka rrís!" />
+            <TextBlock
+                Background="Black"
+                Foreground="White"
+                Style="{StaticResource GameOverScoreStyle}"
+                Text="{Binding ScoreText}" />
             <TextBox
                 PlaceholderText="Enter your name"
                 Style="{StaticResource GameOverTextBoxStyle}"
@@ -27,18 +39,20 @@
                 Command="{Binding SaveScoreCommand}"
                 Content="Save Score"
                 Style="{StaticResource GameOverSecondaryButtonStyle}" />
-            <TextBlock 
-                Style="{StaticResource GameOverConfirmationMessageStyle}" 
-                Text="{Binding ConfirmationMessage}" 
+            <TextBlock
+                Style="{StaticResource GameOverConfirmationMessageStyle}"
+                Text="{Binding ConfirmationMessage}"
                 Visibility="{Binding ConfirmationVisibility}" />
-            <Button
-                Command="{Binding PlayAgain}"
-                Content="Play Again"
-                Style="{StaticResource GameOverPrimaryButtonStyle}" />
-            <Button
-                Command="{Binding GoToMain}"
-                Content="Return to Main Menu"
-                Style="{StaticResource GameOverSecondaryButtonStyle}" />
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button
+                    Command="{Binding PlayAgain}"
+                    Content="Play Again"
+                    Style="{StaticResource GameOverPrimaryButtonStyle}" />
+                <Button
+                    Command="{Binding GoToMain}"
+                    Content="Return to Main Menu"
+                    Style="{StaticResource GameOverSecondaryButtonStyle}" />
+            </StackPanel>
         </StackPanel>
     </Grid>
 

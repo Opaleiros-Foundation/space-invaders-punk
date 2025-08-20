@@ -5,53 +5,56 @@
     <Page.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ms-appx:///Styles/AppStyles.xaml"/>
-                <ResourceDictionary Source="ms-appx:///Styles/ControllersStyles.xaml"/>
+                <ResourceDictionary Source="ms-appx:///Styles/AppStyles.xaml" />
+                <ResourceDictionary Source="ms-appx:///Styles/ControllersStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Page.Resources>
 
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="ms-appx:///Assets/background/background.png" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="ms-appx:///Assets/background/background.png" Stretch="UniformToFill" />
         </Grid.Background>
-        
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0"
-                   Text="Controles"
-                   Style="{StaticResource PageTitleStyle}" />
+        <TextBlock
+            Grid.Row="0"
+            Style="{StaticResource PageTitleStyle}"
+            Text="Controles" />
 
-        <StackPanel Grid.Row="1"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Spacing="20">
+        <StackPanel
+            Grid.Row="1"
+            HorizontalAlignment="Center"
+            Spacing="20"
+            VerticalAlignment="Center">
 
             <StackPanel Orientation="Horizontal" Spacing="10">
-                <TextBlock Text="Mover para Esquerda:" Style="{StaticResource ControlLabelStyle}" />
-                <TextBlock Text="Seta para Esquerda / Tecla A" Style="{StaticResource ControlTextStyle}" />
+                <TextBlock Style="{StaticResource ControlLabelStyle}" Text="Mover para Esquerda:" />
+                <TextBlock Style="{StaticResource ControlTextStyle}" Text="Seta para Esquerda / Tecla A" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Spacing="10">
-                <TextBlock Text="Mover para Direita:" Style="{StaticResource ControlLabelStyle}" />
-                <TextBlock Text="Seta para Direita / Tecla D" Style="{StaticResource ControlTextStyle}" />
+                <TextBlock Style="{StaticResource ControlLabelStyle}" Text="Mover para Direita:" />
+                <TextBlock Style="{StaticResource ControlTextStyle}" Text="Seta para Direita / Tecla D" />
             </StackPanel>
 
             <StackPanel Orientation="Horizontal" Spacing="10">
-                <TextBlock Text="Atirar:" Style="{StaticResource ControlLabelStyle}" />
-                <TextBlock Text="Barra de Espaço" Style="{StaticResource ControlTextStyle}" />
+                <TextBlock Style="{StaticResource ControlLabelStyle}" Text="Atirar:" />
+                <TextBlock Style="{StaticResource ControlTextStyle}" Text="Barra de Espaço" />
             </StackPanel>
 
         </StackPanel>
 
-        <Button Grid.Row="2"
-                AutomationProperties.AutomationId="MainPageButton"
-                Command="{Binding GoToMain}"
-                Content="Return"
-                Style="{StaticResource ReturnButtonStyle}" />
+        <Button
+            AutomationProperties.AutomationId="MainPageButton"
+            Command="{Binding GoToMain}"
+            Content="Return"
+            Grid.Row="2"
+            Style="{StaticResource ReturnButtonStyle}" />
     </Grid>
 </Page>

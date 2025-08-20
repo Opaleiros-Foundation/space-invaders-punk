@@ -1,59 +1,76 @@
-<ResourceDictionary
-    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style x:Key="GameOverTitleStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="72"/>
-        <Setter Property="FontWeight" Value="Bold"/>
-        <Setter Property="Margin" Value="0,0,0,40"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Style TargetType="TextBlock" x:Key="GameOverTitleStyle">
+        <Setter Property="FontSize" Value="42" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="Margin" Value="0,0,0,1" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="FontFamily" Value="ms-appx:///Assets/font/space_invaders.ttf#space_invaders" />
-        <Setter Property="Foreground" Value="{ThemeResource PrimaryColor}" />
+        <Setter Property="Foreground" Value="{ThemeResource OnBackgroundColor}" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="TextAlignment" Value="Center" />
     </Style>
 
-    <Style x:Key="GameOverScoreStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="48"/>
-        <Setter Property="Margin" Value="0,0,0,30"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Style TargetType="TextBlock" x:Key="GameOverScoreStyle">
+        <Setter Property="FontSize" Value="48" />
+        <Setter Property="Margin" Value="0,0,0,30" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="FontFamily" Value="ms-appx:///Assets/font/space_invaders.ttf#space_invaders" />
-        <Setter Property="Foreground" Value="{ThemeResource OnPrimaryColor}" />
+        <Setter Property="Foreground" Value="White" />
     </Style>
 
-    <Style x:Key="GameOverTextBoxStyle" TargetType="TextBox">
-        <Setter Property="Width" Value="350"/>
-        <Setter Property="Margin" Value="0,0,0,20"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Style TargetType="TextBox" x:Key="GameOverTextBoxStyle">
+        <Setter Property="Width" Value="350" />
+        <Setter Property="Margin" Value="0,0,0,20" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="FontFamily" Value="ms-appx:///Assets/font/space_invaders.ttf#space_invaders" />
         <Setter Property="Background" Value="{ThemeResource SurfaceVariantColor}" />
-        <Setter Property="Foreground" Value="{ThemeResource OnSurfaceVariantColor}" />
+        <Setter Property="Foreground" Value="White" />
         <Setter Property="BorderBrush" Value="{ThemeResource PrimaryColor}" />
         <Setter Property="BorderThickness" Value="2" />
         <Setter Property="CornerRadius" Value="5" />
-        <Setter Property="Padding" Value="10,5,10,5" />
+        <Setter Property="Padding" Value="20" />
     </Style>
 
-    <Style x:Key="GameOverPrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource PrimaryButtonStyle}">
-        <Setter Property="Width" Value="Auto" />
-        <Setter Property="Height" Value="120" />
-        <Setter Property="FontSize" Value="{StaticResource SubtitleFontSize}" />
-        <Setter Property="Margin" Value="0,0,0,10"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Style
+        BasedOn="{StaticResource PrimaryButtonStyle}"
+        TargetType="Button"
+        x:Key="GameOverPrimaryButtonStyle">
+        <Setter Property="Width" Value="300" />
+        <Setter Property="Height" Value="60" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="Margin" Value="0,0,10,10" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Background" Value="{ThemeResource BackgroundColor}" />
+        <Setter Property="Foreground" Value="{ThemeResource OnBackgroundColor}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource PrimaryColor}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="5" />
     </Style>
 
-    <Style x:Key="GameOverSecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource SecondaryButtonStyle}">
-        <Setter Property="Width" Value="Auto" />
-        <Setter Property="Height" Value="100" />
-        <Setter Property="FontSize" Value="{StaticResource SubtitleFontSize}" />
-        <Setter Property="Margin" Value="0,0,0,10"/>
-        <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    <Style
+        BasedOn="{StaticResource SecondaryButtonStyle}"
+        TargetType="Button"
+        x:Key="GameOverSecondaryButtonStyle">
+        <Setter Property="Width" Value="300" />
+        <Setter Property="Height" Value="60" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="Margin" Value="10,0,0,10" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="Background" Value="{ThemeResource BackgroundColor}" />
+        <Setter Property="Foreground" Value="{ThemeResource OnBackgroundColor}" />
+        <Setter Property="BorderBrush" Value="{ThemeResource PrimaryColor}" />
+        <Setter Property="BorderThickness" Value="2" />
+        <Setter Property="CornerRadius" Value="5" />
     </Style>
 
-    <Style x:Key="GameOverConfirmationMessageStyle" TargetType="TextBlock">
-        <Setter Property="FontSize" Value="20"/>
-        <Setter Property="Margin" Value="0,10,0,20"/>
-        <Setter Property="HorizontalAlignment" Value="Center"/>
+    <Style TargetType="TextBlock" x:Key="GameOverConfirmationMessageStyle">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="Margin" Value="0,10,0,20" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
         <Setter Property="FontFamily" Value="ms-appx:///Assets/font/space_invaders.ttf#space_invaders" />
-        <Setter Property="Foreground" Value="{ThemeResource TertiaryColor}" />
+        <Setter Property="Foreground" Value="{ThemeResource OnSecondaryColor}" />
+        <Setter Property="Background" Value="{ThemeResource OnSecondaryColor}" />
     </Style>
 
 </ResourceDictionary>
