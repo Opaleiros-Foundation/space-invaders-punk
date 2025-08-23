@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using SpaceInvaders.Interfaces.Services;
+using SpaceInvaders.Constants;
 
 #if !__MACCATALYST__ && !WINDOWS && !ANDROID && !IOS
 using NAudio.Wave;
@@ -19,18 +20,35 @@ public class SoundService : ISoundService
 #if !__MACCATALYST__ && !WINDOWS && !ANDROID && !IOS
     private readonly List<IWavePlayer> _activePlayers = new();
 #endif
-    private readonly List<Process> _activeProcesses = new();
+    private class ActiveSound
+    {
+        public Process Process { get; }
+        public SoundPriority Priority { get; }
+        public DateTime StartTime { get; }
+
+        public ActiveSound(Process process, SoundPriority priority)
+        {
+            Process = process;
+            Priority = priority;
+            StartTime = DateTime.Now;
+        }
+    }
+
+    private readonly List<ActiveSound> _activeSounds = new();
 
     /// <summary>
     /// Gets or sets the global volume for sounds played by this service.
     /// </summary>
     public float Volume { get; set; } = 1.0f; // Default volume to 1.0 (max)
 
+    private const int MAX_CONCURRENT_SOUNDS = 5; // Example limit
+
     /// <summary>
     /// Plays a sound from the specified path.
     /// </summary>
     /// <param name="soundPath">The path to the sound file (e.g., "ms-appx:///Assets/sounds/my_sound.mp3").</param>
-    public void PlaySound(string soundPath)
+    /// <param name="priority">The priority of the sound.</param>
+    public void PlaySound(string soundPath, SoundPriority priority = SoundPriority.Medium)
     {
         try
         {
@@ -79,17 +97,59 @@ public class SoundService : ISoundService
                 {
                     if (sender is Process p)
                     {
-                        lock (_activeProcesses)
+                        lock (_activeSounds)
                         {
-                            _activeProcesses.Remove(p);
+                            var activeSoundToRemove = _activeSounds.FirstOrDefault(s => s.Process == p);
+                            if (activeSoundToRemove != null)
+                            {
+                                _activeSounds.Remove(activeSoundToRemove);
+                            }
                         }
                         p.Dispose();
                     }
                 };
 
-                lock (_activeProcesses)
+                lock (_activeSounds)
                 {
-                    _activeProcesses.Add(process);
+                    // Remove any exited processes from the list
+                    _activeSounds.RemoveAll(s => s.Process.HasExited);
+
+                    // If max concurrent sounds reached, stop the lowest priority/oldest sound
+                    if (_activeSounds.Count >= MAX_CONCURRENT_SOUNDS)
+                    {
+                        var lowestPrioritySound = _activeSounds
+                            .OrderBy(s => s.Priority)
+                            .ThenBy(s => s.StartTime)
+                            .FirstOrDefault();
+
+                        if (lowestPrioritySound != null && priority > lowestPrioritySound.Priority)
+                        {
+                            // Stop the lowest priority sound to make room for the new, higher priority sound
+                            try
+                            {
+                                if (!lowestPrioritySound.Process.HasExited)
+                                {
+                                    lowestPrioritySound.Process.Kill();
+                                    lowestPrioritySound.Process.WaitForExit(1000);
+                                }
+                                lowestPrioritySound.Process.Dispose();
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine($"[SoundService] Error stopping lowest priority sound: {ex.Message}");
+                            }
+                            _activeSounds.Remove(lowestPrioritySound);
+                        }
+                        else if (lowestPrioritySound != null && priority <= lowestPrioritySound.Priority)
+                        {
+                            // If new sound has lower or equal priority, don't play it
+                            Console.WriteLine($"[SoundService] Not playing sound: {fullPath} due to priority/limit.");
+                            return;
+                        }
+                    }
+
+                    var activeSound = new ActiveSound(process, priority);
+                    _activeSounds.Add(activeSound);
                 }
                 process.Start();
                 process.BeginOutputReadLine();
@@ -131,25 +191,25 @@ public class SoundService : ISoundService
     /// </summary>
     public void StopAllSounds()
     {
-        lock (_activeProcesses)
+        lock (_activeSounds)
         {
-            foreach (var process in _activeProcesses)
+            foreach (var activeSound in _activeSounds)
             {
                 try
                 {
-                    if (!process.HasExited)
+                    if (!activeSound.Process.HasExited)
                     {
-                        process.Kill(); // Terminate the process
-                        process.WaitForExit(1000); // Wait for it to exit gracefully (1 second timeout)
+                        activeSound.Process.Kill(); // Terminate the process
+                        activeSound.Process.WaitForExit(1000); // Wait for it to exit gracefully (1 second timeout)
                     }
-                    process.Dispose();
+                    activeSound.Process.Dispose();
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine($"[SoundService] Error stopping process: {ex.Message}");
                 }
             }
-            _activeProcesses.Clear(); // Clear the list after stopping all processes
+            _activeSounds.Clear(); // Clear the list after stopping all processes
         }
     }
 }

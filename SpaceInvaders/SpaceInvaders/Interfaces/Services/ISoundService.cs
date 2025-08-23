@@ -1,4 +1,5 @@
 namespace SpaceInvaders.Interfaces.Services;
+using SpaceInvaders.Constants;
 
 /// <summary>
 /// Defines the methods for the sound playback service.
@@ -9,7 +10,8 @@ public interface ISoundService
     /// Plays a sound from the specified path.
     /// </summary>
     /// <param name="soundPath">The path to the sound file to be played.</param>
-    void PlaySound(string soundPath);
+    /// <param name="priority">The priority of the sound.</param>
+    void PlaySound(string soundPath, SoundPriority priority = SoundPriority.Medium);
 
     /// <summary>
     /// Stops all currently active sound playback processes.

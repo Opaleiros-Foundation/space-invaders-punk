@@ -55,7 +55,7 @@
       </PackageReference>
       <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" />
       <PackageReference Include="Uno.Extensions.Navigation" />
-      
+
       <PackageReference Include="NAudio" />
       </ItemGroup>
 
