@@ -19,6 +19,7 @@ public class SoundService : ISoundService
 #if !__MACCATALYST__ && !WINDOWS && !ANDROID && !IOS
     private readonly List<IWavePlayer> _activePlayers = new();
 #endif
+    private readonly List<Process> _activeProcesses = new();
 
     /// <summary>
     /// Gets or sets the global volume for sounds played by this service.
@@ -48,16 +49,51 @@ public class SoundService : ISoundService
                 {
                     StartInfo = new ProcessStartInfo
                     {
-                        FileName = "mpg123",
-                        Arguments = $"-f 16384 \"{fullPath}\"",
+                        FileName = "ffplay",
+                        Arguments = $"-nodisp -autoexit -loglevel quiet \"{fullPath}\"", // Play audio, no display, auto-exit, quiet logging
                         UseShellExecute = false,
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
                         CreateNoWindow = true
+                    },
+                    EnableRaisingEvents = true
+                };
+
+                process.OutputDataReceived += (sender, data) =>
+                {
+                    if (!string.IsNullOrWhiteSpace(data.Data))
+                    {
+                        Console.WriteLine($"[SoundService][ffplay-out] {data.Data}");
                     }
                 };
+
+                process.ErrorDataReceived += (sender, data) =>
+                {
+                    if (!string.IsNullOrWhiteSpace(data.Data))
+                    {
+                        Console.WriteLine($"[SoundService][ffplay-err] {data.Data}");
+                    }
+                };
+
+                process.Exited += (sender, e) =>
+                {
+                    if (sender is Process p)
+                    {
+                        lock (_activeProcesses)
+                        {
+                            _activeProcesses.Remove(p);
+                        }
+                        p.Dispose();
+                    }
+                };
+
+                lock (_activeProcesses)
+                {
+                    _activeProcesses.Add(process);
+                }
                 process.Start();
-                // dont wait for the process to finish
+                process.BeginOutputReadLine();
+                process.BeginErrorReadLine();
             }
 #if !__MACCATALYST__ && !WINDOWS && !ANDROID && !IOS
             else
@@ -87,6 +123,33 @@ public class SoundService : ISoundService
         catch (Exception ex)
         {
             Console.WriteLine($"[SoundService] Error playing sound: {ex.Message}");
+        }
+    }
+
+    /// <summary>
+    /// Stops all currently active sound playback processes.
+    /// </summary>
+    public void StopAllSounds()
+    {
+        lock (_activeProcesses)
+        {
+            foreach (var process in _activeProcesses)
+            {
+                try
+                {
+                    if (!process.HasExited)
+                    {
+                        process.Kill(); // Terminate the process
+                        process.WaitForExit(1000); // Wait for it to exit gracefully (1 second timeout)
+                    }
+                    process.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[SoundService] Error stopping process: {ex.Message}");
+                }
+            }
+            _activeProcesses.Clear(); // Clear the list after stopping all processes
         }
     }
 }

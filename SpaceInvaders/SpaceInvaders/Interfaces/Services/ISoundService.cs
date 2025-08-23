@@ -10,4 +10,9 @@ public interface ISoundService
     /// </summary>
     /// <param name="soundPath">The path to the sound file to be played.</param>
     void PlaySound(string soundPath);
+
+    /// <summary>
+    /// Stops all currently active sound playback processes.
+    /// </summary>
+    void StopAllSounds();
 }

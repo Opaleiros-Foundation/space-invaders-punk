@@ -358,10 +358,21 @@ namespace SpaceInvaders.Presentation
         
         private void GameStartPage_Unloaded(object sender, RoutedEventArgs e)
         {
+            Console.WriteLine("[GameStartPage] Unloaded event fired.");
             if (_gameTimer == null) return;
             
             _gameTimer.Stop();
             _gameTimer.Tick -= GameTimer_Tick;
+
+            if (_soundService == null)
+            {
+                Console.WriteLine("[GameStartPage] _soundService is null in Unloaded event.");
+            }
+            else
+            {
+                _soundService.StopAllSounds();
+                Console.WriteLine("[GameStartPage] StopAllSounds called from Unloaded event.");
+            }
         }
 
         private void GameTimer_Tick(object? sender, object? e)
