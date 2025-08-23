@@ -30,11 +30,11 @@ Este documento fornece soluções para problemas comuns que podem surgir durante
 
 **Possíveis Causas e Soluções:**
 
-*   **`mpg123` não está instalado**: O `SoundService` do projeto utiliza o utilitário `mpg123` para reprodução de áudio em ambientes Linux.
-    *   **Solução**: Instale o `mpg123` no seu sistema. Para sistemas baseados em Debian/Ubuntu:
+*   **`ffplay` não está instalado**: O `SoundService` do projeto utiliza o utilitário `ffplay` (parte do FFmpeg) para reprodução de áudio em ambientes Linux.
+    *   **Solução**: Instale o `ffplay` no seu sistema. Para sistemas baseados em Debian/Ubuntu:
         ```bash
         sudo apt-get update
-        sudo apt-get install mpg123
+        sudo apt-get install ffmpeg
         ```
         Para outras distribuições, consulte a documentação do seu gerenciador de pacotes.
 

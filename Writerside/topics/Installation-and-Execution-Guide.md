@@ -77,13 +77,13 @@ Após a compilação bem-sucedida e com o banco de dados rodando, você pode exe
 
 ### Nota sobre Áudio no Linux
 
-Se você estiver executando o projeto em um ambiente Linux, certifique-se de ter o `mpg123` instalado para a reprodução de áudio. O `SoundService` do projeto utiliza este utilitário externo para garantir a compatibilidade de áudio no Linux.
+Se você estiver executando o projeto em um ambiente Linux, certifique-se de ter o `ffplay` (parte do FFmpeg) instalado para a reprodução de áudio. O `SoundService` do projeto utiliza este utilitário externo para garantir a compatibilidade de áudio no Linux.
 
-Para instalar o `mpg123` (exemplo para sistemas baseados em Debian/Ubuntu):
+Para instalar o `ffplay` (exemplo para sistemas baseados em Debian/Ubuntu):
 
 ```bash
 sudo apt-get update
-sudo apt-get install mpg123
+sudo apt-get install ffmpeg
 ```
 
 Com esses passos, você estará pronto para desenvolver e testar o projeto Space Invaders em sua máquina.

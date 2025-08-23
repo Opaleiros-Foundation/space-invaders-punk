@@ -29,7 +29,7 @@
 ## 5. Áudio: NAudio
 
 *   **Descrição**: NAudio é uma biblioteca de áudio de código aberto para .NET, que fornece funcionalidades para reprodução, gravação e processamento de áudio.
-*   **Motivo da Escolha**: Permite a manipulação e reprodução de efeitos sonoros e músicas no jogo, contribuindo para uma experiência imersiva. A implementação considera a compatibilidade com diferentes sistemas operacionais, incluindo Linux (via `mpg123`).
+*   **Motivo da Escolha**: Permite a manipulação e reprodução de efeitos sonoros e músicas no jogo, contribuindo para uma experiência imersiva. A implementação considera a compatibilidade com diferentes sistemas operacionais, utilizando `ffplay` para Linux e `NAudio` para outras plataformas.
 
 ## 6. Controle de Versão: Git
 
