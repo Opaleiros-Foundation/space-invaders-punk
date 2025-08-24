@@ -13,8 +13,5 @@ public interface ISoundService
     /// <param name="priority">The priority of the sound.</param>
     void PlaySound(string soundPath, SoundPriority priority = SoundPriority.Medium);
 
-    /// <summary>
-    /// Stops all currently active sound playback processes.
-    /// </summary>
-    void StopAllSounds();
+    
 }

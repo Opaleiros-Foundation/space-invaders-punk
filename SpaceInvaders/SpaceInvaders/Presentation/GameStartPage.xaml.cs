@@ -362,7 +362,7 @@ namespace SpaceInvaders.Presentation
             
             _gameTimer.Stop();
             _gameTimer.Tick -= GameTimer_Tick;
-            _soundService?.StopAllSounds();
+            
         }
 
         private void GameTimer_Tick(object? sender, object? e)

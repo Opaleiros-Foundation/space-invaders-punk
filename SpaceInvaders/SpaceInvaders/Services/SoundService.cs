@@ -20,21 +20,7 @@ public class SoundService : ISoundService
 #if !__MACCATALYST__ && !WINDOWS && !ANDROID && !IOS
     private readonly List<IWavePlayer> _activePlayers = new();
 #endif
-    private class ActiveSound
-    {
-        public Process Process { get; }
-        public SoundPriority Priority { get; }
-        public DateTime StartTime { get; }
-
-        public ActiveSound(Process process, SoundPriority priority)
-        {
-            Process = process;
-            Priority = priority;
-            StartTime = DateTime.Now;
-        }
-    }
-
-    private readonly List<ActiveSound> _activeSounds = new();
+    
 
     /// <summary>
     /// Gets or sets the global volume for sounds played by this service.
@@ -93,64 +79,7 @@ public class SoundService : ISoundService
                     }
                 };
 
-                process.Exited += (sender, e) =>
-                {
-                    if (sender is Process p)
-                    {
-                        lock (_activeSounds)
-                        {
-                            var activeSoundToRemove = _activeSounds.FirstOrDefault(s => s.Process == p);
-                            if (activeSoundToRemove != null)
-                            {
-                                _activeSounds.Remove(activeSoundToRemove);
-                            }
-                        }
-                        p.Dispose();
-                    }
-                };
-
-                lock (_activeSounds)
-                {
-                    // Remove any exited processes from the list
-                    _activeSounds.RemoveAll(s => s.Process.HasExited);
-
-                    // If max concurrent sounds reached, stop the lowest priority/oldest sound
-                    if (_activeSounds.Count >= MAX_CONCURRENT_SOUNDS)
-                    {
-                        var lowestPrioritySound = _activeSounds
-                            .OrderBy(s => s.Priority)
-                            .ThenBy(s => s.StartTime)
-                            .FirstOrDefault();
-
-                        if (lowestPrioritySound != null && priority > lowestPrioritySound.Priority)
-                        {
-                            // Stop the lowest priority sound to make room for the new, higher priority sound
-                            try
-                            {
-                                if (!lowestPrioritySound.Process.HasExited)
-                                {
-                                    lowestPrioritySound.Process.Kill();
-                                    lowestPrioritySound.Process.WaitForExit(1000);
-                                }
-                                lowestPrioritySound.Process.Dispose();
-                            }
-                            catch (Exception ex)
-                            {
-                                Console.WriteLine($"[SoundService] Error stopping lowest priority sound: {ex.Message}");
-                            }
-                            _activeSounds.Remove(lowestPrioritySound);
-                        }
-                        else if (lowestPrioritySound != null && priority <= lowestPrioritySound.Priority)
-                        {
-                            // If new sound has lower or equal priority, don't play it
-                            Console.WriteLine($"[SoundService] Not playing sound: {fullPath} due to priority/limit.");
-                            return;
-                        }
-                    }
-
-                    var activeSound = new ActiveSound(process, priority);
-                    _activeSounds.Add(activeSound);
-                }
+                
                 process.Start();
                 process.BeginOutputReadLine();
                 process.BeginErrorReadLine();
@@ -186,30 +115,5 @@ public class SoundService : ISoundService
         }
     }
 
-    /// <summary>
-    /// Stops all currently active sound playback processes.
-    /// </summary>
-    public void StopAllSounds()
-    {
-        lock (_activeSounds)
-        {
-            foreach (var activeSound in _activeSounds)
-            {
-                try
-                {
-                    if (!activeSound.Process.HasExited)
-                    {
-                        activeSound.Process.Kill(); // Terminate the process
-                        activeSound.Process.WaitForExit(1000); // Wait for it to exit gracefully (1 second timeout)
-                    }
-                    activeSound.Process.Dispose();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[SoundService] Error stopping process: {ex.Message}");
-                }
-            }
-            _activeSounds.Clear(); // Clear the list after stopping all processes
-        }
-    }
+    
 }

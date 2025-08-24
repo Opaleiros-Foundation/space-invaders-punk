@@ -271,7 +271,7 @@ public partial class GameStartPageViewModel : ObservableObject
             _gameTimer.Stop();
             _specialAlienTimer.Stop();
             _initialPauseTimer.Stop(); // Stop initial pause timer on game over
-            SoundService.StopAllSounds();
+            
             await _navigator.NavigateViewModelAsync<GameOverViewModel>(this, data: Player);
             return;
         }
